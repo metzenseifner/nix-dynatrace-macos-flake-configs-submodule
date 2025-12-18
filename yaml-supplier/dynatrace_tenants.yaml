@@ -1,0 +1,39 @@
+---
+dynatrace:
+  tenants:
+    stage:
+      dev:
+        - name: vzx38435
+          dns_record: A
+        - name: vja49678
+          dns_record: A
+        - name: umsaywsjuo
+          dns_record: ALIAS
+          description: Used by Platform Advocates
+        - name: kxo25992
+          description: Design System
+          url_extra_patterns:
+            - name: Design System
+              url: https://kxo25992.dev.apps.dynatracelabs.com/ui/apps/my.design.system.latest/package/react-icons
+      hardening:
+        - name: yhf92160
+        - name: msu89794
+          description: Used by E2E Tests
+      production:
+        - name: guu84124
+        - name: ovw30140
+          description: Monitor of Jenkins and Kubernetes
+  ["self-monitoring"]:
+    dev:
+      - name: deve2e
+        dns_record: ALIAS
+      - name: gmg80500
+        dns_record: A
+    hardening:
+      - name: eva38390
+    production:
+      - name: ntd44713
+      - name: dre63214
+
+
+

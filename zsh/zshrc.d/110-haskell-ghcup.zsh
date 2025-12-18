@@ -1,0 +1,1 @@
+export GHCUP_USE_XDG_DIRS=true

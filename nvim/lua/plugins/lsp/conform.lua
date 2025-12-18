@@ -1,0 +1,58 @@
+  -- {
+  --   -- advantages
+  --   --  - nice declarative syntax
+  --   --  - good logs
+  --   --  - ability to use custom formatters like trim_whitespace for all files.
+  --   -- disadvantages
+  --   --  does not intregate with vim.lsp.format. This must be done manually.
+  --   'stevearc/conform.nvim', -- replaces none_ls null_ls for formatting especially for eslint_d. it solves format on save including imports
+  --   config = function()
+  --     local conf = {
+  --       -- Map of filetype to formatters
+  --       formatters_by_ft = {
+  --         lua = { "stylua" },
+  --         -- Conform will run multiple formatters sequentially
+  --         python = { "isort", "black" },
+  --         -- You can customize some of the format options for the filetype (:help conform.format)
+  --         rust = { "rustfmt", lsp_format = "fallback" },
+  --         -- Conform will run the first available formatter
+  --         javascript = { "prettierd", "prettier", stop_after_first = true },
+  --         typescript = { "eslint_d" },
+  --         typescriptreact = { "eslint_d" },
+  --         -- Use the "*" filetype to run formatters on all filetypes.
+  --         --["*"] = { "codespell" },
+  --         -- Use the "_" filetype to run formatters on filetypes that don't
+  --         -- have other formatters configured.
+  --         ["_"] = { "trim_whitespace" },
+  --       },
+  --       -- If this is set, Conform will run the formatter on save.
+  --       -- It will pass the table to conform.format().
+  --       -- This can also be a function that returns the table.
+  --       format_on_save = { -- creates autocmd for you -- note not possible to override callback, so if needed, create your own
+  --         -- I recommend these options. See :help conform.format for details.
+  --         lsp_format = "fallback",
+  --         timeout_ms = 500,
+  --       },
+  --       -- If this is set, Conform will run the formatter asynchronously after save.
+  --       -- It will pass the table to conform.format().
+  --       -- This can also be a function that returns the table.
+  --       format_after_save = { -- creates autocmd for you
+  --         lsp_format = "fallback",
+  --       },
+  --       -- Set the log level. Use `:ConformInfo` to see the location of the log file.
+  --       log_level = vim.log.levels.INFO,
+  --     }
+  --     require 'conform'.setup(conf)
+  --
+  --     vim.keymap.set({ "n", "v" }, "<leader>fc", function()
+  --       require 'conform'.format({
+  --           lsp_fallback = true,
+  --           async = false,
+  --           timeout_ms = 500,
+  --         },
+  --         function(err, did_edit)
+  --           vim.notify(string.format("Conform applied formatting: %s %s", did_edit, err))
+  --         end)
+  --     end, { desc = "Format file or range (in visual mode)" })
+  --   end
+  -- },

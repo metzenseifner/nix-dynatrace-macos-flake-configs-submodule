@@ -1,0 +1,8 @@
+--return {
+--  "js-debug-adapter" = {
+--    --There are two main things to configure.
+--      -- Adapter: How the DAP client (nvim-dap) should start the debugger.
+--      -- Debugger: How the debugger should connect to the debuggee.
+--      cmd = {}
+--  }
+--}

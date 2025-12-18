@@ -1,0 +1,67 @@
+#compdef copilot
+# above line is important!  Zsh reads that header and automatically registers the function for the copilot command.
+#
+# Make options show up even before typing '-' and hide files initially
+zstyle ':completion:*:*:copilot:*' complete-options true
+zstyle ':completion:*:*:copilot:*' tag-order options -
+#
+# else you must explicitly run `compdef _copilot copilot`
+#https://zsh.sourceforge.io/Doc/Release/Completion-System.html
+#
+# Key Concepts
+#Context: Determines what kind of completion is needed (e.g., completing a command name, an option, or a filename).
+# Tags: Labels that classify completion items (e.g., “files” vs. “directories”).
+# Styles: Rules that control how completion behaves (e.g., order of suggestions, formatting). You set these using the zstyle command.
+# Widgets: Functions bound to keys (like TAB) that trigger completion.
+#
+#
+# Zsh has a listener on the TAB key and executes _main_complete (dispatcher)
+# that decides which completion function to run.
+# Completion functions generate possible matches.
+# Completers apply strategies like:
+# Simple completion
+# Error correction
+# Menu selection (cycling through options)
+#
+# Installation
+# 
+# autoload -U compinit
+# compinit
+#
+# compinit checks that completion files are safe (not in world-writable directories).
+# Options:
+# -u = trust all files
+# -i = ignore insecure files silently
+# Ensure this file is in your $fpath
+#
+# Completion function
+_copilot() {
+  compadd -Q -S ' ' -- '--allow-all-paths --allow-all-tools --no-color'
+  _arguments \
+    '--no-color[Disable output coloring which can interfer with terminal color themes]' \
+    '--allow-all-paths[Allow access to all paths]' \
+    '--allow-all-tools[Allow use of all tools]' \
+    '--help[show help]' \
+    '*:filename:_files'
+}
+
+# # Load and bind it to the command `copilot`
+# autoload -Uz _copilot
+# # Register the completion
+compdef _copilot copilot
+
+
+# Not active for now
+# generate_completion_dynamically_from_help() {
+# #compdef copilot
+# 
+# local -a dyn_opts
+# # Extract long options from --help output (adjust the sed/awk as needed)
+# dyn_opts=(${(f)"$(copilot --help 2>/dev/null | sed -n 's/^ *\(--[A-Za-z0-9][A-Za-z0-9-]*\).*/\1/p')"})
+# 
+# # Turn each into an _arguments spec with a generic help string
+# local -a specs
+# specs=("${^dyn_opts}[copilot option]")
+# 
+# _arguments -s $specs '*:filename:_files'
+# }

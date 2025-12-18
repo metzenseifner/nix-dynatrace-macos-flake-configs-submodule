@@ -1,0 +1,35 @@
+return {}
+-- return {
+--   s("queue-control-for-promises", fmt([[
+-- //----------------------------------------------------------------------------//
+-- //                            Control Queue                                   //
+-- //----------------------------------------------------------------------------//
+-- // Usage:   const results = queue(arrayOfPromiseSupplierFunctions, queueSize); // EdgeConnect instance allows max. 20 concurrent fetches
+-- const queue = (tasks, concurrency) => {
+--   const runTask = (task, results, executing) => {
+--     const p = Promise.resolve()
+--       .then(task)
+--       .then(result => {
+--         results.push(result);
+--         executing.splice(executing.indexOf(p), 1);
+--       });
+--     return p;
+--   };
+--
+--   const enqueue = (index, results, executing) => {
+--     if (index === tasks.length) {
+--       return Promise.resolve(results);
+--     }
+--
+--     const task = tasks[index];
+--     const p = runTask(task, results, executing);
+--     executing.push(p);
+--
+--     const next = executing.length >= concurrency ? Promise.race(executing) : Promise.resolve();
+--     return next.then(() => enqueue(index + 1, results, executing));
+--   };
+--
+--   return enqueue(0, [], []);
+-- };
+--   ]], {}, {})),
+-- }

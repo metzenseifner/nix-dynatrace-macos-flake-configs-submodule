@@ -1,0 +1,29 @@
+-- return {
+--       -- PYTHON pynvim plugin, does not have setup function
+--       "blacklight/nvim-http",
+--       --build = function(_)
+--       --  -- TODO make me robust by ensuring all python dependencies exist.
+--       --end,
+--       --main = vim.fn.stdpath('data') .. "/lazy/nvim-http/autoload/http.vim",
+--       --init= function(plugin)
+--       --
+--       --end,
+--       config = false
+--     },
+--
+--     {
+--       "vhyrro/luarocks.nvim",
+--       priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+--       enabled = false,
+--       dependencies = {
+--         "rcarriga/nvim-notify", -- Optional dependency
+--       },
+--       keys = {
+--         { "<leader><leader>h", "<cmd>Rest run<cr>", desc = "Run REST request using cURL. (filetype=http is a treesitter parser requirement)" },
+--       },
+--       opts = { -- opted for declarative approach because setup function does too much in luarocks
+--         -- see https://github.com/vhyrro/luarocks.nvim/blob/main/lua/luarocks-nvim/init.lua#L7C19-L7C23
+--         -- required until https://github.com/rest-nvim/rest.nvim/issues/306
+--         rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+--       },
+--     }

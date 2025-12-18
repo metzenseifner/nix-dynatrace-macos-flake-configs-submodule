@@ -1,0 +1,2 @@
+# Originaly setup using: RUSTUP_HOME=~/.local/share/rustup CARGO_HOME=~/.local/share/cargo rustup-init
+export PATH=~/.local/share/cargo/bin:"$PATH"

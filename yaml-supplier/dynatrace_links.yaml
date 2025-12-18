@@ -1,0 +1,1014 @@
+---
+local_links:
+  security_advocate:
+    - name: Security Advocates Onboarding
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/security_advocates_onboarding.aspx"
+    - name: Security Advocates Community of Practice
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/security_advocates_community_of_practice.aspx"
+    - name: Security Advocates Onboarding Live Sessions
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/security_advocates_onboarding_live_sessions.aspx"
+    - name: Security Advocate Exam
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/SecurityAdvocateExam.aspx"
+  hotfix:
+    - name: Hotfix Policy File
+      url: "https://github.com/dynatrace-infrastructure/dtp-github-workflows/blob/main/policies/pull-request-policies-auto-generated-hotfix.yaml#L694"
+  oauth:
+    - name: Heimdall OAuth 2 Template Blog Post
+      url: "https://dynatrace.sharepoint.com/sites/PlatformDelivery/SitePages/OAuth-Client-Templates-Blogpost.aspx"
+    - name: Defining OAuth 2 Clients in Heimdall
+      url: "https://dynatrace.sharepoint.com/sites/SRSECOPS/SitePages/Defining-OAuth-clients-in-Heimdall.aspx"
+    - name: Debugging problems in Heimdall
+      url: "https://dynatrace.sharepoint.com/sites/PlatformDelivery/SitePages/OAuth2-Client-Troubleshooting.aspx"
+  books:
+    - name: Order new books (Advance Galaxy Shop)
+      url: "https://advance-shop.apps.lab.dynatrace.org/my-requests?category=conferenceRequest" 
+  java: 
+    - name: Java Virtual Threads in production code forbidden due to deadlock potential. Prefer System Threads.
+      url: "https://dt-rnd.atlassian.net/browse/PS-31446"
+  go:
+    - name: Map YAML to Types in Go Example in CARE Code
+      url: "https://bitbucket.lab.dynatrace.org/projects/PFI/repos/dtp-tools/browse/pkg/config/internal_state_repositories.go#31,31"
+  problems:
+    - name: Workflow Automation Execution Failure due to Authentication or API Gateway
+      url: https://dt-rnd.atlassian.net/browse/ASDY-8338
+    - name: Jenkins Image Not Found Because of Retention issues
+      url: https://dt-rnd.atlassian.net/browse/ASDY-8366
+  people:
+    - name: "Ask P&C"
+      url: "https://employeeenablement.dynatrace.com/support/catalog/items?category_id=18000166648"
+      description: "Can open tickets"
+    - name: "Paternity Leave in Austria"
+      url: "https://dynatrace.sharepoint.com/sites/Austria/SitePages/Paternity-Leave.aspx"
+    - name: "Care Leave"
+      url: https://dynatrace.sharepoint.com/sites/Austria/SitePages/Care-Leave.aspx
+      description: up to 1 week per working year; up to 2 weeks per working year, if your kid is under 12 years
+  Performance_Enablement:
+    - name: "Performance Enablement at Dynatrace Top Level Page"
+      url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Performance-Enablement-at-Dynatrace.aspx"
+    - name: "360º Feedback"
+      url: "https://dynatrace.sharepoint.com/sites/career_dev/SitePages/Tools%20&%20Templates.aspx"
+    - name: "Resources for Team Captains"
+      url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Performance-Enablement-Resources-(For-Team-Captains).aspx"
+    - name: "Resources for Dynatrace Employees"
+      url: ""
+    - name: "How to set goals"
+      url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Goal-Setting-Performance-Enablement.aspx#how-to-set-goals"
+    - url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Performance-Enablement-at-Dynatrace.aspx"
+      name: "Performance Enablement (PE)"
+      description: "Goals: Personal Growth: Career Growth & Performance (update: For R&D, focus on Team Goals and Cap Goals), Bi-directional Feedback: Critical Conversations; Goal Accountability: Alignment with company strategy and execution.. Coming Soon: SuccessFactors; Ask P&C/PE Support"
+    - name: "Goal Settings: The FIFA Method for Individual Fulfillment and Advancement"
+      url: "https://dt-rnd.atlassian.net/wiki/spaces/CASP/pages/567444012/Leadership+The+FIFA+Method+a+Framework+for+Individual+Fulfillment+and+Advancement"
+    - url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Dynatrace-Elements-of-Leadership.aspx"
+      name: "Dynatrace Elements of Leadership"
+      description: "For leads only. Prerequisite for sharing this link: Must have demonstrated peer leadership ability."
+  feedback:
+    - name: "Dynatrace People Leaders Feedback Best Practices"
+      url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/DEL-Embrace-Feedback-Dynatracers-Best-Practices-and-Additional-Resources.aspx"
+  template:
+    - name: "Dynatrace Powerpoint Marketing Template"
+      url: "https://dynatrace.sharepoint.com/sites/MarketingComms/Shared%20Documents/Essential%20Docs/Powerpoint/Dynatrace_Template_0-2.potx?web=1"
+    - name: "Dynatrace Style Guide"
+      url: "https://styleguide.dynatrace.com/docs/category/style"
+    - name: "Dynatrace Zoom Backgrounds"
+      url: "https://dynatrace.sharepoint.com/sites/EBC/EBC%20Media%20Kit/Forms/AllItems.aspx?FolderCTID=0x012000D7C0A39E1CA9E243AC50F6BF3FCE168A&id=%2Fsites%2FEBC%2FEBC%20Media%20Kit%2FTemplates%2FZoom%20Backgrounds&viewid=b70466cb-3a5f-466d-b4fe-243b3bbd6b53"
+    - name: "Dynatrace Template Asset Files Direct URL (old)"
+      url: "https://dynatrace.sharepoint.com/sites/EBC/EBC%20Media%20Kit/Forms/AllItems.aspx?FolderCTID=0x012000D7C0A39E1CA9E243AC50F6BF3FCE168A&id=%2Fsites%2FEBC%2FEBC%20Media%20Kit%2FTemplates&viewid=b70466cb-3a5f-466d-b4fe-243b3bbd6b53"
+  benefits:
+    - name: "Pension Plan Austria"
+      url: "https://dynatrace.sharepoint.com/sites/Austria/SitePages/Company-Pension-Scheme.aspx"
+    - name: "Employee Stock Purchase Program"
+      url: "https://dynatrace.sharepoint.com/sites/employeeuniverse/SitePages/employee-stock-purchase-plan-espp.aspx"
+    - name: "Dynatrace Corporate Brand Assets"
+      url: "https://dynatrace.sharepoint.com/sites/EBC/SitePages/Media-Kit.aspx#corporate-brand-assets"
+  helm_docs:
+    - name: "DTP Helm Best Practices (PIET)"
+      url: ""
+    - name: "Helm Chart Best Practices Guide"
+      url: ""
+    - name: "Bitnami Helm Charts for Good Example Patterns"
+      url: ""
+    - name: "Base Charts (Helper Charts) DTP Iam Config"
+      url: ""
+    - name: "Base Charts (Helper Charts) DTP Domain Schema"
+      url: ""
+    - name: "Base Charts (Helper Charts) DTP SSO Config"
+      url: ""
+    - name: "Base Charts (Helper Charts) DTP Networking"
+      url: ""
+    - name: "Base Charts (Helper Charts) DTP Base Application Chart"
+      url: ""
+    - name: "Sprig Function Documentation for Helm templating functions (analogous to Jinja2 filters)"
+      url: ""
+    - name: "Testing Helm Charts Internal Docs Wiki"
+      url: ""
+    - name: "Developer Handbook from ASDY"
+      url: ""
+    - name: "#help-analytics-platform-delivery"
+      url: ""
+  ASDY_Developer_Handbook:
+    - name: DTP Templating of values-cluster-scoped.yaml
+      url: https://dt-rnd.atlassian.net/l/cp/rVAH0Bur
+    - name: Promotion Phases
+      url: https://dt-rnd.atlassian.net/l/cp/rVAH0Bur
+    - name: Exclude Services / Folders from Promotion
+      url: https://dt-rnd.atlassian.net/l/cp/rVAH0Bur
+    - name: Deployment Rings
+      url: https://dt-rnd.atlassian.net/l/cp/fUwtXBZR
+    - name: Onboard new Quality Gates
+      url: https://dt-rnd.atlassian.net/l/cp/68Y5tHkT
+    - name: Validation Checks
+      url: https://dt-rnd.atlassian.net/l/cp/usVd1E7c
+    - name: Capability Organizational Service Ownership Map YAML File - Prod
+      url: https://github.com/dynatrace-infrastructure/dtp-state-prod/blob/master/dtp-gitops/dtp-config.yaml
+      description: Organizational Service Ownership in contrast to Service Dirs which represent Technical Capabilities
+  Agile:
+    - name: How-Tos for Ways of Working
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/In-Practice.aspx?csf=1&web=1&e=emGogU#how-to-s-for-our-way-of-working
+    - name: Agile Competence Center
+      url: https://dynatrace.sharepoint.com/sites/AgileCompetenceCenter
+    - name: Typical Sprint Flow
+      url: https://dynatrace.sharepoint.com/sites/AgileCompetenceCenter/SitePages/A-typical-flow-of-events-during-a-sprint.aspx
+    - name: Backlog Refinement
+      url: https://dynatrace.sharepoint.com/sites/AgileCompetenceCenter/SitePages/Backlog-Refinement-[predicability-Blog--4].aspx
+    - name: Incident Postmortem Definition
+      url: https://dynatrace.sharepoint.com/sites/AgileCompetenceCenter/SitePages/Incident-Post-Mortem.aspx
+    - name: Maintenance Categories
+      url: https://dynatrace.sharepoint.com/sites/InEx/SitePages/Maintenance-Categorization.aspx
+    - name: Artifacts Overview
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/Artifacts.aspx#user-story
+    - name: Story
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/User-Story.aspx
+    - name: Epic
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/Artifacts.aspx#dev-epic
+    - name: Value Increment (VI)
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/Artifacts.aspx#value-increment-(vi)
+    - name: Value Pack (VP)
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/Artifacts.aspx#value-pack-(vp)
+    - name: Jira Guidance
+      url: https://dt-rnd.atlassian.net/wiki/x/hQLFOw
+  InEx:
+    - name: Maintenance Categories
+      url: https://dynatrace.sharepoint.com/sites/InEx/SitePages/Maintenance-Categorization.aspx
+    - name: Why do we book time?
+      url: https://dynatrace.sharepoint.com/sites/InEx/SitePages/Why-do-we-book-time-.aspx
+    - name: PMs PAs PEs DLs Design Leads Product Experience Designers must book time on VIs
+      url: https://dynatrace.sharepoint.com/sites/InEx/SitePages/expanding%20timetracking.aspx
+    - name: Task
+      url: https://dt-rnd.atlassian.net/wiki/x/7ALEOw
+  R&D:
+    - name: Onboarding Welcome Page
+      url: https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/R&D-Onboarding.aspx
+    - name: Policies & Principles
+      url: https://dynatrace.sharepoint.com/sites/RnD/SitePages/Principles.aspx
+    - name: "Quality Assurance: Rules of Engagement for Sprint Reviews & Quality Reviews"
+      url: https://dynatrace.sharepoint.com/sites/RnD/SitePages/Engagement%20Rules%20Sprint%20Review.aspx
+    - name: Backport Guidelines
+      url: https://dynatrace.sharepoint.com/sites/RnD/SitePages/Backports.aspx
+    - name: Dynatrace Meetings Culture
+      url: https://dynatrace.sharepoint.com/sites/HRComms/SitePages/meeting-culture.aspx 
+    - name: "Bugs First! Policy"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Bugs-First!-Policy.aspx"
+    - name: "Bug Priorities"
+      url: "https://dynatrace.sharepoint.com/sites/AgileCompetenceCenter/SitePages/Priorities.aspx?web=1"
+    - name: "Vulnerability Remediation Policy"
+      url: "https://dynatrace.sharepoint.com/sites/ProductSecurity/SitePages/Vulnerability-Remediation-Policy.aspx"
+    - name: "Request for Assistance (RFA) Guidelines"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Request-For-Assistance-(RFA)-Guidelines.aspx"
+    - name: "Autonomy Principle"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Autonomy-Principle.aspx"
+    - name: "Autonomy Principle from Bernd Greifeneder"
+      url: "https://dynatrace.sharepoint.com/sites/CTO/SitePages/Launching-the-autonomy-principle-and-value-creation-teams.aspx"
+    - name: "Scaled Agile Interface (SAI)"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Scaled_Agile_Interface.aspx"
+    - name: "Value Creation Guide (VCG)"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Value-Creation-Flow.aspx"
+    - name: "Value Creation Guide>InPractice>Adoption Stories>SAI Example"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Scaled_Agile_Interface_Example_EP-Build.aspx?web=1"
+    - name: "Solutions-Capabilities Model Evolution"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Solutions-Capabilities-Model-Evolution.aspx"
+    - name: "Ceremonies / Events & Alignment"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Events-%26-Alignment.aspx"
+  mission:
+    - name: "Agile Competence Center"
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/AgileCompetenceCenter.aspx"
+    - name: "Agile Foundational Training: Agile Theory and Practice"
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/AgileinTheoryandPractice.aspx"
+    - name: "Leadership Basecamp"
+      url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/LeadershipBasecampMission.aspx"
+  SRE: 
+    - name: "Self-monitoring Migration Value Increment PRODUCT-11526"
+      url: "https://dt-rnd.atlassian.net/browse/PRODUCT-11526"
+      description: "There was an e-mail from Reisenbichler, Thomas <thomas.reisenbichler@dynatrace.com>"
+  travel:
+    - name: "Budget Changes Decentralized Changes"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/informal-structure.aspx#decentralized-r-d-budget"
+      description: "See https://dynatrace.sharepoint.com/sites/DERB"
+    - name: "Decentralized Budget"
+      url: "https://dynatrace.sharepoint.com/sites/DERB"
+    - name: "ÖBB Discount 24%"
+      url: "https://dynatrace.sharepoint.com/sites/Austria/SitePages/Ground-transportation-oebb-train.aspx"
+      description: "You may use this privately if using private credit card."
+    - name: "Egencia SSO Login"
+      url: "https://launcher.myapps.microsoft.com/api/signin/92b68838-8dae-433a-942a-9408d1b7b54e?tenantId=70ebe3a3-5b30-435d-9d67-7716d74ca190"
+    - name: "Egencia Train Search"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/AT_travel_ground_transportation.aspx"
+    - name: "Egencia Flight Search"
+      url: "https://www.egencia.de/home/#flight-search"
+    - name: "Travel Request Budget"
+      url: "https://dynatrace-my.sharepoint.com/:w:/p/nicola_riedmann/ESI7WHabPKNMmUuX6UK85vwB8VhDYUin8fuxZsoSyf5Bfg?e=76amUU"
+      description: "src: https://dynatrace.sharepoint.com/sites/RnD/SitePages/Budget-your-travel.aspx"
+    - name: "Travel Budget Template"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Budget-your-travel.aspx"
+    - name: "Daily allowance"
+      url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Budget-your-travel.aspx#daily-allowance-(reimburse-via-concur)"
+
+    # { name = "How to add Daily Allowance (for Austria)", url = "https://dynatrace.sharepoint.com/sites/EmployeeUniverse/SitePages/Concur-Claim.aspx#how-to-add-daily-allowance-(for-austria%2C-poland-czech-republic-only!)" },
+    # { name = "Workshop Lunch (daily at 15€)", url = "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Team-lunch-and-dinner_RnD.aspx" },
+    # { name = "Workshop Dinner (once at 40€)", url = "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Team-lunch-and-dinner_RnD.aspx#workshop-dinner" },
+    # { name = "Recommendation to book standard flexible tickets", url = "https://dynatrace.slack.com/archives/C067WATT267/p1725624426068899?thread_ts=1725611223.376119&cid=C067WATT267" }
+
+  training:
+    - name: "Navex"
+      url: "https://lms.navexglobal.com/topclass4/topclass.do?retrieve-home"
+      description: "Must access from Sharepoint for SSO Login redirect."
+  hardware:
+    - name: "Choices"
+      url: "https://dynatrace.sharepoint.com/sites/EDEComms/ClientTechnology/SitePages/Client-Hardware-Standards.aspx"
+  architecture:
+    - name: "REST API Standard for Dynatrace"
+      url: "https://dynatrace.sharepoint.com/sites/Platform/SitePages/REST-API-Guidelines.aspx"
+  kubernetes:
+    - name: "Kubernetes Automation Demo Slides"
+      url: "https://dynatrace.sharepoint.com/:p:/s/Automations/Ef45jxqlpyNDpYg4qA2tPDoBfwtPiXOAn5jehB2d9dH_Hw?e=zGgIdK"
+    - name: "Kubernetes Automation Demo Recording"
+      url: "https://dynatrace.sharepoint.com/:v:/s/Automations/EdjomobnanhAkWZCXXJQRRwBwhYtKB_aot6Xau6yndE6bA?e=ll9QU0"
+      description: ""
+    - name: "AWS Connector Demo Slides"
+      url: "https://dynatrace.sharepoint.com/:p:/s/Automations/EUQZcMqbT_BLtyDhKt-7VjsBHB57yydpXxVQgJjpmPtatA?e=ikvzC0"
+    - name: "AWS Connector Demo Recording"
+      url: "https://dynatrace.sharepoint.com/:v:/s/Automations/EY_5neoYPEpPijbt_NJ_E6UBgiL6YMCoc8tpW4yjKgW3Tg?e=jJLqPU"
+  backstage:
+    - name: "What is Backstage?"
+      url: "https://backstage.internal.dynatrace.com/docs/delivery/component/backstage/#what-is-backstage"
+    - name: "dtp-base-images"
+      url: "https://backstage.internal.dynatrace.com/docs/delivery/Component/dtp-base-images"
+    - name: "Run backstage locally"
+      url: https://backstage.internal.dynatrace.com/docs/delivery/component/backstage/contributing/
+  ["Platform Infrastructure Engineering"]:
+    - name: "Hotfixes and Backports"
+      url: "https://dt-rnd.atlassian.net/l/cp/QfxG1UmP"
+    - name: "Find out which versions have to be fixed"
+      url: "https://dt-rnd.atlassian.net/l/cp/2wufHMDE"
+    - name: "DTP Installation Provisioning Steps for a new Region"
+      url: "https://dt-rnd.atlassian.net/l/cp/5HReowwo"
+    - name: "Runbook: Provision new Installation Folder in a DTP State Repository"
+      url: "https://dt-rnd.atlassian.net/l/cp/Nuobkj16"
+    - name: "Runbook: DTP Provision Remaining cluster-specific values and Provision new Argo Application Services on a new Installation"
+      url: "https://dt-rnd.atlassian.net/l/cp/yPT1KAP8"
+    - name: "Promotion Flow Phases"
+      url: "https://dt-rnd.atlassian.net/l/cp/K2r8j18G"
+    - name: "Deployment Rings"
+      url: "https://dt-rnd.atlassian.net/l/cp/R8fft75i"
+    - name: "Platform Installation and Cluster Naming Scheme"
+      url: https://dt-rnd.atlassian.net/l/cp/sUSRmKVS
+    - name: "Platform Installation and Cluster Naming Scheme (2)"
+      url: https://dt-rnd.atlassian.net/l/cp/XHFQHykd
+    - name: "Platform Sizing"
+      url: https://dt-rnd.atlassian.net/l/cp/vDeeRWeu
+    - name: "Excluding Services from a Promotion by Installation ID"
+      url: https://dt-rnd.atlassian.net/l/cp/mGaYL09W
+  ["Team CARE"]:
+    - name: Goalkeeper Agreement (Purpose and Scope revised after team split)
+      url: https://dt-rnd.atlassian.net/wiki/x/uAWSOw
+    - name: Team Goal Epic Q1FY2026 (2025)
+      url: https://dt-rnd.atlassian.net/browse/ASDY-6312
+      description:  E2E test improvements
+    - name: "Tech Talks"
+      url: https://dt-rnd.atlassian.net/l/cp/cyiHKQww
+    - name: "DAC / Data Acquisition Controller"
+      url: "https://dt-rnd.atlassian.net/l/cp/yJQTWbx0"
+    - name: Team CARE Tech Talks
+      url: "https://dt-rnd.atlassian.net/l/cp/T6T1FXEH"
+    - name: Ownership of Repositories and Projects Wiki
+      url: "https://dt-rnd.atlassian.net/wiki/x/goAIAw"
+    - name: Ownership of Repositories Story
+      url: https://dt-rnd.atlassian.net/browse/ASDY-11952
+    - name: Ownership of Repositories Epic
+      url: https://dt-rnd.atlassian.net/browse/ASDY-11952
+    - name: SRG Service Reliability Guardian Self-Monitoring guardian.json for Hotfix-Capability Config Not Found Logs
+      url: https://bitbucket.lab.dynatrace.org/projects/DOPS/repos/com-dynatrace-ace-monitoring-configuration/pull-requests/9975/diff#platform%2Fplatform-services%2Forchestration%2Fsrg%2Fgeneral%2Fguardian.json
+    - name: Hotfix VI Demo PRODUCT-9494
+      url: https://dynatrace.zoom.us/rec/share/7WLkbtZexMBGTWeLdjfcsyvEY9tsJbLSfY7ucLc-rR4RmZQrSAXwSomQifbSW4Ne.cjyoj51epLEi1wYP
+      description: "Password: yD4R*?v0; Slides: https://dynatrace-my.sharepoint.com/:p:/p/carina_bernscherer/EbaC5JiGpldDmL1swAn1GS8Bdy7YCtK5_8tBrgMk0b6Qlw?e=5sCU4f"
+    - name: Knowledge Base Miro Board
+      url:  https://miro.com/app/board/uXjVMIq1DHQ=
+      description: Sarah Huber started this initiative.
+    - name: "Service Onboarding"
+      url: "https://dt-rnd.atlassian.net/l/cp/tjifXBGX"
+    - name: "Delivery, Reliability, Security Top-level Page"
+      url: "https://dt-rnd.atlassian.net/l/cp/1U0uftkc"
+    - name: "State Repository Orchestration IMPORTANT TOP LEVEL WIKI"
+      url: "https://dt-rnd.atlassian.net/l/cp/HPbHcdPU"
+    - name: "Release Process Wiki"
+      url: "https://dt-rnd.atlassian.net/l/cp/0nEBzPAZ"
+    - name: "Budget Allowances"
+      url: "https://dynatrace.sharepoint.com/sites/DERB/SitePages/Tipps-%26-Tricks.aspx#personal-feedback-talk"
+    - name: "Requesting a Piece of the Pie (money from the Decentralized Budget) Jira Workflow"
+      url: "https://dt-rnd.atlassian.net/jira/software/c/projects/DERB/boards/4361"
+    - name: "ASDY-571 and Team Goals Follow-up from Matthaeus"
+      url: "https://dynatrace.zoom.us/rec/share/qGibSoUQwtjR5A1Hb_skxGVnnVjzujWbs5fKs6MJOU9oVQfa72_X2i77iIXLVmtF.DtjWZqNw6s3ynSjE"
+      description: "Password: X^tV1uNt"
+    - name: "team split miro board"
+      url: "https://miro.com/app/board/uXjVKZMebpQ=/?share_link_id=609751429827"
+    - name: "Go Repo dtp-orchestration dtp-tools dtp-workflow-tools"
+      url: "https://bitbucket.lab.dynatrace.org/projects/PFI"
+    - name: "Deep-Dive into DTP Orchestration / Promotion Flow"
+      url: "https://dynatrace.zoom.us/rec/share/7PIgpaVG-7qb_BhB2q6W2TlKeggkDjINzfl-zw79rhEcdJJzMOPYNpz2TWiD377y.b2ZRaZ1rlVXMA36_"
+      description: "password: smLB#3A9 slides: https://dynatrace-my.sharepoint.com/:p:/p/matthaeus_huber/ERb_itogl6pIvxLiBIOqGIYBZCWWr1OnXXvuDr18B9dahA?e=ZIbNMB"
+  OpenPipeline:
+    - name: "Ingest API (Swagger UI)"
+      url: "https://gmg80500.dev.dynatracelabs.com/rest-api-doc/index.jsp?urls.primaryName=OpenPipeline%20-%20Ingest%20API"
+  OpenFeature:
+    - name: "OpenFeature React SDK"
+    - name: "Client-side Dynatrace Web-Provider"
+    - name: "Dev2Dev Feb 20, 2024"
+    - name: "Feature Flag Day"
+    - name: "#help-openfeature"
+    - name: "Dev Portal Wiki: Feature Flags"
+  innsbruck:
+    - url: "https://dynatrace.sharepoint.com/:f:/r/sites/Innsbruck/Shared%20Documents/Innsbruck%20sync?csf=1&web=1&e=drwuhM"
+      name: "Innsbruck Lab Sync Presentations"
+    - name: "Innsbruck Lab Sharepoint"
+      url: "https://dynatrace.sharepoint.com/sites/Innsbruck"
+  statistics:
+    - url: "https://app.powerbi.com/groups/me/reports/e25c8a8d-b34d-4044-b56a-4787ed043be9/ReportSectionb48df34ac3c38b2257d8?experience=power-bi"
+      name: "Data Completeness Report_DP (Team Members)"
+    - url: ""
+      name: ""
+  release:
+    - name: "Go to Production for Apps Zoom Recording (2024)"
+      url: "https://dynatrace.zoom.us/rec/share/MQzr4T9qAVdpOtDD19zfz3fqDLRrmw4AQs-MwYyd_0aSQKQzugPOkaC0v5iyvb04.D5tnyhe4KghFD594"
+      description: "Passcode: !ZVTU044"
+    - name: "We may disregard alerting profiles for simple actions/apps"
+      url: "https://bitbucket.lab.dynatrace.org/projects/DOPS/repos/com-dynatrace-ace-monitoring-configuration/pull-requests/6244/overview"
+    - name: "We may disregard alerting profiles for simple actions/apps"
+      url: "https://dynatrace.slack.com/archives/C03MUDXA6PK/p1720000422074389"
+    - name: "Ticket LCC-534 LCC - Releasing & Monitoring: GitHub for Workflows"
+      url: "https://dt-rnd.atlassian.net/browse/LCC-534"
+    - name: "Ticket LCC-534 We may disregard 2nd gen tech like alerting profiles for simple actions/apps"
+      url: "https://dt-rnd.atlassian.net/browse/LCC-534?focusedCommentId=3413720"
+    - name: "How we detect and alert"
+      url: "https://bitbucket.lab.dynatrace.org/projects/DOPS/repos/com-dynatrace-ace-monitoring-configuration/browse/platform-apps/dynatrace.jira/log-event/event.appId.errors.json"
+      description: "Instead of 2nd gen alerting profiles, we scan logs for entries with a severity of 'error' and produce Davis events that we can listen for in the Automation App."
+  leadership:
+    - url: "https://dynatrace.sharepoint.com/sites/Learn-and-Develop/SitePages/Dynatrace-Elements-of-Leadership.aspx"
+      name: "Dynatrace Elements of Leadership (Sharepoint)"
+      description: "Should be a peer leader first before landing here."
+    - name: "Leadership Journey YouTube Videos from Werk4"
+      url: "https://www.youtube.com/watch?v=YKrK7MfvUog&list=PLnHDnO3dx3CFBNTjo8NaPQZtDg11kkTN8&index=1"
+  udemy:
+    - url: "https://dynatrace.udemy.com/course/dynatrace/learn/lecture/40158214"
+      name: "Hands-on bootcamp of Dynatrace"
+  bitbucket:
+    - url: "https://dt-rnd.atlassian.net/l/cp/JT2fKhAD"
+      name: "OWNERS file Confluence Wiki Docs"
+  zendesk:
+    - url: "https://one.dynatrace.com/hc/en-us/articles/1500013010941-Light-vs-Full-Agent"
+      name: "Light vs Full Agent"
+    - url: "https://dynatrace.zendesk.com/agent/tickets/343074"
+      name: "Zen Desk Ticket Example"
+  DACI:
+    - name: "Programming Language for Promotion Service: Golang"
+      url: https://dt-rnd.atlassian.net/l/cp/Da5B2Nj3
+    - url: "https://dt-rnd.atlassian.net/wiki/x/AgA7Fw"
+      name: "Changelog Format"
+    - url: "https://dt-rnd.atlassian.net/wiki/x/AYC8Fw"
+      name: "Action I/O"
+  gitpod:
+    - url: "https://dt-rnd.atlassian.net/l/cp/5xTSywxL"
+      name: "Wiki: Setup Gitpod at Dynatrace"
+  images:
+    - name: Harbor CD Instance
+      url: https://harbor.registry.cd.internal.dynatrace.com/harbor/projects
+      description: Instance dedicated to Platform Infrastructure
+    - name: Harbor Instance
+      url: https://registry.lab.dynatrace.org/harbor/projects
+      description: Has most of the jci images shared by many 3rd gen app Jenkins instances.
+    - url: "https://dt-rnd.atlassian.net/l/cp/cc962D1W"
+      name: "Docker Pull-Through Cache (docker-proxy.lab.dynatrace.org)"
+  API:
+    - url: "https://teams.internal.dynatrace.com/swagger-ui/index.html"
+      name: "swaggerapi-openapi-dynatrace-teams-internal"
+    - url: "https://internal.ace-tools.dynatrace.com/rms/sprints?id=283"
+      name: "ACE Tools RMS"
+    - url: "https://internal.ace-tools.dynatrace.com/rms/rest/sprint/current"
+      name: "HTTP GET Current Sprint Integer"
+      description: "Requires EdgeConnect to use from Self-monitoring tenants."
+
+  # teamsinternalimporter = {
+  #   { url = "https://bitbucket.lab.dynatrace.org/projects/COPS/repos/heimdall-dt-saas-managed/pull-requests/12245/overview", name = "heimdall-oauth2-client-edge-connect" },
+  # },
+  # ownershipapp = {
+  #   { url = "https://bitbucket.lab.dynatrace.org/projects/AT/repos/dynatraceuitestfw/browse/doc/index.md",                             name = "e2e-selenium-test-docs" },
+  #   { url = "https://dynatrace.enterprise.slack.com/archives/C9MP219NV",                                                               name = "#help-dt-uia",                                                        description = "Help for dynatraceuitestfw repo and SecretServer Access." },
+  #   { url = "https://dynatrace.sharepoint.com/sites/CARPE/SitePages/Environment-types.aspx",                                           name = "e2e-tenant-types/environment-types" },
+  #   { url = "https://umsaywsjuo.dev.apps.dynatracelabs.com/ui/apps/dynatrace.notebooks/notebook/46df4cee-be7f-4326-be81-eef486b2c8b8", name = "Ownership DPL Playground (Examples of Parsing Ownership Data in DQL)" },
+  #   { url = "https://dynatrace.slack.com/archives/C011DUELHFG/p1717579584892659?thread_ts=1717578407.519369&cid=C011DUELHFG",          name = "Ownership will be difficult in the future" }
+  # },
+  teamplatinum:
+    - url: "https://miro.com/app/board/uXjVKycfYls=/"
+      name: "Rescaling the First Responder Miro Board"
+    - url: "https://bitbucket.lab.dynatrace.org/users/jonathan.komar/repos/jenkins-api/browse"
+      name: "Jenkins API Utilities"
+    - url: "https://bitbucket.lab.dynatrace.org/users/jonathan.komar/repos/team-platinum/browse/projects.json"
+      name: "Projects Single Source of Truth (SSOT) Repo"
+      description: "Used in several workflows to more easily make changes in a single location. (Don't Repeat Yourself and live happier)"
+    - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Team-lunch-and-dinner_RnD.aspx"
+      name: "personal-feedback-talk-budget"
+    - url: "https://secretserver.dynatrace.org/app/#/secrets/view/folder/5764"
+      name: "SecretServer Folder team-cloudautomation-platinum"
+    - url: "https://rgb52858.sprint.dynatracelabs.com"
+      name: "rgb52858-tenant-owned-by-jonathan-komar"
+    - url: "https://myaccount-hardening.dynatracelabs.com/account/iam/api?account-uuid=1bdb606e-3118-4ae9-aa85-065db5b8322c"
+      name: "oauth-e2e-client-for-core-apps-sprint"
+      description: "Service user: merima.dedovic.e2e@ruxitlabs.com; client id: dt0s02.KBKX4RED; description: OAuth Client for E2E tests (contains all 3rd-gen permissions); dynatrace-apps-jenkins/hardening-carpe-e2e-user; tenant: https://msu89794.sprint.apps.dynatracelabs.com; uuid: b3bdec5-38e3-4191-b530-188e02af617e"
+    - url: "https://dynatrace.sharepoint.com/sites/capabilities/SitePages/Kubernetes-Observability---Meeting-Culture.aspx"
+      name: "Meeting Culture Document from Bernhard Dieber"
+      description: "Role descriptions, including Christian Kreuzberger's new role in Cloud Automation."
+    - url: "https://dt-rnd.atlassian.net/l/cp/WZ93uZtv"
+      name: "Platinum Creativity Sessions Framework"
+    - url: "https://dt-rnd.atlassian.net/l/cp/AigUN3VU"
+      name: "Platinum Creativity Session Projects"
+    - url: "https://dt-rnd.atlassian.net/issues/PS-22153"
+      name: "Action Observability Self-Monitoring Actions PS-22153"
+    - url: "https://internal.ace-tools.dynatrace.com/rms/dashboard/overview"
+      name: "release-management-system-rms-overview"
+      description: "Requires EdgeConnection to Host Pattern internal.ace-tools.dynatrace.com"
+    - url: "https://dynatrace.sharepoint.com/sites/SRSECOPS/Lists/Release%20Schedule/AllItems.aspx?useFiltersInViewXml=1&viewid=fff0afda-711b-4c83-a782-eaa9428ac860&FilterFields1=Component&FilterValues1=Cluster%3B%23Apps&FilterTypes1=Choice&FilterOp1=In"
+      name: "release-schedule"
+    - url: "https://dynatrace-apps-sonarqube.ci.dynalabs.io/projects"
+      name: "sonarcube-instance"
+      description: "Discussion of adoption: https://dynatrace.slack.com/archives/C03V4AS0495/p1712653051889699"
+    - url: "https://ntd44713.live.dynatrace.com/ui/metrics?gtf=-2h&gf=all&filters=text%3Dautomation"
+      name: "metrics-automations"
+    - url: "https://dynatrace.slack.com/archives/C0547SE6PTN/p1707986934611089"
+      name: "slack-lambda-formatting-poll"
+    - url: "https://dt-rnd.atlassian.net/l/cp/MkgiNwsP"
+      name: "wiki-ownership-2nd-gen-docs"
+    - url: "https://dt-rnd.atlassian.net/l/cp/c4sN4nrD"
+      name: "wiki-ownership-3rd-gen-docs"
+    - url: "https://u15570388.ct.sendgrid.net/ls/click?upn=u001.BGhqzrz1VcIjFe5pPsQgyEuOuX5jsokCLqVa-2FktQddOq7hX4iIk614DacO6QUgIAWi5xIOIM1474EjtrAWHqc1g2gQK-2BsE7y98wb4Nr3SXwbfumF-2F9QzzfTTvhYYh-2FdZfKQ4UMLoAkreGbCP1sksygXF3Qu0C2rtZMH28fZ7tkY-3DqV_n_T66BQBipQTcoiwPcPAZrUxNP6g19IaVSQJBHDV3ky2Q8ZKu4Lc3u9S38lfGM6s9Iq9v0cGxjjvvVfxVlo3Y4HM34iRhO-2BcqtGpkzdakGMVbM7xHDVoLYTgJ5MKSh5ql8fRni9eMsgwdYFqFdl-2BPMWriGKfreC-2B6bKED8UAzZ3RCyMLpexl8OZVoytbyTNPuLbaM5Xx-2BmIHdB2iKiM3A4D0-2FKVKzk246-2FUIHPARP47MvimiFzRarqX7Z9tYWGKiqv7jnIbYTFHO1QbpXt0db6f8oOk6bdW4ZunfjgfPdqPBSn-2Fp8V3PoqVsNDdvwVJ-2FOKwkIyyIpuCbaNVmnACJj8YyQn6ahmowv5NYal6gs7JgCCuCHZYL9G5tPN-2Bk6faGKu0UzQupvwZZVV4GRWTfnMC-2FUT8LOsCVtJRLek8kl495AEhpzqoeqc0cjX0ip-2Fq28DieyGj1KoB8yjQcTudPDyC2XPhAzYu-2BYJ4cXC0kzxU-2FsFOSQkAPRLwPc-2FKByng41xuGn8NUyz07ZMRdFbjKU0uIdUmMdC5lCi1pP3ek-2BV2cxsU7JOBsBIc7Bzyty9eShKfAKQ-2BSikladXcK6shlRxq8rLmm9qkW-2B54tGLeltoTwxNjhhG7QoQxnyXKFpa5iuZ6ZWOePsJTwgU6r9KsO79kTEnoCJOIzUU7Lzp55dwKo6dqzJNBLf0mFIP4AnPiKm1E9odCtUAZR-2BRSeec18gnxKBD76BRSjcIGSRe7-2FAUyv0qthCEP3DYRIZrgekBbdYDZOALu0XhPNDAJLg3bu4zNSxQIsQ5Cv0pw8JK7tiZxpPGCGhyuwzWxdkSu-2Fh3Ia4phlJSbqCsuWftv1UmofkfCA-3D-3D"
+      name: "zoom-revelio-handover-part-1"
+      description: "Zoom Password: C^TK3g1$"
+    - url: "https://dynatrace.zoom.us/rec/share/S1FizLy1rymXVAnyIEq0bmpzkahKdWPWAjV3eZot5EvAInt6cFTnMAfO9gvGd8no.S7QcGCe8ZHvB91Vg"
+      name: "zoom-revelio-handover-part-2"
+      description: "Zoom Password: ^xwwW6AF"
+    - url: "https://dynatrace.zoom.us/rec/share/mivt0UyDhQNTx9fIwtFF4Wr6nAk-f5ECdvf8YDcTw7XMStpTs_cgHBZ8PKAQj8UE.QrFV6ODpJnEFO4xH"
+      name: "zoom-revelio-handover-part-3"
+      description: "Zoom Password: 4d47L^Ef"
+  career:
+    - url: "https://dynatrace.sharepoint.com/sites/Career_Dev/SitePages/Competencies.aspx#%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8Bvisualization-interpretation"
+      name: "competenceies-How to Interpret the Numbers"
+  capability:
+    - url: "https://dt-rnd.atlassian.net/jira/software/c/projects/CA/settings/automate#/rule-list?systemLabelId=project&pa[…]eSize=20&sortKey=name&sortOrder=ASC"
+      name: "jira-automations"
+  repo:
+    - name: "Platform Delivery Insights / Deployment Overview App / Service Overview"
+      url: "https://bitbucket.lab.dynatrace.org/projects/APPS/repos/deployment-overview-app/browse"
+    - name: "dynatrace-javascript-runtime"
+      url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/runtime/browse"
+      description: "Team Runtime and Team Serverless"
+    - name: "monaco-dynatrace-configuration-as-code"
+      url: "https://github.com/dynatrace/dynatrace-configuration-as-code"
+      description: "Configuration as Code for Dynatrace (Monaco) Public Repository"
+    - name: "Gmg Allow List for Limit Outbound Connections"
+      url: https://bitbucket.lab.dynatrace.org/projects/DOPS/repos/com-dynatrace-ace-monitoring-configuration/browse/common/general/allow-outbound-connections/allow-outbound-connections.yaml#2,4-5,12
+      description: Default upper bound of set
+  automation-utils:
+    - url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/dynatrace-sdk/browse/packages/util/automation/project.json"
+      name: "automation-utils-package"
+    - url: "https://bitbucket.lab.dynatrace.org/projects/appfw/repos/dynatrace-sdk/browse/packages/client/automation/package.json?useDefaultHandler=true&at=3ccc1e509f5b068a2d4bf01d97af259b00524f0e#2"
+      name: "client-automation-package"
+    - url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/dynatrace-sdk/browse/packages/client/automation/src/lib/models/execution.ts"
+      name: "execution-object"
+      description: "This object is passed between actions."
+    - url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/dynatrace-sdk/browse/packages/util/automation/src/lib/execution.ts#24"
+      name: "execution-object-result"
+      description: "This object is passed between actions."
+    - url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/dynatrace-sdk/browse/packages/util/automation-action-utils/src/lib/actions/logger.ts#27,30,32,34"
+      name: "userLogger-module"
+  video_recording:
+    - url: "https://dynatrace.zoom.us/rec/share/gOzBLnAOlmfrOzyPRHEtIrPWh98bkoeYbrcb0ZtuQHZtCImzi1lPxuQx2Om0rhrC.dZ2abxxgFl9aydLM"
+      name: "Recording Introduction to OpenFeature."
+      description: "Password: YUa6Oh??  Slides: https://dynatrace-my.sharepoint.com/:f:/p/bernhard_fritz/EjyPnKoJshRDpL9FF3en-wkB64CbWEg_vZs6DTOrBuR4ig?e=zc4koC"
+    - url: "https://dynatrace.sharepoint.com/:v:/r/sites/Automations/Shared%20Documents/Video%20recordings/Product%20Demos/2024-02-29%20VI%20Demo%20Emails%20in%20Workflows.mp4?csf=1&web=1&e=Qok1gX"
+      name: "recording-emails-and-ms365"
+    - url: "https://dynatrace.sharepoint.com/:p:/r/sites/Automations/Shared%20Documents/Video%20recordings/VI%20Demo%20Email/20240229_VIDemo_Microsoft365-and-Email-for-workflows.pptx?d=wc5fa429cc8e342f98d8b9eae6fd512fb&csf=1&web=1&e=JM3JTS"
+      name: "slides-emails-and-ms365"
+  CARPE:
+    - name: "CARPE Requests Service Catalog"
+      url: "https://dynatrace.sharepoint.com/sites/CARPE/SitePages/Service-Catalog.aspx"
+    - name: "CARPE Request"
+      url: "https://dt-url.net/vj02zuh"
+    - url: "https://dt-rnd.atlassian.net/l/cp/FLzMxj9P"
+      name: "Contract-Based API Testing CARPE Documentation"
+    - name: "Sharepoint CARPE Home"
+      url: "https://dynatrace.sharepoint.com/sites/dynatrace.carpe/SitePages/home.aspx"
+      description: "Cloud Application Readiness Peer Enablement"
+    - name: "dev-wiki CARPE"
+      url: "https://dev-wiki.dynatrace.org/display/ruxit/CARPE"
+    - name: "a string url with object config"
+      url: "https://a-string-with-config"
+    - url: "https://a-string"
+    - url: "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdynatrace.sharepoint.com%2F%3Au%3A%2Fr%2Fsites%2FCARPE%2FSitePages%2FWhat-CARPE-pro.aspx%3Fcsf%3D1%26web%3D1%26share%3DEfOXtl5rvwpIqCeELgjNYFwB-R-mQQ195OVbBIERfXqLoQ%26e%3D4%253acNVvys%26fromShare%3Dtrue%26at%3D9&data=05%7C01%7Cjonathan.komar%40dynatrace.com%7C43d7d5a5ffe8435cb0a108dbe6ae1051%7C70ebe3a35b30435d9d677716d74ca190%7C1%7C0%7C638357407494680269%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=8%2BkHEa5h5ijzzT3WuP1Sk1OZHLcU6kKRNJ2LKAxoXCQ%3D&reserved=0"
+      name: "[DRAFT] Self-monitoring: Let's break the myth around it and make it our reality"
+    - url: "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdynatrace.sharepoint.com%2F%3Au%3A%2Fr%2Fsites%2FCARPE%2FSitePages%2FTasks-we-are-currently-performing-and-are-responsible-for.aspx%3Fcsf%3D1%26web%3D1%26share%3DETF5rWmYNbFBm6ErH2onX6cBE9ktfQMxL8tOnIo4MyA7-A%26e%3D4%253agXtzLG%26fromShare%3Dtrue%26at%3D9&data=05%7C01%7Cjonathan.komar%40dynatrace.com%7Cf042c9548f3f4fb5dfb608dbe6adf325%7C70ebe3a35b30435d9d677716d74ca190%7C1%7C0%7C638357407045464005%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=C36HiS4vFnCqZ5Aw6KjQuuNPC63E3EvPVz1JeuGp3n0%3D&reserved=0"
+      name: "[DRAFT] Tasks we are currently performing and are responsible for"
+    - name: "LCC Launch Coordination Checklist (Go to production for 3rd gen Apps Procedure)"
+      url: "https://dynatrace.sharepoint.com/sites/SRSECOPS/SitePages/LCC-Launch-Coordination-Checklist.aspx"
+  saas:
+    - url: "https://myaccount-hardening.dynatracelabs.com/account/license/overview?account-uuid=15bee47a-a120-4d60-ade0-e19f96f2aeee"
+      description: "Overview of Sprint/Hardening License"
+    - url: "https://myaccount-hardening.dynatracelabs.com/accounts"
+  monaco:
+    - url: "https://hub.docker.com/r/dynatrace/dynatrace-configuration-as-code"
+      name: "monaco-docker-image"
+    - url: "https://gotemplate.io"
+      name: "monaco-go-template-preview"
+    - url: "https://dt-rnd.atlassian.net/l/cp/17zTgNEy"
+      name: "deploy-a-workflow-public-docs"
+    - url: "https://github.com/Dynatrace/dynatrace-configuration-as-code-samples/tree/main/site_reliability_guardian_sample"
+      name: "deploy-a-workflow-public-docs"
+    - url: "https://dynatrace.slack.com/archives/C010YNQL570/p1709478889348259?thread_ts=1709198889.210489&cid=C010YNQL570"
+      name: "slack-hamza-yahaya-enable-3rd-gen"
+    - url: "https://dynatrace.sharepoint.com/sites/Licensing-Home/SitePages/Onboarding-an-SPINE-Service-to-Consistency-Checks.aspx#create-a-service-user"
+      name: "how-to-create-a-service-user"
+  platform-settings:
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-task-execution-id"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-workflow-execution-id"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-user"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-workflow-id"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-tenant"
+    - url: "https://gmg80500.dev.dynatracelabs.com/#settings/requestattributes;gf=all"
+      name: "request-attributes-automation-action-execution-id"
+  git:
+    - url: "https://www.conventionalcommits.org/"
+      name: "Conventional Commits"
+  jenkins:
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/jira-app/job/prod/job/main/"
+      name: "jira-prod-(main)-jobs"
+      description: "Jira for Workflows Prod Main Branch, which runs E2E."
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/jira-app/job/dev/"
+      name: "jira-dev-jobs"
+      description: "Jira for Workflows Dev branch builds."
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/microsoft365-connector/job/prod/job/main"
+      name: "ms365-mail-prod-(main)-jobs"
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/microsoft365-connector/job/dev/"
+      name: "ms365-mail-dev-jobs"
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/email-app/job/prod/"
+      name: "email-app-prod-jobs"
+    - url: "https://dynatrace-apps-jenkins.ci.dynalabs.io/job/dynatrace-app-projects/job/email-app/job/dev/"
+      name: "email-app-dev-jobs"
+    - url: "https://iam-jenkins.ci.dynalabs.io/job/IAM/job/iam-policy-management-promote/"
+      name: "IAM-Policy-Promotions"
+      description: "Applying IAM policies to SaaS Environments"
+  react:
+    - url: "https://dev-jira.dynatrace.org/browse/ADES-5614"
+      name: "dt-app-create-template-upgrade-reactv18"
+    - url: "https://dynatrace.slack.com/archives/C01MYTU5PTQ/p1704711105109739?thread_ts=1668584579.958249&cid=C01MYTU5PTQ"
+      name: "Slack Thread: React 18 Roadmap"
+  self-monitoring:
+    - url: "https://gmg80500.dev.dynatracelabs.com/#dashboard;gtf=l_24_HOURS;gf=all;id=71637f59-6184-301d-a1ce-60b12dba4d9c"
+      name: "Sprint Hardening Dashboard: Jira for Workflows"
+  docs-workflows:
+    - name: "jinja2-event-object"
+      url: "https://docs.dynatrace.com/docs/shortlink/automation-workflow-expression-reference#event"
+    - name: "javascript action"
+      url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/default-workflow-actions/run-javascript-workflow-action"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/reference"
+      name: "jinja2-reference"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/reference#filters"
+      name: "jinja2-filters"
+    - url: "https://developer.dynatracelabs.com/develop/workflows/create-custom-action/"
+      name: "Internal Dev Docs Creating Actions"
+      description: "Relevant for Partial Updates"
+  workflows:
+    - url: "https://github.com/Dynatrace/Dynatrace-workflow-samples"
+      name: "Dynatrace Workflow Samples Repo"
+  jinja2:
+    - url: "https://jinja.palletsprojects.com/en/3.1.x/"
+      name: "doc"
+    - url: "https://jinja.palletsprojects.com/en/3.1.x/templates/#filters"
+      name: "filters"
+    - url: "https://jinja.palletsprojects.com/en/3.1.x/templates/#builtin-filters"
+      name: "builtin-filters"
+  missioncontrol:
+    - url: "https://mc-dev.internal.dynatracelabs.com/#clustersOverview;2003=active;2005=last_7_days;sortmode=mode_cluster_name"
+      name: "mission-control-cluster-dev"
+  zoom:
+    - name: The First Team CARE - Quarterly Roadmap Sync and Goal Check-in on Mo. Sept 15, 2025
+      url: https://dynatrace.zoom.us/rec/share/g0mrKG-J44BYkIuOQQWAuoggG3fZnnk8QaLwnOF-4NOkDFhVFJJxu8lAQ2OmkDAy.IwqEi-4f7RYKR7sb 
+      description: "Passcode: 2.75!Rk?"
+    - url: "https://dynatrace.zoom.us/meeting#/"
+      name: "Manage Zoom Meetings"
+      description: "Zoom Web Interface Meeting Management"
+    - url: "https://dynatrace.zoom.us/j/4336505524?pwd=NjIwVUxmMldZK0dRSVpMdlNKUzlRQT09"
+      name: "Invitation to Personal Zoom Room-Jonathan"
+    - url: "https://dynatrace.zoom.us/meeting/91726200802"
+      name: "Manage Jonathan 1:1 Simon"
+    - url: "https://dynatrace.zoom.us/meeting/94868314740?occurrence=1702455300000"
+      name: "Manage Jonathan 1:1 Claudia"
+    - url: "https://dynatrace.zoom.us/meeting/93131472955?occurrence=1702976400000"
+      name: "Manage Jonathan 1:1 Johannes"
+    - url: "https://dynatrace.zoom.us/meeting/98663218232?occurrence=1686641400000"
+      name: "Manage Jonathan 1:1 Bernhard"
+    - url: "https://dynatrace.zoom.us/j/91726200802"
+      name: "Invitation to Jonathan 1:1 Simon"
+    - url: "https://dynatrace.zoom.us/j/94868314740"
+      name: "Invitation to Jonathan 1:1 Claudia"
+    - url: "https://dynatrace.zoom.us/j/93131472955"
+      name: "Invitation to Jonathan 1:1 Johannes"
+    - url: "https://dynatrace.zoom.us/j/98663218232"
+      name: "Invitation to Jonathan 1:1 Bernhard"
+  services:
+    - url: "https://email-control.dev.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public#/Emails%20API/sendEmail"
+      name: "sendEmail-central-dev"
+      description: "email service managed by Team"
+    - url: "https://email-control.sprint.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public#/Emails%20API/sendEmail"
+      name: "sendEmail-central-sprint"
+    - url: "https://teams.internal.dynatrace.com/capabilities/142"
+      name: "Cluster Deployment Capability"
+    - url: "https://teams.internal.dynatrace.com/teams/52804"
+
+  # services = {
+  #   { url = 'https://email-control.dev.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public#/Emails%20API/sendEmail',                        name = 'sendEmail-central-dev',                description = 'email service managed by Team ' },
+  #   { url = 'https://email-control.sprint.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public#/Emails%20API/sendEmail',                     name = 'sendEmail-central-sprint' },
+  #   { url = 'https://teams.internal.dynatrace.com/capabilities/142',                                                                                                     name = 'Cluster Deployment Capability' },
+  #   { url = 'https://teams.internal.dynatrace.com/teams/52804',                                                                                                          name = 'Team Mission Control' },
+  #   { url = "https://eva38390.sprint.dynatracelabs.com/#problems/problemdetails;gtf=p_114583043507662114_1706671800000V2;gf=all;pid=114583043507662114_1706671800000V2", name = "problems-email-service" },
+  #   { url = "https://docs.dynatrace.com/docs/platform/davis-ai/anomaly-detection/metric-events",                                                                         name = "metric-events-for-alert-profiles" },
+  #   { url = "https://email-control.dev.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public#/Emails%20API/sendEmail",                        name = "email-control-proxy-sendEmail-dev",    description = "The singleton proxy to the underlaying email-service that our public HTTP API proxy forwards to." },
+  #   { url = "https://email-control.sprint.central.internal.dynatracelabs.com/swagger-ui/index.html?urls.primaryName=public",                                             name = "email-control-proxy-sendEmail-sprint", description = "The singleton proxy to the underlaying email-service that our public HTTP API proxy forwards to." }
+  #
+  # },
+  eslint:
+    - url: "https://github.com/microsoft/vscode-eslint/tags"
+      name: "vscode-eslint VSCode extension Versions"
+      description: "The eslint language server in VS Code wrapped in an extension."
+    - url: "https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#eslint"
+      name: "nvim-lspconfig ESLint Integration Docs"
+      description: "Ref to hrsh7th/vscode-langservers-extracted, where the binary vscode-eslint-language-server comes from."
+    - url: "https://github.com/hrsh7th/vscode-langservers-extracted"
+      name: "vscode-eslint-language-server Repo"
+      description: "Extracts eslint language server from vscode-eslint extension."
+
+    - url: "https://github.com/hrsh7th/vscode-langservers-extracted/tags"
+      name: "vscode-eslint-language-server Versions"
+      description: "Extracts eslint language server from vscode-eslint extension."
+    - url: "https://github.com/hrsh7th/vscode-langservers-extracted/blob/master/script/build-vscode-eslint.sh"
+      name: "vscode-eslint-language-server Build Script"
+      description: "This builds from the HEAD commit of the vscode-eslint master branch."
+    - url: "https://github.com/manateelazycat/lsp-bridge/commit/7a24d8934c3e3ca185de7d4f7a7c1362e6f63beb"
+      name: "emacs VSCode ESLint Bridge"
+      description: "Commit that adds vscode-eslint-language-server from vscode-langservers-extracted to lsp-bridge"
+  build:
+    - name: Bitbucket PR No-Rebuild Changeset Problem Slack Discussion
+      url: "https://dynatrace.slack.com/archives/C01MYTU5PTQ/p1740555746420429"
+    - url: "https://dynatrace.sharepoint.com/sites/PlatformDelivery/SitePages/The-Delivery-Guild.aspx"
+      name: "sharepoint-delivery-guild"
+    - url: "https://dynatrace.slack.com/archives/C01E01T0NLT"
+      name: "#community-delivery-guild slack channel"
+    - url: "https://dynatrace.sharepoint.com/sites/AdvanceGalaxy/SitePages/DeliveryGuild.aspx"
+      name: "advance-galaxy-delivery-guild"
+  dynatrace:
+    - name: Access Tokens / Platform Tokens for OAuth 2.0 / Dynatrace API
+      url: https://myaccount.dynatrace.com/platformTokens
+      description: |
+        Created by regular users and work within the bounds of the assigned user permissions.
+        Authorization: Bearer <platformtoken>
+        for service user token generation, requires scope: ALLOW iam:service-users:use
+        cite: https://docs.dynatrace.com/docs/manage/identity-access-management/access-tokens-and-oauth-clients/platform-tokens
+
+    - name: "Deployment Rings-Wiki"
+      url: "https://dt-rnd.atlassian.net/l/cp/1TwQ9Y8p"
+    - name: "Deployment Rings-Defined"
+      url: "https://bitbucket.lab.dynatrace.org/projects/PFI/repos/dtp-tools/browse/pkg/config/deployment_ring.go"
+    - url: "https://dt-rnd.atlassian.net/jira/dashboards/44400"
+      name: "Promotion (Platform Promotion Dashboard)"
+      description: "Promotions from Sprint/Hardening/Staging to Production"
+    - name: "Promotion Flow"
+      url: "https://dt-rnd.atlassian.net/l/cp/Bw6Z1Qo6"
+    - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Employee_Universe.aspx"
+      name: "Employee Universe"
+      description: "sharepoint-Top-level Menu for Dynatracers"
+    - url: "https://dynatrace.sharepoint.com/sites/ACE_Services"
+      name: "sharepoint-ace-services"
+    - name: "Central Services Cluster (CSC) How to onboard a service Wiki"
+      url: "https://dt-rnd.atlassian.net/l/cp/M1jmxVL9"
+    - name: "Central Services Cluster (CSC) Email Service and API"
+      url: "https://dt-rnd.atlassian.net/l/cp/nxaSTr4W"
+    - name: "Exposing a service on the public API Gateway"
+      url: "https://dt-rnd.atlassian.net/l/cp/ZQ1FDJNR"
+  dynatrace_roles:
+    - url: "https://dynatrace.sharepoint.com/sites/Career_Dev/SitePages/Roles,-Grades-&-Seniority%20Levels.aspx?csf=1&web=1&e=DZ0jy0&cid=caf3d90a-f994-4b9f-bf00-7339f7a0c013http%3A%2F%2Fhttp%3A%2F%2F#special-engagement"
+      name: "sharepoint-Special Engagements"
+    - url: "https://teams.internal.dynatrace.com/badges/overview"
+      name: "Special Engagement Badges"
+    - url: "https://forms.microsoft.com/Pages/ResponsePage.aspx?id=o-PrcDBbXUOdZ3cW10yhkJZH29zTgqRNmPG-yo57YL9UNTdYM0NXT0hTVlowUVhEUUUyOElHVEZMOCQlQCN0PWcu"
+      name: "Bootstrap a New Special Engagement"
+  dynatrace_developer:
+    - url: "https://developer.dynatracelabs.com/"
+      name: "3rd Gen App Dev Docs"
+      description: "Internal Developer Guide"
+    - url: "https://developer.dynatracelabs.com/reference/app-toolkit/plugin-system/"
+      name: "Plugins"
+    - url: "https://developer.dynatracelabs.com/reference/app-toolkit/plugin-system/"
+      name: "Plugins"
+    - url: "https://artifactory.lab.dynatrace.org/ui/packages/npm:%2F%2F@dynatrace-sdk%2Fapp-environment?name=%40dynatrace-sdk&type=packages"
+      name: "Artifactory Publication app.config.ts API @dynatrace-sdk/app-environment"
+      description: "Provide app.config.ts contextual information at runtime."
+    - url: "https://developer.dynatracelabs.com/reference/sdks/app-environment/"
+      name: "SDK app.config.ts API Dev Docs"
+      description: "Runtime access to app.config.ts data."
+  Value Creation Guide:
+    - name: Story Artifact Definition
+      url: https://dynatrace.sharepoint.com/sites/VCG/SitePages/User-Story.aspx
+    - name: Epic Artifact Definition
+      url:  https://dynatrace.sharepoint.com/sites/VCG/SitePages/Dev-Epic.aspx
+  Jira:
+    - url: "https://dt-rnd.atlassian.net/browse/PS-24103?atlOrigin=eyJpIjoiZDNlOGZjNmNkZjdmNDQ4MTlkODZkNTUyZjdmMDAxYWUiLCJwIjoiamlyYS1zbGFjay1pbnQifQ"
+      name: "PS-24103 The expression toggle button is not disabled when select component is disabled."
+      description: "Related https://dynatrace.slack.com/archives/C029P7AG909/p1717671887472989. Jira for Workflows: We relied on the 'broken' disable behavior of the AutomationSelect component to force users to switch to Expression Mode for some 'pickers' when e.g. Project is an expression. Now we use conditional rendering. When we force expression mode, we rerender the picker as AutomationTextInput. Possible impact on user experience."
+    - url: "https://dt-rnd.atlassian.net/browse/PS-25988"
+      name: "PS-23812 expression evaluation safeguard to prevent injection attacks"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Maintenance-Categorization.aspx"
+      name: "Maintenance Categories"
+    - url: "https://dt-rnd.atlassian.net/browse/APPDEV-9582"
+      name: "Feature Request: Add support for getAppDescription to SDK app-environment package APPDEV-9577"
+    - url: "https://dt-rnd.atlassian.net/wiki/spaces/RNDOPS/pages/79496706/How+to+grant+access+to+a+Space+in+Confluence+SaaS+Cloud"
+      name: "Grant access to user space"
+    - url: "https://dt-rnd.atlassian.net/wiki/spaces/ACE/pages/276168707/2023-12-20+Maintenance+Labels+Refresher"
+      name: "labels"
+    - url: "https://dev-jira.dynatrace.org//secure/CreateIssue.jspa?issuetype=1&pid=17090"
+      name: "open-bitbucket-team-ep-ticket"
+    - url: "https://dev-jira.dynatrace.org//secure/CreateIssue.jspa?issuetype=1&pid=19093"
+      name: "open-jira-team-rndopssup-ticket"
+    - url: "https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html"
+      name: "personal-access-tokens-cloud"
+      description: "Authorization: Bearer <yourtoken>"
+    - url: "https://developer.atlassian.com/server/jira/platform/basic-authentication/"
+      name: "basic-authentication-cloud"
+      description: "Authorization: Basic <base64-encoded username:password>"
+    - url: "https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/#about"
+      name: "jira-cloud-apiv2-reference"
+    - url: "https://docs.atlassian.com/software/jira/docs/api/REST/9.14.0/"
+      name: "jira-datacenter-apiv2-reference"
+    - url: "https://dt-rnd.atlassian.net/browse/RNDOPS-929"
+      name: "jira-test-instance-playground-ticket"
+    - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Request-For-Assistance-(RFA)-Guidelines.aspx"
+      name: "rfa-guidelines"
+  owners:
+    - url: "https://cloudcontrol-dev.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-dev"
+      description: "Find out who owns a tenant."
+    - url: "https://cloudcontrol-sprint.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-sprint"
+      description: "Find out who owns a tenant in the Sprint SaaS."
+    - url: "https://cloudcontrol.internal.dynatrace.com/"
+      name: "cloudcontrol-prod"
+      description: "Find out who owns a tenant in the Prod SaaS."
+    - url: "https://cloudcontrol-dev.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-dev-paying-tenants"
+      description: "Find out who owns a tenant."
+    - url: "https://cloudcontrol-dev.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-dev-trial-tenants"
+      description: "Find out who owns a tenant."
+    - url: "https://cloudcontrol-sprint.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-sprint-paying-tenants"
+      description: "Find out who owns a tenant in the Sprint SaaS."
+    - url: "https://cloudcontrol-sprint.internal.dynatracelabs.com/#tenants"
+      name: "cloudcontrol-sprint-trial-tenants"
+      description: "Find out who owns a tenant in the Sprint SaaS."
+    - url: "https://admin.myaccount-dev.dynatracelabs.com"
+      name: "admin-myaccount-dev"
+      description: "Find tenant meta information."
+    - url: "https://admin.myaccount-hardening.dynatracelabs.com"
+      name: "admin-myaccount-sprint"
+      description: "Find tenant meta information."
+  hubmanager:
+    - url: "https://hub-manager.spine.internal.dynatrace.com"
+      name: "hub-manager-prod"
+    - url: "https://hub-manager.spine-hardening.internal.dynatracelabs.com/"
+      name: "hub-manager-sprint"
+    - url: "https://hub-manager.spine-dev.internal.dynatracelabs.com"
+      name: "hub-manager-dev"
+  accountmanagement:
+    - url: "https://myaccount-dev.dynatracelabs.com/accounts"
+      name: "accountmanager-dev"
+    - url: "https://myaccount-hardening.dynatracelabs.com/accounts"
+      name: "accountmanager-sprint"
+    - url: "?"
+      name: "accountmanager-prod"
+    - url: "https://api.dynatrace.com/spec"
+      name: "accountmanagement-api"
+  dqldocs:
+    - name: "DQL Aggregation Functions"
+      url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language/functions/aggregation-functions"
+    - name: "DQL Matcher Syntax for Events"
+      url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/trigger/event-trigger#hints-on-working-with-workflows-and-event-triggers"
+      description: "DQL Matcher syntax is a subset of DQL that does not include filter DQL syntax like in(array(token, 'thing'))"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language/data-types"
+      name: "dql-datatypes"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/business-analytics/ba-events-processing/ba-events-processing-matcher"
+      name: "DQL matcher in business events"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language/commands"
+      name: "dql-commands"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language/functions"
+      name: "dql-functions"
+  docs:
+    - name: "Secure Development Controls (Part of Dynatrace Security Development Lifecycle (SDL)"
+      url: "https://docs.dynatrace.com/docs/manage/data-privacy-and-security/data-security/secure-development-controls#secure-development-controls"
+    - url: "https://developer.dynatrace.com/develop/sdks/app-environment/"
+      name: "App Environment SDK"
+    - url: "https://docs.dynatrace.com/docs/platform/davis-ai/basics/events/event-types/resource-events"
+      name: "Resource Event Types"
+      description: "Set of Event types e.g., CUSTOM_ALERT, UNEXPECTED_HIGH_LOAD, MEMORY_SATURATED, LOW_DISK_SPACE, SLOW_DISK, HOST_DISK_LOW_INODES, HIGH_NETWORK_UTILIZATION, HIGH_GC_ACTIVITY, HIGH_LATENCY, INSUFFICIENT_DISK_QUEUE_DEPTH, RESOURCE_EVENT (custom)"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/default-workflow-actions/run-javascript-workflow-action"
+      name: "run-javascript-workflow-action"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/default-workflow-actions/dql-query-workflow-action"
+      name: "dql-query-action"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/default-workflow-actions/http-request-workflow-action"
+      name: "http-request-workflow-action"
+    - url: "https://dynatrace.sharepoint.com/sites/CARPE/SitePages/Create-a-tenant.aspx?web=1"
+      name: "ruxitlabs-create-a-tenant"
+    - url: "https://docs.dynatrace.com/docs"
+      name: "dynatrace-public-welcome"
+    - url: "https://dynatrace-docs-preview.spine-dev.internal.dynatracelabs.com/pr-748/docs/platform-modules/automations/workflows/building#remove-a-task-transition"
+      name: "PR Preview Doc PR-748 (Merged, yet Unpublished) Automation Task Transitions"
+    - url: "https://developer.dynatrace.com/reference/sdks"
+      name: "Dev Docs Guide Dynatrace SDKs for Typescript"
+    - url: "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication/account-api-authentication"
+      name: "oauth2-client-generation-general"
+      description: "Requires permission `account-user-management`"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/cloud-automation/setup-cloud-automation/authentication#client"
+      name: "oauth2-client-generation-cloudautomation"
+    - url: "https://docs.dynatrace.com/docs/manage/account-management"
+      name: "account management"
+    - url: "https://developer.dynatracelabs.com/develop/test"
+      name: "layers-of-testing"
+      description: "Testing Category Definitions"
+    - url: "https://docs.dynatrace.com/docs/observe-and-explore/logs/log-management-and-analytics/lma-log-ingestion-via-api"
+      name: "log-ingestion"
+    - url: "https://docs.dynatrace.com/docs/observe-and-explore/notifications-and-alerting/alerting-profiles"
+      name: "alert-profiles"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-query-language/commands/aggregation-commands#makeTimeseries"
+      name: "makeTimeseries-from-stream"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/trigger#davis-problem-trigger"
+      name: "david-problem-trigger"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/digital-experience/synthetic-monitoring/general-information/credential-vault-for-synthetic-monitors"
+      name: "credential-vault"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/digital-experience/synthetic-monitoring/general-information/credential-vault-for-synthetic-monitors#cv-api"
+      name: "credential-vault-api"
+    - url: "https://developer.dynatrace.com/reference/sdks/automation-utils/"
+      name: "automation-utils"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco"
+      name: "monaco"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/installation"
+      name: "Install Monaco Executable"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/manage-configuration"
+      name: "monaco-configuration"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/yaml-configuration#config"
+      name: "monaco-configuration-yaml"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/projects"
+      name: "monaco-projects"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/account-configuration"
+      name: "monaco-user-accounts"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration#deployment-manifest"   
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration#deployment-manifest"
+      name: "monaco-deployment-manifest"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/yaml-configuration#dynatrace-configuration-as-code-via-monaco"
+      name: "monaco-yaml"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/guides/order-of-configurations"
+      name: "monaco-enforce-order-of-configuration-application"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/guides/create-oauth-client#create-an-oauth-client"
+      name: "monaco-oauth-scopes-permissions"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/special-configuration-types#settings-2-0-objects"
+      name: "monaco-settings-2.0-objects"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/guides/configuration-as-code-advanced-use-case"
+      name: "monaco-templates-templating"
+      description: "Dynatrace Monaco CLI projects contain both a config.yaml and JSON template file."
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/projects#json-template-file"
+      name: "monaco-json-template-file"
+      description: "JSON contains the payload pushed (after templating has been applied). YAML contains a list of {config: obj, id: string}."
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/yaml-configuration#parameters"
+      name: "monaco-variables"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/yaml-configuration#type-automation"
+      name: "monaco-workflows-type-automation"
+    - url: "https://docs.dynatrace.com/docs/manage/configuration-as-code/monaco/configuration/yaml-configuration#env-overrides"
+      name: "monaco-override-config-per-environment"
+    - url: "https://youtu.be/blJDhHwZfp4?t=2109"
+      name: "monaco-values-syntax-youtube"
+    - url: "https://docs.dynatrace.com/docs/manage/account-management/identity-access-management/account-api-oauth"
+      name: "accountmanagement managing accounts API"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language"
+      name: "dynatrace-pattern-language-dpl"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-grammar"
+      name: "DPL Grammar"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-lines-strings#line-data"
+      name: "LD LDATA Line Data Matcher for matches until LF CR EOF"
+      description: "parsing whereby LD tells parser were to go and optional operator ':' is left-associative assignment operator with respect to parser matcher on left assigning parsed value to the symbol on the right :: parse-and-extract: LD:username ',' :: parse-and-ignore: LD username ','"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-lines-strings"
+      name: "DATA Multiline Matcher for matches containing LF CR EOF"
+      description: "match everything until empty line assigning to value: DATA:value (LF LF)"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions"
+      name: "Workflow Integration Actions"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions"
+      name: "Workflow Integration Actions"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions/jira"
+      name: "Jira for Workflows Public Docs"
+  dpl:
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language"
+      name: "dynatrace-pattern-language-dpl"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-grammar"
+      name: "DPL Grammar"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-lines-strings#line-data"
+      name: "LD LDATA Line Data Matcher for matches until LF CR EOF"
+      description: "parsing whereby LD tells parser were to go and optional operator ':' is left-associative assignment operator with respect to parser matcher on left assigning parsed value to the symbol on the right :: parse-and-extract: LD:username ',' :: parse-and-ignore: LD username ','"
+    - url: "https://docs.dynatrace.com/docs/platform/grail/dynatrace-pattern-language/log-processing-lines-strings"
+      name: "DATA Multiline Matcher for matches containing LF CR EOF"
+      description: "match everything until empty line assigning to value: DATA:value (LF LF)"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions"
+      name: "Workflow Integration Actions"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions"
+      name: "Workflow Integration Actions"
+    - url: "https://docs.dynatrace.com/docs/platform-modules/automations/workflows/actions/jira"
+      name: "Jira for Workflows Public Docs"
+  Time_Booking:
+    - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Time-Tracking-Austria.aspx"
+      name: "Time Booking Guide Austria"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Data-Completeness---what-it-is-about-.aspx"
+      name: "Why my team needs to report all our time?"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Data-Completeness---what-it-is-about-.aspx#how-to-report-out-of-office-time"
+      name: "How to book partial day compensatory time (time taken from your overtime balance)"
+      description: "If you take a time off from your 'OTBalance' overtime (a.k.a compensatory time) - then you just don't report any hours and effectively there are less hours, you booked for given week."
+    - name: "Sick Leave (Austria)-sharepoint"
+      url: "https://dynatrace.sharepoint.com/sites/austria/SitePages/sick-leave.aspx"
+    - name: Partial Day Sick Leave
+      url: https://dynatrace.sharepoint.com/sites/Austria/SitePages/Time-Tracking.aspx#sick-leave-1
+      description: Book as doctor's appointment, being mindful of lunch break until 13:18.
+    - name: "10.2024 Adapted Sick Leave Procedure for Austria"
+      url: "https://employeeenablement.dynatrace.com/support/solutions/articles/18000104188"
+      description: "See announcement in #office-innsbruck https://dynatrace.slack.com/archives/C031H5R5ZJM/p1729770966226909"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Time-Grouper-Overview.aspx"
+      name: "Time Grouper API (Sharepoint-Semantics Overview)"
+      description: "Defines Meaning of Grouper Tickets."
+    - url: "https://dt-rnd.atlassian.net/jira/dashboards/51505"
+      name: "Time Grouper Implementation"
+      description: "Maps Time Grouper API to CA Ticket Implementations"
+    - url: "https://dt-rnd.atlassian.net/browse/RNDOPS-1353"
+      name: "Automatic Alerts for Time Threshold Reached in Tickets"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Time-Booking-Guide.aspx"
+      name: "Time Booking Guide"
+    - url: "https://dt-rnd.atlassian.net/l/cp/Pg0ZqH0m"
+      name: "Compensatory Time Off 2 Day / Month Rule No Longer in Effect"
+    - url: "https://dynatrace.slack.com/archives/CH3ESMW3T/p1672649449690319"
+      name: "sick-leave-conversion-from-vacation-or-compensatory-time"
+    - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/SetOvertime.aspx#at-employees"
+      name: "time-booking-set-overtime"
+    - url: "https://app.powerbi.com/groups/me/reports/e25c8a8d-b34d-4044-b56a-4787ed043be9/ReportSectionb48df34ac3c38b2257d8?experience=power-bi"
+      name: "team-contractual-hours-report Data Completeness Report"
+    - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/RnD_workation.aspx"
+      name: "Workation Vacation"
+  sdk:
+    url: "https://bitbucket.lab.dynatrace.org/projects/APPFW/repos/dynatrace-sdk/browse/packages/dt-app-plugin-client-app-settings"
+    name: "sdk-dt-app-plugin-client-app-settings"
+    description: "Team Config Platform"
+  permissions:
+    - url: "https://idmui.internal.dynatrace.com/ui/dashboard"
+      name: "idmui-dev"
+    - url: "https://idmui-sprint.internal.dynatracelabs.com/ui/dashboard"
+      name: "idmui-sprint"
+    - url: ""
+      name: "idmui-prod"
+    - url: "https://dynatrace.sharepoint.com/sites/SRSECOPS/SitePages/Management-of-employee-permissions.aspx"
+      name: "sharepoint-docs-employee-permissions"
+  tickets:
+    - url: "https://dev-jira.dynatrace.org/browse/PS-12634"
+      name: "As a app developer, I want the app version to be attached to logs so that I can correlate issues to app versions"
+      description: "Silvio Doblhofer helped here. It should involve small effort on their part for a big gain on the self-monitoring side."
+  snyk:
+    - url: "https://bitbucket.lab.dynatrace.org/projects/COPS/repos/heimdall-dt-saas-managed/browse/groups/Snyk/snyk-capability_cloud_automation-admin"
+      name: "heimdall-admins"
+    - url: "https://bitbucket.lab.dynatrace.org/projects/COPS/repos/heimdall-dt-saas-managed/browse/groups/Snyk/snyk-capability_cloud_automation-collaborator"
+      name: "heimdall-collaborators"
+    - url: "https://backstage.internal.dynatrace.com/catalog/internal-systems/component/snyk-shared-jenkins-library/docs/usage/"
+      name: ":ocs-backstage"
+    - url: "https://dt-rnd.atlassian.net/browse/PS-22168"
+      name: "missing-workflow-id"

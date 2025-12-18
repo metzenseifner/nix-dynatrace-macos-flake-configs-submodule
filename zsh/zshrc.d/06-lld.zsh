@@ -1,0 +1,1 @@
+alias lld="otool -L"

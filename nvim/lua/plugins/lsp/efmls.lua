@@ -1,0 +1,54 @@
+--return {                     -- general-purpose language server configs that use DidChangeConfiguration making config.yml optional.
+--  "creativenull/efmls-configs-nvim",
+--  version = 'v1.x.x', -- version is optional, but recommended
+--  dependencies = { 'neovim/nvim-lspconfig' },
+--  -- requires :MasonInstall efm
+
+--  opts = {},
+
+--  config = function(_, opts)
+--    local languages = {
+--      -- here we can use premade utility definitions for languages from efmls-configs-nvim
+--      -- Custom languages, or override existing ones
+--      -- Keys are filetypes as recognized by NeoVim
+--      typescript = {
+--        require('efmls-configs.linters.eslint'),
+--        require('efmls-configs.formatters.eslint'),
+--        require('efmls-configs.formatters.prettier'),
+--      },
+--      typescriptreact = {
+--        require('efmls-configs.formatters.prettier'),
+--        require('efmls-configs.formatters.eslint')
+--      },
+--      lua = {
+--        require('efmls-configs.formatters.stylua')
+--      },
+--      html = {
+--        require('efmls-configs.formatters.prettier')
+--      },
+--    }
+--    init_options = {
+--      documentFormatting = true,
+--      documentRangeFormatting = true,
+--      hover = true,
+--      documentSymbol = true,
+--      codeAction = true,
+--      completion = true
+--    }
+--    -- Register linters and formatters per language
+--    require 'lspconfig'.efmls_config = {
+--      filetypes = vim.tbl_keys(languages),
+--      settings = {
+--        rootMarkers = { '.git/' },
+--        languages = languages,
+--      },
+--    }
+
+--    require('lspconfig').efm.setup(vim.tbl_extend('force', require 'lspconfig'.efmls_config, {
+--      -- Pass your custom lsp config below like on_attach and capabilities
+--      --
+--      -- on_attach = on_attach,
+--      -- capabilities = capabilities,
+--    }))
+--  end
+--},

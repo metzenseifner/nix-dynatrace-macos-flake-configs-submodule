@@ -1,0 +1,178 @@
+#compdef nix
+# Zsh completion for modern Nix commands
+
+# Cache for performance
+typeset -gA _nix_cmd_cache
+
+_nix_get_subcommands() {
+  local cache_key="$1"
+  local cmd="$2"
+  
+  if [[ -z "${_nix_cmd_cache[$cache_key]}" ]]; then
+    _nix_cmd_cache[$cache_key]=$(${=cmd} --help 2>&1 | \
+      sed -n 's/^[[:space:]]*·[[:space:]]*nix \([a-z-]*\)[[:space:]].*/\1/p' | \
+      sort -u)
+  fi
+  
+  echo "${_nix_cmd_cache[$cache_key]}"
+}
+
+_nix_flake_subcommands() {
+  local -a subcommands
+  subcommands=(
+    'archive:copy a flake and all its inputs to a store'
+    'check:check whether the flake evaluates and run its tests'
+    'clone:clone flake repository'
+    'info:show flake metadata'
+    'init:create a flake in the current directory from a template'
+    'lock:create missing lock file entries'
+    'metadata:show flake metadata'
+    'new:create a flake in the specified directory from a template'
+    'prefetch:download the source tree denoted by a flake reference'
+    'prefetch-inputs:fetch the inputs of a flake'
+    'show:show the outputs provided by a flake'
+    'update:update flake lock file'
+  )
+  _describe 'nix flake subcommand' subcommands
+}
+
+_nix_flake_templates() {
+  local -a templates
+  # Common flake templates from nixpkgs and popular sources
+  templates=(
+    'templates#simpleContainer:A container with a small program'
+    'templates#trivial:A very basic flake'
+    'templates#full:A flake with all batteries included'
+    'github:nix-community/templates'
+  )
+  _describe 'flake template' templates
+}
+
+_nix_main_commands() {
+  local -a commands
+  commands=(
+    'build:build a derivation or fetch a store path'
+    'develop:run a bash shell that provides the build environment'
+    'flake:manage Nix flakes'
+    'profile:manage Nix profiles'
+    'run:run a Nix application'
+    'search:search for packages'
+    'repl:start an interactive environment for evaluating Nix expressions'
+    'shell:run a shell with packages available'
+    'bundle:bundle an application so that it works outside of the Nix store'
+    'copy:copy paths between Nix stores'
+    'edit:open the Nix expression of a package in an editor'
+    'eval:evaluate a Nix expression'
+    'fmt:format the Nix expression'
+    'log:show the build log of a derivation'
+    'path-info:show information about store paths'
+    'registry:manage the flake registry'
+    'why-depends:show why a package has another package in its closure'
+    'daemon:daemon to perform store operations'
+    'describe-stores:show registered store types and their settings'
+    'hash:compute and convert cryptographic hashes'
+    'key:manage secret keys for signing and verification'
+    'nar:create or inspect NAR files'
+    'print-dev-env:print shell code for the build environment'
+    'realisation:manage realizations'
+    'show-config:show the Nix configuration'
+    'show-derivation:show the contents of a derivation'
+    'store:manipulate a Nix store'
+    'help:show help about nix or a particular subcommand'
+    'help-stores:show help about store types and their settings'
+  )
+  _describe 'nix command' commands
+}
+
+_nix_common_options() {
+  _arguments -s \
+    '--debug[enable debug output]' \
+    '--help[show help]' \
+    '--quiet[decrease verbosity]' \
+    '--verbose[increase verbosity]' \
+    '--version[show version information]' \
+    '--log-format[set log format]:format:(raw internal-json bar bar-with-logs)' \
+    '--print-build-logs[print full build logs on standard error]' \
+    '--no-print-build-logs[do not print full build logs]' \
+    '--experimental-features[enable experimental features]:features:' \
+    '--extra-experimental-features[append experimental features]:features:' \
+    '*::arg:->args'
+}
+
+_nix() {
+  local context state state_descr line
+  typeset -A opt_args
+
+  if (( CURRENT == 2 )); then
+    _nix_main_commands
+    return
+  fi
+
+  local cmd=$words[2]
+  
+  case $cmd in
+    flake)
+      if (( CURRENT == 3 )); then
+        _nix_flake_subcommands
+        return
+      fi
+      
+      local subcmd=$words[3]
+      case $subcmd in
+        init|new)
+          _arguments \
+            '--template[template to use]:template:_nix_flake_templates' \
+            '*::arg:_files'
+          ;;
+        update)
+          _arguments \
+            '--update-input[update specific flake input]:input:' \
+            '*::arg:_files'
+          ;;
+        show|check|lock|metadata|info)
+          _arguments '*::arg:_files'
+          ;;
+        *)
+          _nix_common_options
+          ;;
+      esac
+      ;;
+    
+    develop|build|run|shell)
+      _arguments \
+        '--command[command to run]:command:_command_names' \
+        '*::arg:_files'
+      ;;
+    
+    search)
+      _arguments \
+        '--json[output in JSON format]' \
+        '*::search term:'
+      ;;
+    
+    profile)
+      local -a profile_cmds
+      profile_cmds=(
+        'install:install a package into the profile'
+        'remove:remove packages from the profile'
+        'upgrade:upgrade packages in the profile'
+        'list:list installed packages'
+        'diff-closures:show the closure difference between profile generations'
+        'history:show profile history'
+        'rollback:roll back to the previous profile generation'
+        'wipe-history:delete non-current profile generations'
+      )
+      if (( CURRENT == 3 )); then
+        _describe 'profile command' profile_cmds
+      else
+        _nix_common_options
+      fi
+      ;;
+    
+    *)
+      _nix_common_options
+      ;;
+  esac
+}
+
+_nix "$@"

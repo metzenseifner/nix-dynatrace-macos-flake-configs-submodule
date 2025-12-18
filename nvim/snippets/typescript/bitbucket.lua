@@ -1,0 +1,42 @@
+return {
+}
+
+-- import { execution } from '@dynatrace-sdk/automation-utils';
+-- 
+-- const createPeek = (peekEffect = (v) => console.log(`Status: ${JSON.stringify(v)}`) ) => async <T>(value): Promise<T> => {
+--   if (value instanceof Response) {
+--     const clonedValue = value.clone();
+--     peekEffect(clonedValue);
+--   } else {
+--     peekEffect(value);
+--   }
+--   return Promise.resolve(value);
+-- }
+-- const peek = createPeek((value) => console.log(`Peek: ${value}`));
+-- const peekBody = createPeek((response) => console.log(`Peek: ${response.text()}`));
+-- 
+-- const createResponseValidator = (isValidReponse) => async (response: Response) => {
+--   if(isValidResponse(response)) {
+--     return Promise.resolve(response)
+--   } else {
+--     return Promise.reject(response);
+--   }
+-- }
+-- const isValidResponse = createResponseValidator((response:Response):boolean => response.status === 200 ? Promise.resolve(response) : Promise.reject(response))
+-- 
+-- const parseJson = async (response: Response) => response.json();
+-- 
+-- const handleError = (e) => {
+--   console.error(e);
+--   Promise.reject(e);
+-- }
+-- 
+-- export default async function ({ execution_id }) {
+--   const projects = 
+--     await fetch('https://bitbucket.lab.dynatrace.org/users/jonathan.komar/repos/team-platinum/raw/projects.json?at=refs%2Fheads%2Fmain', {headers: {'content-type': 'application/json;charset=UTF-8'}})
+--     .then(isValidResponse)
+--     .then(parseJson)
+--     .then(peek)
+--     .catch(handleError)
+--   return projects;
+-- }

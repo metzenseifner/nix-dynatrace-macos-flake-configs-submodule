@@ -1,0 +1,19 @@
+---
+time_groupers:
+  Employee Enablement:
+    - name: Learning on the job
+      url: https://dt-rnd.atlassian.net/browse/ASDY-12
+    - name: Training
+      url: https://dt-rnd.atlassian.net/browse/ASDY-13 
+    - name: Onboarding
+      url: https://dt-rnd.atlassian.net/browse/ASDY-14
+    - name: General Empl. Enablement
+      url: https://dt-rnd.atlassian.net/browse/ASDY-16
+  Role Groundwork:
+    - name: Agile Advocate Groundwork
+      url: https://dt-rnd.atlassian.net/browse/ASDY-18
+    - name: Product Owner Groundwork
+      url: https://dt-rnd.atlassian.net/browse/ASDY-19
+    - name: Team Captain Groundwork
+      url: https://dt-rnd.atlassian.net/browse/ASDY-20
+

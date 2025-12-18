@@ -1,0 +1,16 @@
+team_members:
+  - name: Jonathan Komar
+    roles:
+      - Team Captain
+  - name: Matthaeus Huber
+  - name: Jonas Erhart
+    roles:
+      - Agile Advocate
+  - name: Nikolas Keuck
+    roles:
+      - Product Owner
+  - name: Jan Berger
+  - name: Dominik Einkemmer
+    special_engagements:
+      - Security Advocate
+  - name: Andreas Schett

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+REPO_HOOKS_DIR=$(git rev-parse --show-toplevel)/hooks
+
+# This works because the list of refs being pushed is passed on standard input
+if [[ `grep 'null'` ]]; then 
+  echo "You really do not want to push this branch. Aborting."
+  exit 1
+fi
+
+# Check if the hook exists in the worktree hooks directory
+if [ -x "$REPO_HOOKS_DIR/pre-commit" ]; then
+    echo "Found $REPO_HOOKS_DIR/pre-commit. Executing."
+    # Execute the worktree hook
+    exec "$REPO_HOOKS_DIR/pre-commit" "$@"
+else
+    # Execute the global hook
+    echo "Completed pre-commit. No hook under $REPO_HOOKS_DIR/pre-commit found. Exiting."
+fi

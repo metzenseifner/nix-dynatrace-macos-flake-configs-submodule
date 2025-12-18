@@ -1,0 +1,14 @@
+#------------------------------------------------------------------------------#
+#                                 Exclude File                                 #
+#                     Purpose: Exclude files from commits.                     #
+#                      Scope: Local to your machine only.                      #
+#------------------------------------------------------------------------------#
+
+# Fruit Computers
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node
+node_modules
+.npm

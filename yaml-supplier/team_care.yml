@@ -1,0 +1,42 @@
+# Team Care Configuration
+# This file defines team members and their roles for snippet generation
+# Edit this file to reflect team changes - no need to modify Lua code
+
+team_members:
+  - name: "Jonathan Komar"
+    roles: 
+      - "Team Captain"
+  - name: "Jan Berger"
+    roles: []
+  - name: "Nikolas Keuck"
+    roles:
+      - "PO"  # Product Owner
+  - name: "Matthaeus Huber"
+    roles: []
+  - name: "Jonas Erhart"
+    roles:
+      - "Agile Advocate"
+  - name: "Dominick Einkemmer"
+    roles: []
+    special_engagements:
+      - "Security Advocate"
+  - name: "Andreas Schett"
+    roles: []
+  - name: "Nico Riedmann"
+    roles:
+      - "Dev Manager"
+
+# Sprint information (overridden by sprint_supplier if available)
+sprint: "328"
+
+# Team metadata
+team_name: "Team Care"
+team_type: "care"
+
+# Available role types for reference:
+# - "Team Captain"
+# - "PO" (Product Owner)
+# - "Dev Manager" 
+# - "Org Lead"
+# - "Agile Advocate"
+# Additional fields like special_engagements are preserved but not used in snippet generation

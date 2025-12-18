@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+
+# Instructions
+# Install in your .git/hooks project directory
+# chmod +x .git/hooks/prepare-commit-msg
+
+import sys
+import subprocess
+import re
+from fpinpy import Result
+from typing import Callable
+
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel('DEBUG')
+
+# This uses branch names to create conventional commit conformant commit messages.
+
+CONSIDER_BRANCH_PREFIXES = [
+    'fix',
+    'docs',
+    'release',
+    'feat',
+    'test',
+    'changelog',
+    'refactor'
+    ]
+
+# TODO: Not yet implemented: excluding commit msg
+EXCLUDE_COMMIT_PREFIXES = [
+  'fixup!'
+    ]
+CONSIDER_BRANCH_REGEX = r'^[a-zA-Z]+-[0-9]+' + '|^' + '|^'.join(CONSIDER_BRANCH_PREFIXES)
+CONSIDER_BRANCH_PREDICATE = lambda branch: bool(re.search(CONSIDER_BRANCH_REGEX, branch))
+
+TICKET_MATCH_REGEX = r'[a-zA-Z]+-[0-9]+'
+
+QUALIFIED_PREFIX_REGEX = "|".join(map(lambda l: f"{l}/{TICKET_MATCH_REGEX}", CONSIDER_BRANCH_PREFIXES))
+
+def extract_convention_type_from_branch(branch):
+  extractedType = \
+      Result.of(branch) \
+        .map(lambda b: re.search(f"{'|'.join(CONSIDER_BRANCH_PREFIXES)}", b).group(0))
+  if extractedType.isSuccess():
+    return extractedType.successValue()
+  else:
+   raise Exception(f'No conventional commit type found in branch name: {branch}')
+
+def extract_ticket_id_from_branch(branch):
+  extractTicketId = \
+    Result.of(branch) \
+      .map(lambda b: re.search(f'({TICKET_MATCH_REGEX})', b).group(1)) \
+      .orElse(lambda b: re.search(f'({QUALIFIED_PREFIX_REGEX})', b).group(1)) \
+
+  # Escape functional code for now to incremental work towards functional
+  if extractTicketId.isSuccess():
+    return extractTicketId.successValue()
+  else:
+    raise Exception(f'No ticket ID found in the branch name: {branch}')
+
+
+
+
+class PreparablePredicate:
+    def __init__(self, value, predicate: Callable, description: str="Must match predicate"):
+        self.value = value
+        self.predicate = predicate
+        self.description = description
+    def __call__(self):
+        return self.predicate(self.value)
+    def __str__(self):
+        return self.description
+
+def read_commit_msg_full(commit_msg_file):
+    def read_commit_msg() -> str:
+        with open(commit_msg_file, encoding="utf-8") as file:
+            content = file.read()
+        if len(content) > 0:
+            return content
+        else:
+            return ""
+    return read_commit_msg
+
+
+def write_commit_msg_full(commit_msg_file):
+    def write_commit_msg(commit_msg):
+        with open(commit_msg_file, 'w') as file:
+            file.write(commit_msg)
+    return write_commit_msg
+
+def prepare_commit_msg(original_msg: str, branch:str) -> str:
+    commit_msg_formatter = lambda convention_type: lambda ticket_id: lambda msg: f"{convention_type}({ticket_id}): {msg}"
+    ticket_id=extract_ticket_id_from_branch(branch)
+    convention_type=extract_convention_type_from_branch(branch)
+    new_commit_msg = commit_msg_formatter(convention_type)(ticket_id)(original_msg)
+    return new_commit_msg
+
+def prompt_user_confirmation(orig_msg:str, prepared_msg: str) -> bool:
+    divider = """==============================="""
+    while True:
+      isConfirmed = input(f"Should the commit message be automatically adjusted:\n\nOriginal message\n{divider}\n{orig_msg}\n{divider}\n\nNew prefixed commit message\n{divider}\n{prepared_msg}\n{divider}\n[yes|no]? ")
+      if isConfirmed.lower() in ["y", "yes"]:
+          return True
+      elif isConfirmed.lower() in ["n", "no"]:
+          return False
+      else:
+          print("Please enter y|yes or n|no to continue...")
+
+def main(write_commit_msg: Callable, read_commit_msg: Callable):
+
+    branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], encoding="UTF-8", stdout=subprocess.PIPE).stdout
+
+    # Change me according to your conventions
+    is_preparable = PreparablePredicate(branch, CONSIDER_BRANCH_PREDICATE, f"Applies only when branch name starts with {CONSIDER_BRANCH_REGEX}")
+    if not is_preparable():
+        print(f"Skipping prepare-commit-msg because: {is_preparable}")
+        return
+
+    original_commit_msg = read_commit_msg()
+    new_msg = prepare_commit_msg(original_commit_msg, branch)
+
+    isConfirmed = prompt_user_confirmation(original_commit_msg, new_msg)
+
+    if isConfirmed:
+        write_commit_msg(new_msg)
+    else:
+        exit()
+
+if __name__ == "__main__":
+    # Git hook processes are not connected to fd 0
+    sys.stdin = open("/dev/tty", "r")
+    COMMIT_MSG_FILE=sys.argv[1]
+
+    write_commit_msg_func = write_commit_msg_full(COMMIT_MSG_FILE)
+    read_commit_msg_func = read_commit_msg_full(COMMIT_MSG_FILE)
+    main(write_commit_msg_func, read_commit_msg_func)

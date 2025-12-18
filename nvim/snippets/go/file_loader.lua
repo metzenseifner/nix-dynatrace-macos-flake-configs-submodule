@@ -1,0 +1,31 @@
+local ls = require("luasnip")
+-- local s = ls.snippet
+-- local t = ls.text_node
+-- 
+-- local go_snippets = {}
+-- 
+-- -- Path to your directory of .go files
+-- local snippet_dir = "./"
+-- 
+-- -- Helper to read file content
+-- local function read_file(path)
+--   local file = io.open(path, "r")
+--   if not file then return nil end
+--   local content = file:read("*a")
+--   file:close()
+--   return content
+-- end
+-- 
+-- -- Scan the directory and create snippets
+-- for file in vim.fn.glob(snippet_dir .. "/*.go", true, true) do
+--   local filename = vim.fn.fnamemodify(file, ":t:r") -- get filename without extension
+--   local content = read_file(file)
+--   if content then
+--     table.insert(go_snippets, s(filename, { t(content) }))
+--   end
+-- end
+-- 
+-- -- Register the snippets for Go filetype
+-- -- ls.add_snippets("go", go_snippets)
+-- return go_snippets
+-- 

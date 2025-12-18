@@ -1,0 +1,12 @@
+groups:
+  teamcare:
+    repo_dirs:   # Convenient way to add a bunch of repos easily.
+      - /parent/dir/of/a/bunch/of/repos
+    projects:
+      repo:
+        name:
+        path:
+        url:
+        description:
+  teamplatinum:
+    ignore: true

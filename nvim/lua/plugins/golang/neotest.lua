@@ -1,0 +1,86 @@
+return {
+  {
+    "nvim-neotest/neotest",
+    lazy = false,
+    event = { "LspAttach", "DirChanged" },
+
+    dependencies = {
+      { "nvim-neotest/nvim-nio" },
+      { "nvim-lua/plenary.nvim" },
+      { "antoinemadec/FixCursorHold.nvim" },
+      { "nvim-treesitter/nvim-treesitter" },               -- important for detecting tests
+      { "nvim-treesitter/nvim-treesitter" },               -- nvim-treesitter can be added if you have it lazily loaded. It must be loaded before for this plugin to work.
+      { "fredrikaverpil/neotest-golang",  version = "*" }, -- Installation
+      { "nvim-contrib/nvim-ginkgo"}
+    },
+    config = function()
+      require("neotest").setup({
+        log_level = 3,
+        quickfix = {
+          enabled = true,
+          open = false,
+        },
+        adapters = {
+          require("golang.neotest"),
+          require("nvim-ginkgo")
+        },
+        output_panel = {
+          enabled = true,
+          open = true,
+        },
+        highlights = {
+          test = "NeotestBorder"
+        }
+        --config = {
+        --  output_panel = { open_on_run = true },
+        --  diagnostics = true,
+        --}
+
+      })
+    end,
+    keys = {
+      {
+        "<leader><leader>tn",
+        function()
+          require("neotest").run.run()
+          require("neotest").summary.open()
+        end,
+        desc = "Neotest run nearest test. (test nearest)"
+      },
+      {
+        "<leader><leader>tb",
+        function()
+          require("neotest").run.run(vim.fn.expand("%"))
+          require("neotest").summary.open()
+        end,
+        desc = "Neotest run current file (buffer). (test buffer)"
+      },
+      {
+        "<leader><leader>tnd",
+        function()
+          require("neotest").run.run({ strategy = "dap" })
+        end,
+        desc = "Neotest run nearest test in debug mode."
+      },
+      {
+        "<leader><leader>tns",
+        function()
+          require("neotest").run.stop()
+        end,
+        desc = "Stop nearest test."
+      },
+      {
+        "<leader><leader>tna",
+        function()
+          require("neotest").run.attach()
+        end,
+        desc = "Attach to nearest test."
+      },
+      { "<leader><leader>tam", function() require("neotest").summary.run_marked() end,   desc = "Neotest run all marked tests in summary." },
+      { "<leader><leader>tw",  function() require("neotest").watch.watch() end,          desc = "Watch files for changes and run tests." },
+      { "<leader><leader>tus", function() require("neotest").summary.toggle() end,       desc = "Neotest Toggle Test Summary Window" },
+      { "<leader><leader>tuo", function() require("neotest").output_panel.toggle() end,  desc = "Neotest Toggle Test Output Panel Window" },
+      { "<leader><leader>tcm", function() require("neotest").summary.clear_marked() end, desc = "Neotest Clear marked to tests in summary." },
+    }
+  },
+}

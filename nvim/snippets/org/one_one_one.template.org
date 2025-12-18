@@ -1,0 +1,23 @@
+* * TODO 
+  DEADLINE: <2025-11-03 Mon>
+  :PROPERTIES:
+  :OPENED: [2025-11-03 Mon 14:40:12+0100]
+  :TYPE: Team Captain
+  :BY: Jonathan Komar
+  :FOR: {{FOR}}
+  :END:
+# From "The Coaching Habit"
+# Awe Question
+## And what else?
+###  Avoid the "fake question": offering a choice with a question attached "have you thought of", offer an option, not a question.
+###  Why: follow-up questions that promote higher level thinking deepen understanding and promote participation
+###  When I've got the answer I wish to suggest, instead of asking "what about", I will ask one of the seven essential questions.
+# ---
+# Focus Question (stop solving the wrong problem, hone in on the right problem)
+## What is the real challenge here for you?
+### If you had to pick one of these to focus on, which one of these would be the real challenge for you? 
+### Why: Avoid proliferations of challenges. "domino effect" Slow people down and think deeper. Dig down into low-level details. Pins it to that person, forcing person to wrestle with themselves.
+# ---
+
+
+    

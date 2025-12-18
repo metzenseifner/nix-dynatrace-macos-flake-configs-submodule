@@ -1,0 +1,26 @@
+lastupdatecheck: 0
+recentrepos:
+    - /Users/jonathan.komar/devel/nixos-configuration
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/team-care-vacation-plans
+    - /Users/jonathan.komar/devel/flake-templates
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/build-units-service/branches/ASDY-17722_vulnerability_tomcat
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/ASDY-14769_approveandmerge_add-new-deployment-ring-support
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-tools/branches/ASDY-14769_prs_update-support-for-deployment-ring-titles
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-hard/branches/ASDY-8087_builtinapps_manually-update-builtin-app-test
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-builtin-apps-promotion/branches/ASDY-8087_builtinapps_migrate-spine-to-sprint-hub-central
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/01_DT_INFRA/heimdall-dt-saas-managed/branches/ASDY-16574_builtinapps_add-oauth
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-state-nonprod/branches/ASDY-14454_orchestration_migrate-to-dr-dre
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/deployment-overview-app/branches/main
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-state-nonprod/branches/ASDY-10407_dac_enable-promotion-of-dev101
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/ASDY-8820_grail_enable-with-opt-out-services
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-installation-template/branches/ASDY-6276_helpers_cluster-size-init-config
+    - /Users/jonathan.komar/.config/nvim
+    - /Users/jonathan.komar/devel/oauth2-in-go-docs
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/feat_ASDY-5603_devninetynine_onboard-new-installation-dev99
+    - /Users/jonathan.komar/.config
+startuppopupversion: 5
+didshowhunkstaginghint: true
+lastversion: 0.55.0
+customcommandshistory:
+    - q
+hidecommandlog: false

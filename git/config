@@ -1,0 +1,186 @@
+[user]
+	name = Jonathan L. Komar
+	email = Jonathan.Komar@dynatrace.com
+  signingKey = 94DF5329EB1E98E5EED8D15BFE24E158147151F1
+[commit]
+	gpgsign = true
+#[credential]
+#	helper = osxkeychain
+[merge]
+	tool = nvim
+[mergetool "nvim"]
+  cmd = "nvim -c \"DiffviewOpen\""
+  #cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
+  # https://lyz-code.github.io/blue-book/diffview/#resolve-merge-conflicts
+  # https://github.com/sindrets/diffview.nvim/blob/3afa6a053f680e9f1329c4a151db988a482306cd/lua/diffview/config.lua
+[mergetool]
+	keepBackup = true
+	prompt = false
+[alias]  # Shell scripts (! prefixed cmds) run from top-level dir. See $GIT_PREFIX with git rev-parse --show-prefix if below top
+  # note that git log --name-only adds the names of the files per commit
+  show = "!git show --show-signature"
+  sincetag = "!git --no-pager log --reverse --date=local --color=always --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%h::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset' $(git describe --tags --abbrev=0)^1..HEAD"
+  #changelog = "!find .changeset -name '*.md' -and -not -name  'README.md' -print0 | xargs -0 grep -zol '.*\w.*$' | xargs cat"
+  where = "!env"
+  commit-release = "!git commit -a -m \"Release $(cat package.json | jp -u '@.version')\""
+  wt-release = "!effect() {\
+    release() { \
+      local ticket=${1-NOISSUE}; \
+      local sprint=${2-$(sprint_supplier)}; \
+      local releasebranch=chore/${ticket}/changelog/sprint-${sprint}; \
+      local path=$(perl -pe 's|/|_|g'<<<${releasebranch}); \
+      local base=${3-main}; \
+      local cmd='git worktree add -b \"${releasebranch}\" \"branches/${path}\" \"${base}\"'; \
+      eval \"echo ==\\> Executing: $cmd\"; \
+      eval $cmd; \
+    }; \
+    if [ $# != 1 ]; then \
+      echo \"Usage: $ZSH_ARGZERO <ISSUE_KEY> [<SPRINTNR>] [<main>]\"; \
+      exit 1; \
+    fi; \
+    release $@; }; effect"
+  rebasemain = "!git rebase -i $(git merge-base origin/main HEAD)"
+  # specific files per commit since divergence from branch (since a commit) that have been changed. Useful for rebasing when using break command following by checkout --patch to add new patch commits that group changes across >1 commit into one commit.
+  packages = "!git --no-pager log --date=local --color=always --reverse --name-only --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%H::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset'  $(git merge-base HEAD origin/main)..HEAD -- package.json package-lock.json"
+  # Files aggregate since divergence from branch (files changed relative to commit) TODO parameterze origin/main
+  changedfiles = "!git diff --name-only $(git merge-base HEAD origin/main)..HEAD -- "
+  findfile = "! \
+    \
+  git --no-pager log --date=local --color=always --reverse --name-only --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%H::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset'  $(git merge-base HEAD origin/main)..HEAD -- package.json package-lock.json"
+  # git log --name-only $(git merge-base HEAD origin/main)..741f325ac9c723e1da10142aca38e4ba5b0de040 -- package.json
+  # log between commits git log <commitA>..<commitB>
+  # git commits that touched files in range of commits -> git log --name-only --oneline 892020480870434277e60d2f33c995d37cc3ab99..ef3fa079b45e41f16bbf98ee73a37d8b793ded5d -- package.json
+  # git log --name-only $(git merge-base HEAD origin/main)..741f325ac9c723e1da10142aca38e4ba5b0de040 -- package.json
+  # initial ! means to interpret the rest with the default shell
+  lg = !git --no-pager log --date=local --color=always --reverse --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%h::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset'
+  lgfull = !git --no-pager log --date=local --color=always --reverse --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%H::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset'
+  lgbase = !git lg $(git merge-base HEAD origin/main)~1..HEAD
+  #log = git --no-pager log --date=local --color-always --reverse --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%H::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset'
+  #
+  #
+  # -w means to write hash to .git/objects/<first_two_char_of_hash>/<rest_of_hash>
+  null = "!nil() { \
+    empty_hash=$(echo '' | git hash-object -t blob -w --stdin); \
+    branches_dir_hash=$(printf '100644 blob %s\t.placeholder' ${empty_hash} | git mktree); \
+    ignore_hash=$(echo 'branches/' | git hash-object -t blob -w --stdin); \
+    tree_hash=$(printf '100644 blob %s\t.gitignore\n040000 tree %s\tbranches' ${ignore_hash} ${branches_dir_hash} | git mktree); \
+    commit_hash=$(git commit-tree ${tree_hash} -m 'null branch'); \
+    git branch null ${commit_hash}; \
+    }; nil"
+  commitamend = commit --amend --no-edit
+  commitempty = commit --allow-empty
+  wt = worktree
+  # git wt-review <branch>
+  wt-review = "!effect() { \
+      create() { \
+        local fetch='git fetch'; \
+        eval \"echo ==\\> Executing: $fetch\"; \
+        eval $fetch; \
+        local base=\"${1}\"; \
+        local reviewbranch=\"review/${1}\"; \
+        local path=$(perl -pe 's|/|_|g'<<<${reviewbranch}); \
+        local cmd='git worktree add -b \"${reviewbranch}\" \"branches/${path}\" \"${base}\"'; \
+        eval \"echo ==\\> Executing: $cmd\"; \
+        eval $cmd; \
+        echo \"cd $(git rev-parse --show-toplevel)/branches/${path};\" \
+      }; \
+      if [ $# != 1 ]; then \
+        echo \"Usage: $ZSH_ARGZERO <BASE|BRANCH>\"; \
+        exit 1; \
+      fi; \
+      create $@; \
+    }; effect"
+  #local path=${1-$(perl -pe 's|/|_|g'<<<${branch})}; \
+
+
+  #  }"
+  wt-ls = worktree list --no-porcelain
+  wt-rm = worktree remove
+  #wt-clean = "!git wt remove $(git wt list --porcelain | grep -P '^worktree' | perl -pe 's/^worktree (.*)/\1/' | grep -v 'branches/main|branches/master')"
+  wt-clean = "!effect() { \
+      remove() { \
+        local keepRegex=\"${1-main|master}\"; \
+        echo ${keepRegex}; \
+        git worktree list --porcelain \
+        | grep -P '^worktree' \
+        | perl -pe 's/worktree //' \
+        | grep -Pv \"${keepRegex}\"; \
+      }; \
+      remove \"$@\"; \
+    }; effect;"
+
+  #  git wt list --porcelain \
+  #  | grep -P '^worktree.*branches.*' \
+  #  | perl -pe 's/^worktree (.*)/\\1/' \
+  #  | grep -v 'branches/main' \
+  #  | xargs -I {} git worktree remove -f {}; \
+  #  }; effect"
+
+  wt-b = "!effect() { \
+    git fetch;\
+    local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
+    local branch=${1-NOISSUE_${timestamp}}; \
+    local base=${2-origin/main}; \
+    local path=${3-$(perl -pe 's|/|_|g'<<<${branch})}; \
+    echo \"==> Format: git wt-b [<branch>] [<base>] [<path>]\"; \
+    local cmd='git worktree add -b \"${branch}\" \"branches/${path}\" \"${base}\"'; \
+    eval \"echo ==\\> Executing: $cmd\"; \
+    eval $cmd; \
+    echo cd $(git rev-parse --show-toplevel)/branches/${path}; \
+    }; effect"
+  wt-u = "!effect() { \
+    local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
+    local branch=${1-chore/NOISSUE/dependencies/${timestamp}}; \
+    local base=${2-origin/main}; \
+    local path=${3-$(perl -pe 's|/|_|g'<<<${branch})}; \
+    echo \"==> Format: git wt-b [<branch>] [<base>] [<path>]\"; \
+    local cmd='git worktree add -b \"${branch}\" \"branches/${path}\" \"${base}\"'; \
+    eval \"echo ==\\> Executing: $cmd\"; \
+    eval $cmd; \
+    }; effect"
+  git-s = "git switch"
+  showfiles = "show --pretty="format:" --name-only"
+  ls = "log --oneline"
+  # Experiment Samples with Subshells
+  working-subshell-script = "!f() { echo "begin arg=${1-arg1}/${2-arg2}/end"; }; f"
+  escaping-characters-example = "!effect() { \
+    local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
+    local branch=${1-feat/NOISSUE/${timestamp}}; \
+    local path=${2-${timestamp}}; \
+    local base=${3-origin/main}; \
+    local cmd='git worktree add -b \"${branch}\" \"${path}\" \"${base}\"'; \
+    echo \\\"Fully surround me quotes ==\\> $cmd\\\"; \
+    echo \"After arrow quoted ==> \\\"$cmd\\\"\"; \
+    echo \"Suitable for lazy eval ==> $cmd\"; \
+    printf \"Print unexpanded cmd to pass to eval: \" && echo $cmd; \
+    printf \"Eval (expanded value; eval already applied split words lexically; quotes have been swallowed) ==> \" && eval echo $cmd; \
+    }; effect"
+  exp1-works = "!f() \
+    { echo "begin arg=$1/$2/end"; }; f"
+  exp2-works = "!f() { \
+    echo "begin arg=$1/$2/end"; \
+    }; f"
+  exp3-works = "!f() { local path=${1-main}; local base=${2-origin/main}; echo $path $base; }; f"
+  exp4-works = "!f() \
+    { local path=${1-main}; local base=${2-origin/main}; echo $path $base; }; f"
+  exp5-works = "!f() \
+    { local path=${1-main}; \
+    local base=${2-origin/main}; echo $path $base; }; f"
+  exp6-works = "!f() { \
+    local path=${1-main}; \
+    local base=${2-origin/main}; \
+    echo $path $base; \
+    }; \
+    f"
+  exp7-works = "!f() { \
+    local path=${1-main}; \
+    local base=${2-origin/main}; \
+    echo Running git worktree add -b \\\"${path}\\\" \\\"${base}\\\"; \
+    }; f"
+[init]
+	templatedir = ~/.config/git/template
+	defaultBranch = =
+[core]
+	hooksPath = ~/.config/git/scripts
+  excludesfile = ~/.config/git/ignore
+  editor = vim

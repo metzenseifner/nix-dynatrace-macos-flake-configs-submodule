@@ -1,0 +1,18 @@
+#!/usr/bin/env stack
+-- stack --resolver lts-18.18 script
+
+import System.Environment (lookupEnv)
+
+printGitEnvVar :: String -> IO ()
+printGitEnvVar var = do
+    value <- lookupEnv var
+    putStrLn $ var ++ ": " ++ show value
+
+main :: IO ()
+main = do
+    printGitEnvVar "GIT_DIR"
+    printGitEnvVar "GIT_WORK_TREE"
+    printGitEnvVar "GIT_AUTHOR_NAME"
+    printGitEnvVar "GIT_AUTHOR_EMAIL"
+    printGitEnvVar "GIT_COMMITTER_NAME"
+    printGitEnvVar "GIT_COMMITTER_EMAIL"

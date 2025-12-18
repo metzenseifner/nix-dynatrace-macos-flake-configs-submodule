@@ -1,0 +1,62 @@
+-- pickers: main module which is used to create a new picker.
+-- finders: provides interfaces to fill the picker with items.
+-- config: values table which holds the user's configuration. So to make it easier we access this table directly in conf.
+
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local conf = require("telescope.config").values
+
+-- Construct a picker:
+--              - options for the layout
+--                   - options for the window like sorter, finder, prompt_title
+-- pickers.new(opts, {}})
+--
+-- we need to replace the default select action.
+local actions = require("telescope.actions")
+local action_state = require "telescope.actions.state"
+
+
+local Path = require "plenary.path"
+
+local one_on_ones = function(opts)
+  local partialpath = Path:new(vim.fn.stdpath('data'))
+  local path = partialpath:joinpath("jonathans_special_files/1on1")
+  print(path)
+  opts = opts or {}
+  pickers.new(opts, {
+    prompt_title = "Files",
+    finder = finders.new_oneshot_job({"find", tostring(path)}, {
+      entry_maker = function(entry)
+        return {
+          value = entry,
+          display = entry,
+          ordinal = entry,
+        }
+      end
+    }),
+    --finder = finders.new_table {
+    --  results = { "red", "green", "blue" },
+    --  entry_maker = function(entry)
+    --    return {
+    --      value = entry,
+    --      display = entry[1], -- or function(tbl_returned_by_entry_maker_function)
+    --      ordinal = entry[1],
+    --    }
+    --  end
+    --},
+    sorter = conf.generic_sorter(opts),
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+         print(vim.inspect(selection))
+        --vim.api.nvim_put({ selection[1] }, "", false, true)
+        --
+        vim.api.nvim_command('edit ' ..  selection.value)
+      end)
+      return true
+    end,
+  }):find()
+end
+
+one_on_ones()

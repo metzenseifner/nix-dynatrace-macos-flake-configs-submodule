@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+WORKTREE_DIR=$(git rev-parse --show-toplevel)
+COMMAND_FILE_PATH="$(dirname "$(dirname "$WORKTREE_DIR")")/commands.txt"
+CMD="executor --commandFile \"$COMMAND_FILE_PATH\" --cwd \"$WORKTREE_DIR\""
+
+if [ -f $COMMAND_FILE_PATH ]; then
+  echo "Executing: $CMD"
+  # Use eval to handle quoted arguments correctly
+  eval $CMD
+else
+  echo "Skipping $CMD because there is no command.txt file."
+fi

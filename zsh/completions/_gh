@@ -1,0 +1,82 @@
+#compdef gh
+
+# Context-aware completion for:
+# Key zsh completion concepts used here
+
+#compdef gh / compdef _gh gh: binds function _gh to the gh command as its completion function.
+# $words: array of command-line words (1‑indexed in zsh).
+# 
+# $words[1] = gh
+# $words[2] = first subcommand (e.g., pr)
+# $words[3] = next (e.g., list)
+# 
+# 
+# $CURRENT: the index in $words where the cursor is completing.
+# _values: helper that suggests value choices (with optional descriptions). You used it to list pr and then list.
+# compadd -Q: the low-level primitive to add completions. -Q tells zsh not to re-quote the suggestion—it will be inserted as you wrote it.
+# _message: fallback help text when nothing else matches.
+#
+# Cons
+# It overrides GitHub CLI’s excellent default completion for gh globally (flags, repos, users, etc).
+# The suggestion is a single monolithic token. Editing just one part (e.g., adding a field to --json) is cumbersome.
+# There’s no graceful delegation to default completion for other gh subcommands.
+#
+# - Full long suggestion right after `gh pr list`
+# - JSON-only suggestion when you type `json` or `--json` later
+_gh() {
+  local suggestion
+  suggestion=$'--state open --search "status:success Promote" --json number,title,author,state,url,updatedAt,autoMergeRequest,mergeStateStatus --jq \'.[] | "updated:\\(.updatedAt)::\\(.number)::\\(.url)::\\(.number)::\\(.title)::\\(.state)::\\(.author.login)::automerge:\\(if .autoMergeRequest then "ENABLED" else "DISABLED" end)::mergeStateStatus:\\(.mergeStateStatus)"\''
+
+  if (( CURRENT == 2 )); then
+    _values -s ' ' 'gh subcommand' 'pr:Work with pull requests'
+  elif (( CURRENT == 3 )) && [[ $words[2] == pr ]]; then
+    _values -s ' ' 'pr subcommand' 'list:List pull requests'
+  elif [[ $words[2] == pr && $words[3] == list ]]; then
+    compadd -Q -- "$suggestion"
+  else
+    _message 'arguments'
+  fi
+}
+compdef _gh gh
+
+
+# Safer pattern: delegate to default gh completion and inject your preset only when relevant
+# If you’ve already installed the official gh completion (via gh completion -s zsh), you can chain your custom logic with the default one:
+#
+
+# # Autoload helpers (usually available if you use compinit)
+# autoload -Uz _arguments _describe _message
+# 
+# 
+# # You keep all the default gh completions (flags, users, labels, etc).
+# # Your special preset appears only in the gh pr list context.
+# # You still insert the whole argument block with one completion when you want it.
+# __gh_default() {
+#   # Call the default completion if available.
+#   # If you installed gh completion, it registers a function named `__gh_completion`.
+#   # If your environment uses a different name, adjust here.
+#   if whence -w __gh_completion >/dev/null 2>&1; then
+#     __gh_completion
+#   else
+#     # Fallback to generic completion
+#     _message 'arguments'
+#   fi
+# }
+# 
+# _gh() {
+#   local -a words
+#   words=("${words[@]}")   # ensure local copy
+# 
+#   local suggestion
+#   suggestion=$'--state open --search "status:success Promote" --json number,title,author,state,url,updatedAt,autoMergeRequest,mergeStateStatus --jq \'.[] | "updated:\\(.updatedAt)::\\(.number)::\\(.url)::\\(.number)::\\(.title)::\\(.state)::\\(.author.login)::automerge:\\(if .autoMergeRequest then "ENABLED" else "DISABLED" end)::mergeStateStatus:\\(.mergeStateStatus)"\''
+# 
+#   # Only inject our preset immediately after `gh pr list`
+#   if [[ $CURRENT -ge 4 && $words[2] == pr && $words[3] == list ]]; then
+#     # Offer our preset *in addition to* normal completion
+#     compadd -Q -- "$suggestion"
+#     __gh_default
+#   else
+#     __gh_default
+#   fi
+# }
+# compdef _gh gh

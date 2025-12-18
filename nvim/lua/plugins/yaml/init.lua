@@ -1,0 +1,31 @@
+return {
+  { import = "plugins/yaml/yaml" },
+  --{ import = "plugins/yaml/yaml-to-json" }
+}
+-- {
+--   name = "lyaml",
+--   lazy = false, -- temporary
+--   dir = "/tmp",
+--   init = function()
+--   end,
+--   build = function()
+--     local found_luarocks_nvim = package.searchpath("luarocks", package.path)
+--
+--     if vim.fn.executable("luarocks") ~= 1 and not vim.g.rocks_nvim_loaded and not found_luarocks_nvim then
+--       vim.notify(
+--         "`Luarocks` is not installed in your system",
+--         "Are you sure you installed all needed dependencies properly?"
+--       )
+--     else
+--       vim.notify("Found `luarocks` installed in your system")
+--       vim.fn.system("brew install libyaml")
+--       -- Run the LuaRocks command to install lyaml
+--       vim.fn.system("luarocks install lyaml YAML_DIR=$(brew --prefix libyaml)")
+--     end
+--   end,
+--   config = function()
+--     -- Luarocks installed
+--     -- we check for either luarocks system-wide or rocks.nvim as rocks.nvim can manage Luarocks installation
+--     -- and also luarocks.nvim in case the end-user is using lazy.nvim
+--   end
+-- },

@@ -1,0 +1,14 @@
+#------------------------------------------------------------------------------#
+#                          User-global gitignore file                          #
+#------------------------------------------------------------------------------#
+
+.DS_Store
+.env
+# /  starting with / means "only in the root of the repository"
+# [] encloses a character class, e.g. [a-zA-Z] means "any letter".
+# ^  means "not"
+# \. means a literal dot - without the backslash . means "any character"
+# *  means "any number of these characters"
+#/[^\.]*
+# above breaks rg which is used by telescope find_files
+

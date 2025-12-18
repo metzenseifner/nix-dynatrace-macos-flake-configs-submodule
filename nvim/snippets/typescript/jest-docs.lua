@@ -1,0 +1,15 @@
+--return {
+--  s({"mockImplementation", "mockImplementationOnce", "withImplementation"}, fmt([=[
+--  mockImplementation(func): This method sets the implementation of the mock
+--  function that will be used for all calls.
+--
+--  mockImplementationOnce(func): This method sets the implementation of the mock
+--  function that will be used for a single call. After the mock function is
+--  called once, it will revert to its default behavior (which is to return
+--  undefined).
+--  
+--  withImplementation(func, callback): This method sets the implementation of
+--  the mock function that will be used for all invocations that occur within the
+--  scope of the provided callback function.
+--  ]=]), {}, {delimiters="[]"}),
+--}

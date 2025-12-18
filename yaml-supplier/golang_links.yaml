@@ -1,0 +1,5 @@
+---
+local:
+  golang:
+    - name: Safer Concurrency with Functional Programming in Go
+      url: https://codezup.com/functional-programming-in-go-building-concurrent-applications/

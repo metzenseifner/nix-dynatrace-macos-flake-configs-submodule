@@ -1,0 +1,14 @@
+  -- cmdline tools and lsp servers
+  -- deprecated null-ls{
+  -- deprecated null-ls  "jay-babu/mason-null-ls.nvim",
+  -- deprecated null-ls  event = { "BufReadPre", "BufNewFile" },
+  -- deprecated null-ls  dependencies = {
+  -- deprecated null-ls    "williamboman/mason.nvim",
+  -- deprecated null-ls    "jose-elias-alvarez/null-ls.nvim",
+  -- deprecated null-ls  },
+  -- deprecated null-ls  config = function()
+  -- deprecated null-ls    require("mason-null-ls").setup({
+  -- deprecated null-ls      automatic_setup = true, -- sources found in mason will be auto setup for null-ls
+  -- deprecated null-ls    })
+  -- deprecated null-ls  end,
+  -- deprecated null-ls},
