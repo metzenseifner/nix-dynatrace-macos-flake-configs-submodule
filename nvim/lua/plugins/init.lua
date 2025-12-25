@@ -4,7 +4,6 @@ return {
     { "tpope/vim-unimpaired" },
     { "tpope/vim-dispatch" },
     { "radenling/vim-dispatch-neovim" },
-    { "wfxr/minimap.vim" },            -- Orientation in file
     { "norcalli/nvim-colorizer.lua" }, -- for quick color selection like in hex
     { "ojroques/nvim-osc52" },
     --{ "DanilaMihailov/beacon.nvim" }, -- cursor jump animation

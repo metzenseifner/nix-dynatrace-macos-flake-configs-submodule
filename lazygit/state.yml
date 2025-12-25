@@ -1,5 +1,6 @@
 lastupdatecheck: 0
 recentrepos:
+    - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/ASDY-19560_qualitygates_pr-content-fix
     - /Users/jonathan.komar/devel/nixos-configuration
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/team-care-vacation-plans
     - /Users/jonathan.komar/devel/flake-templates
@@ -14,13 +15,18 @@ recentrepos:
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-state-nonprod/branches/ASDY-10407_dac_enable-promotion-of-dev101
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/ASDY-8820_grail_enable-with-opt-out-services
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-installation-template/branches/ASDY-6276_helpers_cluster-size-init-config
-    - /Users/jonathan.komar/.config/nvim
     - /Users/jonathan.komar/devel/oauth2-in-go-docs
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/feat_ASDY-5603_devninetynine_onboard-new-installation-dev99
     - /Users/jonathan.komar/.config
 startuppopupversion: 5
-didshowhunkstaginghint: true
-lastversion: 0.55.0
+lastversion: unversioned
 customcommandshistory:
     - q
 hidecommandlog: false
+ignorewhitespaceindiffview: false
+diffcontextsize: 3
+renamesimilaritythreshold: 50
+localbranchsortorder: recency
+remotebranchsortorder: alphabetical
+gitlogorder: topo-order
+gitlogshowgraph: always

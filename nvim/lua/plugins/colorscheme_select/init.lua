@@ -18,6 +18,7 @@ return {
         "darkplus",
       },
       light_schemes = {
+        "lunaperche",
         "dayfox",
         "dawnfox",
         "leaf",

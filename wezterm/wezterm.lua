@@ -25,7 +25,7 @@ require 'keys' (wezterm, config)
 
 -- TODO check whether tmux avail, if so, set it as default program
 config.hide_tab_bar_if_only_one_tab = true
-config.default_prog = { '/etc/profiles/per-user/jonathan.komar/bin/tmux' } -- when sending tmux to background, leads to unrecoverable state in wezterm
+config.default_prog = { '/run/current-system/sw/bin/tmux' }
 -- config.default_prog = { '/bin/zsh', '-c', 'tmux' } -- when sending tmux to background, leads to unrecoverable state in wezterm
 -- config.default_prog = { '/opt/homebrew/bin/wezterm', 'start', '--', '/bin/zsh', '-c', '/opt/homebrew/bin/tmux' } -- when sending tmux to background, leads to unrecoverable state in wezterm
 
