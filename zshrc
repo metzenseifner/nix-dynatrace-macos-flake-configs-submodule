@@ -1,15 +1,5 @@
-# Optimize compinit with caching - only regenerate once per day
-# Skip security checks (-C) and stat calls for maximum speed
-autoload -Uz compinit
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
-  compinit -C
-fi
-
-# Enable completion system
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# Add this to the TOP of your .zshrc
+zmodload zsh/zprof
 
 # Shell aliases
 alias devel="cd ~/devel"
@@ -25,6 +15,32 @@ export EDITOR=nvim
 export VIMCONFIG=~/.local/share/nvim/site
 export GPG_TTY=$(tty)
 export BROWSER="firefox developer edition"
+
+declare -A colors
+colors=(
+  [red]='\u001b[31m'
+  [green]='\u001b[32m'
+  [blue]='\u001b[34m'
+  [yellow]='\u001b[33m'
+  [reset]='\u001b[0m'
+)
+
+function log() {
+  msg=$1
+  level=${2-INFO}
+  if [ "$level" -eq "ERROR" ]; then
+    color=$colors[red]
+  elif [ "$level" -eq "WARN" ]; then
+    color=$colors[yellow]
+  elif [ "$level" -eq "DEBUG"]; then
+    color=$colors[blue]
+  elif [ "$level" -eq "INFO"]; then
+    color=$colors[green]
+  else
+    color=$colors[reset]
+  fi
+  echo -e "${color}==> ${level} ${reset}${msg}${colors[reset]}"
+}
 
 # Load modular zsh configs from ~/.config/zsh/zshrc.d/
 if [ -d ~/.config/zsh/zshrc.d ]; then
@@ -68,7 +84,10 @@ if (( $+commands[zinit] )); then
   zinit ice wait lucid atload"!_zsh_autosuggest_start"
   zinit light zsh-users/zsh-autosuggestions
 else
+  log "zinit not installed" "WARN"
   # Fallback to nix-managed plugins if zinit not available
-  source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh &!
-  source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh &!
+  # source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh &!
+  # source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh &!
 fi
+# Add this to the BOTTOM of your .zshrc
+zprof

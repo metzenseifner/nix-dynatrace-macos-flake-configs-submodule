@@ -2,8 +2,8 @@
 # above line is important!  Zsh reads that header and automatically registers the function for the copilot command.
 #
 # Make options show up even before typing '-' and hide files initially
-zstyle ':completion:*:*:copilot:*' complete-options true
-zstyle ':completion:*:*:copilot:*' tag-order options -
+# zstyle ':completion:*:*:copilot:*' complete-options true
+# zstyle ':completion:*:*:copilot:*' tag-order options -
 #
 # else you must explicitly run `compdef _copilot copilot`
 #https://zsh.sourceforge.io/Doc/Release/Completion-System.html
@@ -35,20 +35,67 @@ zstyle ':completion:*:*:copilot:*' tag-order options -
 # Ensure this file is in your $fpath
 #
 # Completion function
-_copilot() {
-  compadd -Q -S ' ' -- '--allow-all-paths --allow-all-tools --no-color'
-  _arguments \
-    '--no-color[Disable output coloring which can interfer with terminal color themes]' \
-    '--allow-all-paths[Allow access to all paths]' \
-    '--allow-all-tools[Allow use of all tools]' \
-    '--help[show help]' \
-    '*:filename:_files'
-}
+# _copilot() {
+#   # Comment out compadd as expensive operation
+#   # compadd -Q -S ' ' -- '--allow-all-paths --allow-all-tools --no-color'
+#   local -a combo=(--allow-all-paths --allow-all-tools --no-color)
+#   local -a missing
+# 
+#   # Offer the combo only for flags that aren't already present on the line
+#   for f in $combo; do
+#     (( $words[(I)$f] )) || missing+=$f
+#   done
+# 
+#   # If there is anything to add, present one completion that inserts them all
+#   if (( $#missing )); then
+#     compadd -Q -S ' ' -- "${(j: :)missing}"
+#   fi
+#   _arguments \
+#     '--no-color[Disable output coloring which can interfere with terminal color themes]' \
+#     '--allow-all-paths[Allow access to all paths]' \
+#     '--allow-all-tools[Allow use of all tools]' \
+#     '--help[show help]' \
+#     '*:filename:_files'
+# }
 
 # # Load and bind it to the command `copilot`
-# autoload -Uz _copilot
+# # autoload -Uz _copilot
 # # Register the completion
-compdef _copilot copilot
+# compdef _copilot copilot
+
+# Insert the common copilot flags on Tab, otherwise do normal completion
+# Why it’s fast:
+# 
+#     No compsys lookup, no directory scans, no style checks.
+#     O(1) simple string checks and insertion.
+#     You still get normal completion when the flags are already present (or when you’re not on a copilot line).
+copilot_expand_or_complete() {
+  emulate -L zsh
+  local -a flags=(--allow-all-paths --allow-all-tools --no-color)
+  local -a parts missing
+  parts=(${(z)BUFFER})  # robust splitting (respects quotes)
+
+  # Only trigger when command is 'copilot'
+  if (( ${#parts} )) && [[ ${parts[1]} == copilot ]]; then
+    for f in $flags; do
+      [[ $BUFFER == *" $f"* || $BUFFER == "$f"* ]] || missing+=$f
+    done
+    if (( ${#missing} )); then
+      [[ $LBUFFER == *[[:space:]] ]] || LBUFFER+=' '
+      LBUFFER+="${(j: :)missing} "
+      return
+    fi
+  fi
+
+  # Fall back to the normal Tab behavior
+  zle .expand-or-complete
+}
+zle -N copilot_expand_or_complete
+
+# Bind Tab to our wrapper (emacs and vi-insert modes)
+bindkey -M emacs '^I' copilot_expand_or_complete
+bindkey -M viins '^I' copilot_expand_or_complete
+
 
 
 # Not active for now

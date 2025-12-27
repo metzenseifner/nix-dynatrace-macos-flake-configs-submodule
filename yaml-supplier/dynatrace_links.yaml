@@ -254,7 +254,7 @@ local_links:
       url: "https://backstage.internal.dynatrace.com/docs/delivery/Component/dtp-base-images"
     - name: "Run backstage locally"
       url: https://backstage.internal.dynatrace.com/docs/delivery/component/backstage/contributing/
-  ["Platform Infrastructure Engineering"]:
+  "Platform Infrastructure Engineering":
     - name: "Hotfixes and Backports"
       url: "https://dt-rnd.atlassian.net/l/cp/QfxG1UmP"
     - name: "Find out which versions have to be fixed"
@@ -277,7 +277,7 @@ local_links:
       url: https://dt-rnd.atlassian.net/l/cp/vDeeRWeu
     - name: "Excluding Services from a Promotion by Installation ID"
       url: https://dt-rnd.atlassian.net/l/cp/mGaYL09W
-  ["Team CARE"]:
+  "Team CARE":
     - name: Goalkeeper Agreement (Purpose and Scope revised after team split)
       url: https://dt-rnd.atlassian.net/wiki/x/uAWSOw
     - name: Team Goal Epic Q1FY2026 (2025)
