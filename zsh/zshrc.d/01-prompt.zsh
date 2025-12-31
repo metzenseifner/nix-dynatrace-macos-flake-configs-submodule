@@ -168,8 +168,8 @@ setup_zsh_shell() {
   local TIMESTAMP="%B%F{blue}%D{%H:%M:%S}%f%b"
   local TTY="%y%f"
   local DIR="%1d"
-  local END="%B%F{green}$%f%b "
-  local NEWLINE="\n"
+  local END=$'\n'"%B%F{green}$%f%b "
+  local NEWLINE=$'\n'
 
   # Compute initial prompt parts
   __update_worktree_root
