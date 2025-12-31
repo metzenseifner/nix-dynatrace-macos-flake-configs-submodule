@@ -213,7 +213,7 @@ safe_keymap("i", "ii", "<ESC><ESC>", { silent = true, noremap = true }, "General
 safe_keymap("n", "<leader>yf",
   "<cmd>let @+=expand('%:p') | lua require('osc52').copy(vim.fn.expand('%:p')); print('Copied buffer file path to register @ and system clipboard: ' ..vim.fn.expand('%:p'))<CR>"
   ,
-  { silent = true, noremap = true }, "Copy", "filepathtoclipboard", "Copies buffer filepath to clipboard")
+  { silent = true, noremap = true }, "Copy", "filepathtoclipboard", "Copies buffer filepath to clipboard and default @ register")
 -- TODO weakness: does not work in visual mode because get_buf_range_url defaults to normal and we have no access to mode in closure around cmd
 safe_keymap("n", "<leader>yr", function() require 'gitlinker'.get_buf_range_url() end, opts, "Copy",
   "gitlinkercopybufrangeurl", "Copies Git web app permalink URL from selected range")
@@ -271,9 +271,9 @@ safe_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts, 'LSP',
   'Rename symbols in workspace') -- rename all refs to symbol
 safe_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts, 'LSP', 'lsp.buf.code_action',
   'TODO: What do I do?')
-safe_keymap('n', '<leader>c', '<cmd>lua require("osc52").copy_operator()<CR>', { expr = true }, 'OSC52',
+safe_keymap('n', '<leader>y', '<cmd>lua require("osc52").copy_operator()<CR>', { expr = true }, 'OSC52',
   'osc52_copy_operator', 'Copy to clipboard.')
-safe_keymap('n', '<leader>cc', '<leader>c_', { remap = true }, 'OSC52', 'osc52_copy_operator_remap', 'Copy to clipboard.')
+--safe_keymap('n', '<leader>cc', '<leader>c_', { remap = true }, 'OSC52', 'osc52_copy_operator_remap', 'Copy to clipboard.')
 safe_keymap('v', '<leader>c', '<cmd>lua require("osc52").copy_visual()<CR>', opts, 'OSC52', 'osc52_copy_visual',
   'Copy to clipboard.')
 
@@ -438,6 +438,7 @@ safe_keymap("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/setup/luas
 require('config.keymap.quickfix')
 require('config.keymap.current_working_dir')
 require('config.keymap.open_in_file_browser')
+require('config.keymap.json')
 
 --------------------------------------------------------------------------------
 --                      Orgmode Global Keybindings                            --

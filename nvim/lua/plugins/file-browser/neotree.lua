@@ -29,7 +29,7 @@ return {
         sources = {
           { source = "filesystem" },
           -- { source = "buffers" },
-          -- { source = "git_status" },
+          { source = "git_status" },
         },
       },
       highlight_tab = "NeoTreeTabInactive",

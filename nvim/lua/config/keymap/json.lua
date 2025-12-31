@@ -1,0 +1,21 @@
+--  -- Pretty-print entire buffer
+--  vim.keymap.set('n', '<leader>jp', [[:%!jq .<CR>]], { desc = 'Pretty-print JSON buffer' })
+--  -- Minify entire buffer (compact)
+--  vim.keymap.set('n', '<leader>jm', [[:%!jq -c .<CR>]], { desc = 'Minify JSON buffer' })
+--  -- Sort keys in entire buffer
+--  vim.keymap.set('n', '<leader>js', [[:%!jq -S .<CR>]], { desc = 'Sort JSON keys buffer' })
+--  
+--  -- Pretty-print selection
+--  vim.keymap.set('x', '<leader>jp', [[:'<,'>!jq .<CR>]], { desc = 'Pretty-print JSON selection' })
+--  -- Minify selection
+--  vim.keymap.set('x', '<leader>jm', [[:'<,'>!jq -c .<CR>]], { desc = 'Minify JSON selection' })
+--  -- Sort keys in selection
+--  vim.keymap.set('x', '<leader>js', [[:'<,'>!jq -S .<CR>]], { desc = 'Sort JSON keys selection' })
+--  
+--  -- Expand a JSON string value -> object/array (select including quotes, e.g., va")
+--  vim.keymap.set('x', '<leader>je', [[:'<,'>!jq -R 'fromjson'<CR>]],
+--    { desc = 'Expand JSON string value to real JSON' })
+--  
+--  -- Collapse an object/array -> escaped JSON string value (select the object/array)
+--  vim.keymap.set('x', '<leader>jc', [[:'<,'>!jq -c . | jq -R @json<CR>]],
+--    { desc = 'Collapse JSON back into an escaped string value' })
