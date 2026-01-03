@@ -8,4 +8,12 @@
 -- Allows for caching of all your plugin specs. This becomes important if you have a lot of smaller plugin specs.
 -- Spec changes will automatically be reloaded when they're updated, so the :Lazy UI is always up to date.
 -- Equivalent:  =require("lazy").setup({{import = "plugins"}})
-return require('lazy').setup('plugins') -- load plugins module
+
+-- Configure lazy.nvim with portable defaults
+-- Disable luarocks/hererocks globally for portability across distributions
+return require('lazy').setup('plugins', {
+  rocks = {
+    enabled = false,  -- Disable luarocks for portability - not all distros have it
+    hererocks = false,
+  },
+}) -- load plugins module

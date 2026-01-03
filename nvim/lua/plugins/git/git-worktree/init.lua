@@ -5,7 +5,7 @@ return {
   "ThePrimeagen/git-worktree.nvim",
   --commit = "94684a6e0ca6898d450b3b46c09b3fca1b3d591f",
   --commit = "f247308",
-  branch = 'update-for-telescope-api',
+  -- branch = 'update-for-telescope-api', -- DISABLED: branch doesn't exist on remote
   dependencies = {
     { "nvim-lua/plenary.nvim" },
   },

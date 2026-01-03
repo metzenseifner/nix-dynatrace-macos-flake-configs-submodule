@@ -1,6 +1,6 @@
 return {
   {
-    { dir = "~/devel/print.nvim" },
+    { dir = "~/devel/print.nvim", optional = true }, -- Local development plugin
     { "tpope/vim-unimpaired" },
     { "tpope/vim-dispatch" },
     { "radenling/vim-dispatch-neovim" },

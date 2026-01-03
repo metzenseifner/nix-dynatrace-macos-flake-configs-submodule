@@ -2,9 +2,6 @@ local lsp_flags = {
   debounce_text_changes = 150,
 }
 
--- This file is loaded on demand based on loading a buffer?
-local f = require 'plenary.functional'
-
 -- For null_ls none_ls
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 

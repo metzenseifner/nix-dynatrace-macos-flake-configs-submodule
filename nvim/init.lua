@@ -1,4 +1,3 @@
-vim.loader.enable() -- enable experimental lua loader for startup speed
 -- Neovim Lua Guide https://github.com/nanotee/nvim-lua-guide
 vim.g.mapleader = ","
 -- Boostrap lazy.nvim as package manager (if not alreay installed)
@@ -18,6 +17,11 @@ if not vim.loop.fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Ensure lazy is loadable after adding to rtp (needed for NixOS)
+if vim.loop.fs_stat(lazypath) then
+  package.path = lazypath .. "/lua/?.lua;" .. lazypath .. "/lua/?/init.lua;" .. package.path
+end
 
 -- cabbrev turns first arg into the rest args
 vim.cmd [[cabbrev help vert bel help]]

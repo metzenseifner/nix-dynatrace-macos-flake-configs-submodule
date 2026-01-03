@@ -9,6 +9,14 @@ return {
     end,
   },
   ft = "http",
+  -- Disable luarocks/hererocks for portability - rest.nvim will work without it
+  -- See: https://github.com/rest-nvim/rest.nvim/issues/306
+  opts = {
+    rocks = {
+      enabled = false,  -- Disable luarocks support for portability
+      hererocks = false,
+    },
+  },
   -- init = function(mod, opts)
   --   -- TODO automate this
   --   local luarocks_installer = [=[
