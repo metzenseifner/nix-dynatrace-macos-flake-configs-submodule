@@ -5,6 +5,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     { "j-hui/fidget.nvim", opts = {} },
   },
+  build = "rockspec",
   rocks = { "mimetypes", "xml2lua" },
   -- Conditionally enable based on luarocks availability
   cond = function()
