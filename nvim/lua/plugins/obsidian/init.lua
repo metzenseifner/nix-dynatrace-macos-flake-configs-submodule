@@ -8,20 +8,45 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
-  opts = {
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/Documents/Obsidian Vault",
+  config = function()
+    -- Only setup if vault directory exists
+    local vault_path = vim.fn.expand("~/Documents/Obsidian Vault")
+    
+    if vim.fn.isdirectory(vault_path) == 0 then
+      -- Don't setup if vault doesn't exist - plugin is optional
+      vim.notify(
+        "Obsidian vault not found at " .. vault_path .. ". Plugin disabled. Create vault to enable.",
+        vim.log.levels.INFO
+      )
+      return
+    end
+    
+    require("obsidian").setup({
+      workspaces = {
+        {
+          name = "personal",
+          path = vault_path,
+        },
       },
-      -- add more vaults if needed
-    },
-    -- Optional quality-of-life:
-    notes_subdir = "Notes",         -- or ""
-    daily_notes = { folder = "Daily" },
-    completion = { nvim_cmp = true },
-    disable_frontmatter = false,
-    prefer_obsidian_links = true,   -- [[Wiki Links]] instead of markdown links
-    follow_url_func = function(url) vim.fn.jobstart({"open", url}) end, -- macOS. Use xdg-open on Linux, start on Windows
-  },
+      notes_subdir = "Notes",
+      daily_notes = { folder = "Daily" },
+      completion = { nvim_cmp = true },
+      disable_frontmatter = false,
+      prefer_obsidian_links = true,
+      follow_url_func = function(url)
+        -- Cross-platform URL opening
+        local cmd
+        if vim.fn.has("mac") == 1 then
+          cmd = {"open", url}
+        elseif vim.fn.has("unix") == 1 then
+          cmd = {"xdg-open", url}
+        elseif vim.fn.has("win32") == 1 then
+          cmd = {"cmd", "/c", "start", url}
+        end
+        if cmd then
+          vim.fn.jobstart(cmd)
+        end
+      end,
+    })
+  end,
 }
