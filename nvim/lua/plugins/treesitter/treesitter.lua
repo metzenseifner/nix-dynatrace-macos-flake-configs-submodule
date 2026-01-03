@@ -13,68 +13,27 @@ return
       --{ "nvim-treesitter/nvim-tree-docs" },
     },
     event = 'BufRead',
-    build = { ':TSUpdate', function()
-      vim.notify(
-        "nvim-treesitter has been changed. You might need to restart in a new shell.")
-    end }, -- sometimes requires new terminal
+    build = ':TSUpdate',
     config = function()
-      -- require('nvim-treesitter.configs').setup({
-      --   highlight = {
-      --       enable = true,
-      --       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-      --       -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-      --       -- Using this option may slow down your editor, and you may see some duplicate highlights.
-      --       -- Instead of true it can also be a list of languages
-      --       additional_vim_regex_highlighting = false,
-      --     },
-      --   incremental_selection = {
-      --       enable = true,
-      --       keymaps = {
-      --         init_selection = "gnn",
-      --         node_incremental = "grn",
-      --         scope_incremental = "grc",
-      --         node_decremental = "grm",
-      --       },
-      --     },
-      --   indent = {
-      --       enable = true
-      --   }
-      -- })
-      --vim.api.nvim_set_hl(0, "@foo.bar", { link = "Identifier" })
-
-      -- nvim-treesitter v1.0+ has a simpler API
-      -- Setup is now optional - only needed for custom install_dir
-      -- Use :TSInstall <language> to install parsers manually
-      -- The old ensure_installed, highlight, indent configs are no longer supported in setup()
+      -- Modern nvim-treesitter (v1.0+) works automatically when parsers are installed
+      -- No setup() call needed - highlighting, indentation, etc. work out of the box
+      -- Just install parsers with :TSInstall <language>
       
-      -- Optional: uncomment if you need a custom install directory
-      -- require('nvim-treesitter').setup({
-      --   install_dir = vim.fn.stdpath('data') .. '/site'
-      -- })
+      -- The old APIs are removed:
+      -- - nvim-treesitter.configs (removed)
+      -- - require('nvim-treesitter.parsers').get_parser_configs() (removed)
+      -- - Manual parser configuration (no longer needed)
       
-      -- Note: Treesitter highlighting, indentation, etc. now work automatically
-      -- when parsers are installed. No setup configuration needed.
+      -- Modern treesitter automatically handles:
+      -- ✓ TSX/JSX files (via typescript and tsx parsers)
+      -- ✓ Syntax highlighting
+      -- ✓ Indentation
+      -- ✓ Folding
+      -- ✓ Incremental selection
       
-      -- Commented out legacy context_commentstring config
-      -- context_commentstring = {
-      --   -- nvim-JoosepAlviste/nvim-ts-context-commentstring
-      --   enable = true, -- gcc for line comment,
-      --   config = {
-      --     -- language refers to the treesitter language, not the filetype or the file extension.
-      --     javascript = {
-      --       __default = "// %s",
-      --       jsx_element = "{/* %s */}",
-      --       jsx_fragment = "{/* %s */}",
-      --       jsx_attribute = "// %s",
-      --       comment = "// %s",
-      --     },
-      --     typescript = { __default = "// %s", __multiline = "/* %s */" },
-      --   },
-      -- },
-      -- tree_docs = { enable = true },
-      
-      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      parser_config.tsx.filetype_to_parsername = { "javascript", "typescript", "tsx", "ts" }
+      -- To install parsers: :TSInstall javascript typescript tsx python lua
+      -- To update parsers: :TSUpdate
+      -- To check status: :TSInstallInfo
     end,
     -- build = "TSUpdate",
     -- {'do': ':TSUpdate'}
