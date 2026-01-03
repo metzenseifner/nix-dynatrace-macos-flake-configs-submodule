@@ -3,8 +3,24 @@ return {
   event = "VeryLazy",
   dependencies = { "MunifTanjim/nui.nvim" },
   config = function(_, opts)
+    -- Create todo.txt directory if it doesn't exist
+    local todo_dir = vim.fn.stdpath("data") .. "/todotxt"
+    local todo_file = todo_dir .. "/todo.txt"
+    
+    if vim.fn.isdirectory(todo_dir) == 0 then
+      vim.fn.mkdir(todo_dir, "p")
+    end
+    
+    -- Create empty todo.txt if it doesn't exist
+    if vim.fn.filereadable(todo_file) == 0 then
+      local file = io.open(todo_file, "w")
+      if file then
+        file:close()
+      end
+    end
+    
     local conf = {
-      todo_file = vim.fn.stdpath("data") .. "/todotxt/" .. "todo.txt",
+      todo_file = todo_file,
       sidebar = {
         width = 40,
         position = "right", --"left" | "right" | "bottom" | "top", -- default: "right"
