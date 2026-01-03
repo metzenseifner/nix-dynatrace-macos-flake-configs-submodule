@@ -137,7 +137,12 @@ return {
     install_extension("git_worktree")
     install_extension("env")
     install_extension("luasnip")
-    install_extension("rest") -- require("telescope").extensions.rest.select_env()
+    
+    -- Only load rest extension if rest.nvim is actually loaded
+    if pcall(require, "rest-nvim") then
+      install_extension("rest") -- require("telescope").extensions.rest.select_env()
+    end
+    
     install_extension("cder") -- for switching working directories
     install_extension("notify")
     install_extension("file_browser")

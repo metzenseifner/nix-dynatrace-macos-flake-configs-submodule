@@ -1,48 +1,33 @@
 return {
   "rest-nvim/rest.nvim",
-  event = "VeryLazy",
+  ft = "http",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      table.insert(opts.ensure_installed, "http")
-    end,
+    { "j-hui/fidget.nvim", opts = {} },
   },
-  ft = "http",
-  -- Disable luarocks/hererocks for portability - rest.nvim will work without it
-  -- See: https://github.com/rest-nvim/rest.nvim/issues/306
-  opts = {
-    rocks = {
-      enabled = false,  -- Disable luarocks support for portability
-      hererocks = false,
-    },
-  },
-  -- init = function(mod, opts)
-  --   -- TODO automate this
-  --   local luarocks_installer = [=[
-  --    #!/usr/local/bin zsh
-  --     set -e
-  --     VERSION=3.11.1
-  --     PGP_SIGNATURE=https://luarocks.github.io/luarocks/releases/luarocks-${VERSION}.tar.gz.asc
-  --     TARBALL=luarocks-${VERSION}.tar.gz
-  --     DEST=/tmp
-  --     INSTALL_PATH=$HOME/.local
-  --
-  --     stat ${DEST}/${TARBALL} || curl -L https://luarocks.github.io/luarocks/releases/${TARBALL} -o ${DEST}/${TARBALL}
-  --     stat ${DEST}/${TARBALL%.tar.gz}.pgp.sig ||curl -L ${PGP_SIGNATURE} -o ${DEST}/${TARBALL%.tar.gz}.pgp.sig
-  --
-  --     cd ${DEST}
-  --     tar -xf ${TARBALL} -C ${TARBALL%.tar.gz}
-  --     cd ${TARBALL%.tar.gz}
-  --     ./configure --prefix=$INSTALL_PATH
-  --     make
-  --     make install
-  --     echo "==> Installed luarocks to ${INSTALL_PATH}"
-  --   ]=]
-  -- end,
-  config = function(mod, opts)
+  rocks = { "mimetypes", "xml2lua" },
+  -- Conditionally enable based on luarocks availability
+  cond = function()
+    local has_luarocks = vim.fn.executable("luarocks") == 1
+    
+    if not has_luarocks then
+      -- Schedule notification to show after nvim starts
+      vim.schedule(function()
+        vim.notify(
+          "rest.nvim: Plugin disabled because 'luarocks' is not installed.\n" ..
+          "rest.nvim requires: luarocks, mimetypes, xml2lua\n" ..
+          "To enable: Install luarocks and run 'luarocks install mimetypes xml2lua'",
+          vim.log.levels.WARN,
+          { title = "rest.nvim" }
+        )
+      end)
+      return false
+    end
+    
+    return true
+  end,
+  config = function()
     ---rest.nvim default configuration
-    ---@class rest.Config
     local conf = {
       ---@type table<string, fun():string> Table of custom dynamic variables
       custom_dynamic_variables = {},
@@ -131,6 +116,5 @@ return {
     }
 
     require("rest-nvim").setup(conf)
-    --vim.g.rest_nvim = default_config
   end
 }
