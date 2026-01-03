@@ -1,5 +1,7 @@
 # Homebrew - Nix manages most GNU tools (coreutils, grep, findutils, etc.)
-# Only configure Homebrew for GUI apps and tools not in Nix
+# Only configure Homebrew for GUI apps and tools not in Nix (macOS only)
 
-# Homebrew base paths for casks and brews
-path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+if [[ $(uname) == "Darwin" ]]; then
+  # Homebrew base paths for casks and brews
+  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+fi

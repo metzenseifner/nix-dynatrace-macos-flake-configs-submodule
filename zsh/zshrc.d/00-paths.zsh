@@ -11,6 +11,8 @@ path=($HOME/go/bin $path)
 path=($HOME/.rd/bin $path)
 
 # TexLive (system-wide installation)
-[[ -d /usr/local/texlive/current/bin/universal-darwin ]] && path=(/usr/local/texlive/current/bin/universal-darwin $path)
+if [[ $(uname) == "Darwin" ]]; then
+  [[ -d /usr/local/texlive/current/bin/universal-darwin ]] && path=(/usr/local/texlive/current/bin/universal-darwin $path)
+fi
 
 export PATH

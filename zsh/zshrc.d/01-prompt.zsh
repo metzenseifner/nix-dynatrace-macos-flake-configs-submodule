@@ -163,13 +163,13 @@ setup_zsh_shell() {
   fi
 
   USER_FORMAT="${EFFECTIVE_USER_WEIGHT}%F{${EFFECTIVE_USER_COLOR}}"
-  local MYUSER="${USER_FORMAT}%n(${uid})%f%b"
-  local HOSTNAME="%F{green}%m%f"
-  local TIMESTAMP="%B%F{blue}%D{%H:%M:%S}%f%b"
-  local TTY="%y%f"
-  local DIR="%1d"
-  local END=$'\n'"%B%F{green}$%f%b "
-  local NEWLINE=$'\n'
+  typeset -g MYUSER="${USER_FORMAT}%n(${uid})%f%b"
+  typeset -g HOSTNAME="%F{green}%m%f"
+  typeset -g TIMESTAMP="%B%F{blue}%D{%H:%M:%S}%f%b"
+  typeset -g TTY="%y%f"
+  typeset -g DIR="%1d"
+  typeset -g END=$'\n'"%B%F{green}$%f%b "
+  typeset -g NEWLINE=$'\n'
 
   # Compute initial prompt parts
   __update_worktree_root

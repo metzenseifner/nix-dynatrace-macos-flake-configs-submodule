@@ -10,18 +10,16 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.show_update_window = false
-
 -- TODO add this where necessary
 -- if wezterm.target_triple == 'x86_64-apple-darwin' then
 --   -- font_dirs    = { '$HOME/.dotfiles/.fonts' }
 -- end
 
-require 'font' (config)
-require 'color' (wezterm, config)
-require 'hyperlinks' (wezterm, config)
-require 'bell' (wezterm, config)
-require 'keys' (wezterm, config)
+require('font')(config)
+require('color')(wezterm, config)
+require('hyperlinks')(wezterm, config)
+require('bell')(wezterm, config)
+require('keys')(wezterm, config)
 
 -- TODO check whether tmux avail, if so, set it as default program
 config.hide_tab_bar_if_only_one_tab = true
