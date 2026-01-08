@@ -13,7 +13,7 @@
 -- Disable luarocks/hererocks globally for portability across distributions
 return require('lazy').setup('plugins', {
   rocks = {
-    enabled = false,  -- Disable luarocks for portability - not all distros have it
+    enabled = true,
     hererocks = false,
   },
 }) -- load plugins module
