@@ -261,7 +261,30 @@ return {
       --jdtls = {enable = false},
       --["java-test"] = {},
       --["java-debug-adapter"] = {},
-      yamlls = {},
+      yamlls = {
+        settings = {
+          yaml = {
+            schemaStore = {
+              enable = true,
+              url = "https://www.schemastore.org/api/json/catalog.json",
+            },
+            schemas = {
+              -- Argo Workflows schema validation
+              ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = {
+                "**/templates/*workflow*.yaml",
+                "**/templates/*workflow*.yml",
+                "**/*workflow*.yaml",
+                "**/*workflow*.yml",
+              },
+              -- Kubernetes schemas for other resources
+              kubernetes = "*.yaml",
+            },
+            validate = true,
+            completion = true,
+            hover = true,
+          },
+        },
+      },
       gopls = require("plugins.golang.lsp-gopls"),
       -- golangci-lint-langserver =
       terraformls = {
