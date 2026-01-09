@@ -43,6 +43,18 @@ vim.g.do_filetype_lua = 1
 
 vim.filetype.add({
   pattern = {
-    [".*/charts/.*.ya?ml"] = "helm",
+    [".*/charts/.*.ya?ml"] = function(path, bufnr)
+      -- Check if file contains Argo Workflows specific content
+      local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)
+      for _, line in ipairs(lines) do
+        if line:match("kind:%s*WorkflowTemplate") or 
+           line:match("kind:%s*Workflow") or
+           line:match("kind:%s*ClusterWorkflowTemplate") or
+           line:match("kind:%s*CronWorkflow") then
+          return "yaml.argo"
+        end
+      end
+      return "helm"
+    end,
   },
 })
