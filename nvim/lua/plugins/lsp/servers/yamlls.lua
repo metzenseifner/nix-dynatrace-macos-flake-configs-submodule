@@ -1,25 +1,46 @@
+local function show_yaml_schemas()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr, name = "yamlls" })
+  local client = clients and clients[1]
+  if not client then
+    vim.notify("yamlls is not attached to this buffer")
+    return
+  end
+
+  local uri = vim.uri_from_bufnr(bufnr)
+  client.request('yaml/get/all/jsonSchemas', { uri = uri }, function(err, result)
+    if err or not result then
+      vim.notify("No schema info available")
+      return
+    end
+    local lines = {}
+    for _, s in ipairs(result) do
+      local name = s.name or s.uri or "unknown schema"
+      local uri_text = s.uri and (" (" .. s.uri .. ")") or ""
+      table.insert(lines, name .. uri_text)
+    end
+    if #lines == 0 then
+      lines = { "No schemas applied" }
+    end
+    -- Show popup; see Neovim’s LSP floating preview docs
+    vim.lsp.util.open_floating_preview(lines, "markdown", { border = "rounded", title = "YAML Schemas" })
+  end, bufnr)
+end
+
+vim.api.nvim_create_user_command("YamlSchemas", show_yaml_schemas, {})
+
 return {
   yamlls = {
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
     settings = {
-      --root_dir = util.find_git_ancestor,
       yaml = {
         trace = {
           server = true
         },
-        cmd = { "yaml-language-server", "--stdio" },
-        single_file_support = true,
-        filetypes = { "yaml", "yml" },
         completion = true,
         format = {
           enable = true
         },
-        --schemaStore = {
-        --  -- JSON Schema Store
-        --  -- https://github.com/SchemaStore/schemastore/tree/master/src/schemas/json
-        --  enable = false, -- pulls all avail schemas from JSON schema store
-        --  -- url =
-        --},
         schemas = {
           -- (schema, path match globPattern) tuples associate application of schema to specific buffers based on their paths
           -- schema can be local or remote
@@ -45,8 +66,10 @@ return {
           "*api*.{yml,yaml}",
           ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
           "*docker-compose*.{yml,yaml}",
-          ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] =
-          "*flow*.{yml,yaml}",
+          ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = {
+            "*workflow*.{yml,yaml}",
+            "**/templates/*workflow*.{yml,yaml}",
+          },
         }
       }
     }

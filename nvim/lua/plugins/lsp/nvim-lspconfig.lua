@@ -261,30 +261,7 @@ return {
       --jdtls = {enable = false},
       --["java-test"] = {},
       --["java-debug-adapter"] = {},
-      yamlls = {
-        settings = {
-          yaml = {
-            schemaStore = {
-              enable = true,
-              url = "https://www.schemastore.org/api/json/catalog.json",
-            },
-            schemas = {
-              -- Argo Workflows schema validation
-              ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = {
-                "**/templates/*workflow*.yaml",
-                "**/templates/*workflow*.yml",
-                "**/*workflow*.yaml",
-                "**/*workflow*.yml",
-              },
-              -- Kubernetes schemas for other resources
-              kubernetes = "*.yaml",
-            },
-            validate = true,
-            completion = true,
-            hover = true,
-          },
-        },
-      },
+      --yamlls = {}, -- configured in servers/yamlls.lua
       gopls = require("plugins.golang.lsp-gopls"),
       -- golangci-lint-langserver =
       terraformls = {
@@ -452,6 +429,7 @@ return {
     end
 
     --servers = add_server(servers)('eslint')
+    servers = add_server(servers)('yamlls')
     servers = add_server(servers)('tsserver')
     -- servers = add_server(servers)('nixfmt')
     servers = add_server(servers)('nil')
@@ -506,8 +484,11 @@ return {
         end
       end
       -- Apply fully-customized server_opts to each server we have configured
-      -- print(string.format('lspconfig applying setup to server %s with options %s', server, P(server_opts)))
-      -- print(string.format('lspconfig applying setup to server %s', server))
+      -- Debug: show what settings we're applying
+      if server == "yamlls" then
+        vim.notify(string.format("Applying yamlls config with %d schemas", 
+          vim.tbl_count(server_opts.settings.yaml.schemas or {})), vim.log.levels.INFO)
+      end
       vim.lsp.config(server, server_opts)
       vim.lsp.enable(server)
       -- it is technically possible to override servers here:
@@ -533,7 +514,10 @@ return {
 
     if have_mason then
       mason_lspconfig.setup({ ensure_installed = ensure_installed })
-      --mason_lspconfig.setup_handlers({ setup }) -- https://github.com/ayamir/nvimdots/issues/1461
+      -- Manually call setup for each mason-installed server
+      for _, server in ipairs(ensure_installed) do
+        setup(server)
+      end
     end
 
     --------------------------------------------------------------------------------
@@ -545,21 +529,21 @@ return {
       vim.notify("vim.lsp.buf.hover() called.")
       vim.lsp.buf.hover()
     end, { desc = 'Show type information in hover window.' })
-  end,
-  vim.keymap.set('n', '<leader>pls', function()
-    vim.ui.input({ prompt = "Symbol: " }, function(input)
-      if input == nil then
-        vim.notify("No input provided", vim.log.levels.WARN)
-      end
-      vim.ui.select({ "in Workspace", "in Current Buffer" }, { prompt = "Select an option:" }, function(choice)
-        if choice == "in Workspace" then
-          require("telescope.builtin").lsp_workspace_symbols({ query = input })
-        elseif choice == "in Current Buffer" then
-          require("telescope.builtin").lsp_document_symbols({ query = input })
+    vim.keymap.set('n', '<leader>pls', function()
+      vim.ui.input({ prompt = "Symbol: " }, function(input)
+        if input == nil then
+          vim.notify("No input provided", vim.log.levels.WARN)
         end
+        vim.ui.select({ "in Workspace", "in Current Buffer" }, { prompt = "Select an option:" }, function(choice)
+          if choice == "in Workspace" then
+            require("telescope.builtin").lsp_workspace_symbols({ query = input })
+          elseif choice == "in Current Buffer" then
+            require("telescope.builtin").lsp_document_symbols({ query = input })
+          end
+        end)
       end)
-    end)
-  end, { desc = "Find symbol" })
+    end, { desc = "Find symbol" })
+  end,
   -- Mapper.map('n', '<leader>plsw', "<cmd>lua require'telescope.builtin'.lsp_workspace_symbols({query=''})<cr>",
   --   { silent = true, noremap = true }, "Telescope-Symbols", "lsp_workspace_symbols",
   --   "pick-symbols-workspace: Picker for all symbols in workspace")
