@@ -13,8 +13,9 @@ return telescope.register_extension({
   exports = {
     projects = function(opts)
       local all_projects = {}
-      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or {}
-      
+      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
+      {}
+
       for name, src in pairs(config.sources or {}) do
         local function expand_globs(pattern)
           local items = vim.fn.glob(pattern, true, true)
@@ -26,7 +27,7 @@ return telescope.register_extension({
           end
           return dirs
         end
-        
+
         local function expand_roots(roots)
           local res = {}
           if not roots then return res end
@@ -38,26 +39,27 @@ return telescope.register_extension({
           end
           return res
         end
-        
+
         local dirs = expand_roots(src.roots)
         for _, d in ipairs(dirs) do
           table.insert(all_projects, { path = d, source = name })
         end
       end
-      
+
       local pickers = require('telescope.pickers')
       local finders = require('telescope.finders')
       local conf_module = require('telescope.config')
       local actions = require('telescope.actions')
       local action_state = require('telescope.actions.state')
-      
+
       pickers.new(opts or {}, {
         prompt_title = 'All Projects',
         finder = finders.new_table({
           results = all_projects,
           entry_maker = function(item)
-            local name = vim.fn.fnamemodify(item.path, ':t')
-            local display = string.format('%s   [%s]   %s', name, item.source, item.path)
+            local path = item.path:gsub('/$', '')
+            local name = vim.fn.fnamemodify(path, ':t')
+            local display = string.format('[%s] %s', item.source, name)
             return {
               value = item,
               display = display,
@@ -78,21 +80,22 @@ return telescope.register_extension({
         end,
       }):find()
     end,
-    
+
     sources = function(opts)
-      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or {}
+      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
+      {}
       local sources_list = {}
-      
+
       for name, _ in pairs(config.sources or {}) do
         table.insert(sources_list, { name = name })
       end
-      
+
       local pickers = require('telescope.pickers')
       local finders = require('telescope.finders')
       local conf_module = require('telescope.config')
       local actions = require('telescope.actions')
       local action_state = require('telescope.actions.state')
-      
+
       pickers.new(opts or {}, {
         prompt_title = 'Project Sources',
         finder = finders.new_table({
@@ -116,20 +119,21 @@ return telescope.register_extension({
         end,
       }):find()
     end,
-    
+
     source = function(opts)
       local name = opts and opts.name
       if not name then
         return require('telescope').extensions.project_picker.sources(opts)
       end
-      
-      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or {}
+
+      local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
+      {}
       local src = (config.sources or {})[name]
       if not src then
         vim.notify('Source not found: ' .. name, vim.log.levels.ERROR)
         return
       end
-      
+
       local function expand_globs(pattern)
         local items = vim.fn.glob(pattern, true, true)
         local dirs = {}
@@ -140,7 +144,7 @@ return telescope.register_extension({
         end
         return dirs
       end
-      
+
       local function expand_roots(roots)
         local res = {}
         if not roots then return res end
@@ -152,19 +156,19 @@ return telescope.register_extension({
         end
         return res
       end
-      
+
       local dirs = expand_roots(src.roots)
       local projects = {}
       for _, d in ipairs(dirs) do
         table.insert(projects, { path = d, source = name })
       end
-      
+
       local pickers = require('telescope.pickers')
       local finders = require('telescope.finders')
       local conf_module = require('telescope.config')
       local actions = require('telescope.actions')
       local action_state = require('telescope.actions.state')
-      
+
       pickers.new(opts or {}, {
         prompt_title = 'Projects: ' .. name,
         finder = finders.new_table({

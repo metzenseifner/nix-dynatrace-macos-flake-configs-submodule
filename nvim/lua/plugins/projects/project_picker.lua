@@ -15,6 +15,15 @@ return {
       --   vim.cmd('cd ' .. vim.fn.fnameescape(path))
       --   require('telescope.builtin').find_files({ cwd = path })
       -- end
+      on_select = function(path)
+        local ok_tb, tb = pcall(require, 'telescope.builtin')
+        vim.cmd('cd ' .. vim.fn.fnameescape(path))
+        if ok_tb then
+          tb.find_files({ cwd = path })
+        else
+          vim.cmd('edit ' .. vim.fn.fnameescape(path))
+        end
+      end
     })
 
     -- Load the Telescope extension (enables :Telescope project_picker ...)

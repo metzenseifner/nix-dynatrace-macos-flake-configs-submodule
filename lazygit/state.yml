@@ -1,5 +1,6 @@
 lastupdatecheck: 0
 recentrepos:
+    - /Users/jonathan.komar/devel/nix-dynatrace-macos-flake/configs
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/ASDY-19808_dac_new-approach-old-to-new-world-json-enrichment-process
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-dev/branches/ASDY-19808_dac_disable-dev3-to-stabilization-2
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/ASDY-19560_qualitygates_pr-content-fix

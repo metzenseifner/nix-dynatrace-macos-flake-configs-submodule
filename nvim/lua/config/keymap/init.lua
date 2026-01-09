@@ -439,6 +439,7 @@ require('config.keymap.quickfix')
 require('config.keymap.current_working_dir')
 require('config.keymap.open_in_file_browser')
 require('config.keymap.json')
+require('config.keymap.help')
 
 --------------------------------------------------------------------------------
 --                      Orgmode Global Keybindings                            --
