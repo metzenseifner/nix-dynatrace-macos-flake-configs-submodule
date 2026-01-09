@@ -45,16 +45,31 @@ vim.filetype.add({
   pattern = {
     [".*/charts/.*.ya?ml"] = function(path, bufnr)
       -- Check if file contains Argo Workflows specific content
-      local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 50, false)
+      local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 100, false)
+      local has_helm = false
+      local has_argo = false
+      
       for _, line in ipairs(lines) do
+        -- Check for Helm templating
+        if line:match("{{") or line:match("}}") then
+          has_helm = true
+        end
+        -- Check for Argo Workflows kinds
         if line:match("kind:%s*WorkflowTemplate") or 
            line:match("kind:%s*Workflow") or
            line:match("kind:%s*ClusterWorkflowTemplate") or
            line:match("kind:%s*CronWorkflow") then
-          return "yaml.argo"
+          has_argo = true
         end
       end
-      return "helm"
+      
+      -- Prioritize yaml for LSP support even if Helm templating exists
+      if has_argo then
+        return "yaml.argo"
+      elseif has_helm then
+        return "yaml"  -- Use yaml instead of helm for LSP support
+      end
+      return "yaml"
     end,
   },
 })
