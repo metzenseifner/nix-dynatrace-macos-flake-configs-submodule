@@ -1,6 +1,9 @@
 return {
   "rcarriga/nvim-notify",
   config = function(_, _)
+    local notify = require("notify")
+    ---
+    ---@type notify.Config
     local conf = {
       background_colour = "NotifyBackground",
       fps = 30,
@@ -23,10 +26,10 @@ return {
       top_down = false, -- false: bottom-up rendering, true: top-down with relation to horizontal window boundaries
     }
 
-    vim.notify = require("notify")
+    vim.notify = notify
 
     vim.keymap.set('n', '<leader>pvn', "<cmd>:Telescope notify<CR>", { desc = "Open notification history in telescope." })
 
-    require 'notify'.setup(conf)
+    notify.setup(conf)
   end
 }

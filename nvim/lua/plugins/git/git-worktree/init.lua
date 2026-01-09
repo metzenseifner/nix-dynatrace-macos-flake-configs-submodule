@@ -3,7 +3,7 @@
 return {
   -- replace with polarmutex/git-worktree.nvim fork
   "ThePrimeagen/git-worktree.nvim",
-  --commit = "94684a6e0ca6898d450b3b46c09b3fca1b3d591f",
+  commit = "94684a6e0ca6898d450b3b46c09b3fca1b3d591f",
   --commit = "f247308",
   -- branch = 'update-for-telescope-api', -- DISABLED: branch doesn't exist on remote
   dependencies = {
@@ -32,6 +32,16 @@ return {
         require('notify').notify("Deleted " .. P(metadata.path))
       end
     end)
+
+    ----------------------------------------------------------------------
+    --                       Git Worktrees Keymap                       --
+    ----------------------------------------------------------------------
+    vim.keymap.set("n", "<leader>pgw", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
+      { desc = "Pick Work Tree (git-worktree)" })
+    vim.keymap.set("n", "<leader>pwt", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
+      { desc = "Pick Work Tree (git-worktree)" })
+    vim.keymap.set("n", "<leader>gwn", ":lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>",
+      { desc = "Create New Git Worktree" })
 
     return {
       change_directory_command = "cd",  -- default: "cd",

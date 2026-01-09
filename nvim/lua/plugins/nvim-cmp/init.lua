@@ -61,9 +61,12 @@ return {
             if require 'luasnip'.choice_active() then
               vim.notify("Changing choice")
               require "luasnip".change_choice(1)
-            else
+            elseif cmp.visible() then
               vim.notify("nvim-cmp selecting next item")
               cmp.select_next_item(select_opts)
+            else
+              vim.notify("nvim-cmp triggering completion")
+              cmp.complete()
             end
           end,
           ["<C-e>"] = function()
@@ -149,7 +152,7 @@ return {
         },
         completion = {
           -- adds autocompletion suggestions menu while typing
-          keyword_length = 2, -- num of keystrokes or chars required to trigger suggestions
+          keyword_length = 3, -- num of keystrokes or chars required to trigger suggestions
           --keyword_pattern = ".*",
           completeopt = "menu,menuone,noselect",
         },
@@ -171,18 +174,19 @@ return {
           { -- a contributing culprit to slow typing /sluggish in typescript and markdown filetypes
             name = "nvim_lsp",
             group_index = 1,
-            priority = 3,
+            priority = 10,
             --option = { keyword_length = 0 }, -- possible reason for sluggish behavior, but also slow LSPs themselves
             --entry_filter = function(entry, context)
             --  --return require('cmp.types').lsp.CompleteionItemKind[entry:get_kind()] ~= 'KeepingHereAsExample'
             --  return true
             --end
           },
-          { name = "nvim_lsp_signature_help", group_index = 1, priority = 2, option = { keyword_length = 0 } },
+          { name = "lazydev", group_index = 1, priority = 9 },
+          { name = "nvim_lsp_signature_help", group_index = 1, priority = 8, option = { keyword_length = 0 } },
           { -- Ruled out as culprit for slow typing in markdown and typescript filetypes
             name = "luasnip",
             group_index = 1,
-            priority = 2,
+            priority = 5,
             option = { keyword_length = 1 },
             entry_filter =
                 function(entry, context)
@@ -190,9 +194,8 @@ return {
                 end
           },
           { name = "org" },
-          { name = "path",                    group_index = 1, priority = 1 },
-          { name = "buffer",                  group_index = 1, priority = 1, option = { keyword_length = 2 } },
-          { name = "lazydev" }
+          { name = "path",                    group_index = 1, priority = 3 },
+          { name = "buffer",                  group_index = 1, priority = 2, option = { keyword_length = 2 } }
 
           -- { name = 'nvim_lsp' },
           -- { name = 'vsnip' }, -- For vsnip users.

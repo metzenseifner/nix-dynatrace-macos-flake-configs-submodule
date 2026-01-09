@@ -84,10 +84,6 @@ return {
         --   extension_config_key = value,
         -- }
         -- please take a look at the readme of the extension you want to configure
-        workspaces = {
-          -- stay in insert mode after selection in picker
-          keep_insert = false,
-        },
         --sessions = {
         --  sessions_dir = vim.fn.stdpath('data') .. '/telescope-sessions/',
         --}
@@ -128,7 +124,6 @@ return {
 
     install_extension("file_browser")
     install_extension("mapper")
-    install_extension("workspaces")
     install_extension("ui-select")
     install_extension("bookmarks")
     install_extension("repo")
@@ -137,12 +132,12 @@ return {
     install_extension("git_worktree")
     install_extension("env")
     install_extension("luasnip")
-    
+
     -- Only load rest extension if rest.nvim is actually loaded
     if pcall(require, "rest-nvim") then
       install_extension("rest") -- require("telescope").extensions.rest.select_env()
     end
-    
+
     install_extension("cder") -- for switching working directories
     install_extension("notify")
     install_extension("file_browser")
@@ -156,7 +151,7 @@ return {
     --------------------------------------------------------------------------------
     --                               Global Keymap                                --
     --------------------------------------------------------------------------------
-
+    vim.keymap.set('n', '<leader>r', require('telescope.builtin').registers, { desc = 'Telescope registers' })
     -- putting in telescope package was not working (prob due to lazy loading)
     vim.keymap.set('v', '<C-f>',
       function()
@@ -223,8 +218,8 @@ return {
     -- Incoming callers (who calls the symbol under cursor)
     vim.keymap.set('n', 'gai', function()
       require 'telescope.builtin'.lsp_incoming_calls({
-        show_line = true, -- show the line where the call occurs
-        fname_width = 40, -- widen filename column
+        show_line = true,  -- show the line where the call occurs
+        fname_width = 40,  -- widen filename column
         trim_text = false, -- don't trim call line text
       })
     end, { desc = 'LSP Incoming Calls' })

@@ -36,7 +36,19 @@ return {
 
   dependencies = {
     { "folke/neoconf.nvim",               cmd = "Neoconf",           config = true },
-    { "folke/lazydev.nvim" },
+    { 
+      "folke/lazydev.nvim",
+      ft = "lua",
+      opts = {
+        library = {
+          { path = "luvit-meta/library", words = { "vim%.uv" } },
+          { path = "${3rd}/luv/library", words = { "vim%.loop", "vim%.uv" } },
+          -- Index all lazy.nvim plugins for type inference
+          { path = vim.fn.stdpath("data") .. "/lazy", words = {} },
+        },
+      },
+    },
+    { "Bilal2453/luvit-meta", lazy = true },
     { 'diogo464/kubernetes.nvim',         description = "for yamlls" },
     { "mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
@@ -409,11 +421,25 @@ return {
         -- mason = false, -- set to false if you don't want this server to be installed with mason
         settings = {
           Lua = {
+            runtime = {
+              version = 'LuaJIT',
+            },
+            diagnostics = {
+              globals = { 'vim' },
+            },
             workspace = {
               checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME,
+                -- Add lazy.nvim plugins to workspace
+                "${3rd}/luv/library",
+              },
             },
             completion = {
               callSnippet = "Replace",
+            },
+            telemetry = {
+              enable = false,
             },
           },
         },

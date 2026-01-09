@@ -57,15 +57,6 @@ function open_help_topic(keyword)
   vim.cmd('vert bel help ' .. keyword)
 end
 
-----------------------------------------------------------------------
---                       Git Worktrees Keymap                       --
-----------------------------------------------------------------------
-vim.keymap.set("n", "<leader>pgw", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
-  { desc = "Pick Work Tree (git-worktree)" })
-vim.keymap.set("n", "<leader>pwt", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
-  { desc = "Pick Work Tree (git-worktree)" })
-vim.keymap.set("n", "<leader>gwn", ":lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>",
-  { desc = "Create New Git Worktree" })
 
 --------------------------------------------------------------------------------
 --                             Working Directory                              --

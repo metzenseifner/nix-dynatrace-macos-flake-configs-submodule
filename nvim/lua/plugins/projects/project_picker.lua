@@ -16,12 +16,39 @@ return {
       --   require('telescope.builtin').find_files({ cwd = path })
       -- end
       on_select = function(path)
-        local ok_tb, tb = pcall(require, 'telescope.builtin')
         vim.cmd('cd ' .. vim.fn.fnameescape(path))
-        if ok_tb then
-          tb.find_files({ cwd = path })
-        else
-          vim.cmd('edit ' .. vim.fn.fnameescape(path))
+        
+        local has_worktrees = function(project_path)
+          local normalized_path = project_path:gsub('/$', '')
+          local git_dir = normalized_path .. '/.git'
+          local worktree_dir = git_dir .. '/worktrees'
+          
+          if vim.fn.isdirectory(worktree_dir) == 1 then
+            local worktrees = vim.fn.readdir(worktree_dir)
+            local valid_worktrees = vim.tbl_filter(function(name)
+              return not vim.startswith(name, '.')
+            end, worktrees)
+            return #valid_worktrees > 0
+          end
+          return false
+        end
+        
+        if has_worktrees(path) then
+          local ok, telescope = pcall(require, 'telescope')
+          if ok then
+            local ext_ok = pcall(function()
+              telescope.load_extension('git_worktree')
+            end)
+            if ext_ok then
+              telescope.extensions.git_worktree.git_worktrees()
+              return
+            end
+          end
+        end
+        
+        local ok_builtin, telescope_builtin = pcall(require, 'telescope.builtin')
+        if ok_builtin then
+          telescope_builtin.find_files({ cwd = path })
         end
       end
     })
