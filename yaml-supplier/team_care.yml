@@ -8,9 +8,6 @@ team_members:
       - "Team Captain"
   - name: "Jan Berger"
     roles: []
-  - name: "Nikolas Keuck"
-    roles:
-      - "PO"  # Product Owner
   - name: "Matthaeus Huber"
     roles: []
   - name: "Jonas Erhart"
@@ -21,6 +18,8 @@ team_members:
     special_engagements:
       - "Security Advocate"
   - name: "Andreas Schett"
+    roles: []
+  - name: "David Fritz"
     roles: []
   - name: "Nico Riedmann"
     roles:

@@ -101,7 +101,7 @@ safe_keymap('n', '<leader>rs', '<cmd>/\\%u2713<CR>', opts, "search-buffer-testca
 safe_keymap('n', '<leader>rf', '<cmd>/\\%u2716<CR>', opts, "search-buffer-testcafe-failure-char",
   "Search buffer for TestCafe test failure char.")
 safe_keymap('n', '<leader>hl', function() open_help_topic('lua-guide') end, opts, "help-lua-guide", "Help Lua Guide")
-safe_keymap('n', '<leader>pm', "<cmd>Telescope mapper<cr>", opts, "Telescope-Keys", "mapper", "Open custom keymaps.") -- OPEN VISUAL OF THIS FILE
+-- safe_keymap('n', '<leader>pm', "<cmd>Telescope mapper<cr>", opts, "Telescope-Keys", "mapper", "Open custom keymaps.") -- OPEN VISUAL OF THIS FILE
 safe_keymap('n', '<leader>pmm', "<cmd>Neotree float reveal_file=~/.config/nvim/lua/config/keymap.lua reveal_force_cwd<cr>"
 , opts, "Edit-KeyMapper", "edit-mapper", "Open custom keymaps for changes.")                                         -- OPEN VISUAL OF THIS FILE
 safe_keymap('n', '<leader>pk', "<cmd>Telescope keymaps<cr>", opts, "Telescope-Keys", "keymaps",

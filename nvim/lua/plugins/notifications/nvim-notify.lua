@@ -5,6 +5,7 @@ return {
     ---
     ---@type notify.Config
     local conf = {
+      merge_duplicates = false,
       background_colour = "NotifyBackground",
       fps = 30,
       icons = {

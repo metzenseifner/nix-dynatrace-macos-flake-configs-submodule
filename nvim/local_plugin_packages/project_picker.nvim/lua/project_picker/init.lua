@@ -76,11 +76,45 @@ local function default_on_select(path)
   end
 end
 
+local function expand_wildcard_sources(sources)
+  local expanded = {}
+  for name, src in pairs(sources) do
+    if type(src) == "string" and src:match("/%*$") then
+      local base_path = src:gsub("/%*$", "")
+      if vim.fn.isdirectory(base_path) == 1 then
+        local dirs = vim.fn.readdir(base_path, function(item)
+          return vim.fn.isdirectory(base_path .. "/" .. item) == 1
+        end)
+        for _, dir in ipairs(dirs) do
+          local source_name = dir
+          local source_path = base_path .. "/" .. dir
+          local subdirs = vim.fn.glob(source_path .. "/*", true, true)
+          local roots = {}
+          for _, subdir in ipairs(subdirs) do
+            if vim.fn.isdirectory(subdir) == 1 then
+              table.insert(roots, subdir)
+            end
+          end
+          if #roots > 0 then
+            expanded[source_name] = { roots = roots }
+          end
+        end
+      end
+    else
+      expanded[name] = src
+    end
+  end
+  return expanded
+end
+
 function M.setup(opts)
-  M._config = vim.tbl_deep_extend('force', {
+  local config = vim.tbl_deep_extend('force', {
     sources = {},
     on_select = default_on_select,
   }, opts or {})
+  
+  config.sources = expand_wildcard_sources(config.sources)
+  M._config = config
 
   -- convenience commands
   vim.api.nvim_create_user_command('ProjectPickerProjects', function()

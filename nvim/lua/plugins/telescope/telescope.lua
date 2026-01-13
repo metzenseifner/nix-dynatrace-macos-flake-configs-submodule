@@ -164,6 +164,16 @@ return {
       end,
       { desc = "Grep selection in project." })
 
+    -- Grep visual selection only within the current buffer
+    vim.keymap.set('v', '<C-f>b', function()
+      require("telescope-live-grep-args.shortcuts").grep_visual_selection({
+        quote = false,
+        trim = true,
+        postfix = "",
+        search_dirs = { vim.api.nvim_buf_get_name(0) },
+      })
+    end, { desc = "Grep selection in current buffer." })
+
     -- vim.keymap.set('n', '<leader>fg', rhs, opts)
     vim.keymap.set('v', '<C-s>',
       function()

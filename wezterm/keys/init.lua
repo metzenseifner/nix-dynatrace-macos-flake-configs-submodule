@@ -3,14 +3,18 @@ local apply = function(wezterm, config)
   config.key_map_preference = "Mapped"
   config.keys = {
 
-    { key = "z", mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
+    { key = "z",      mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
     -- Map Option key to act as Meta
     -- { key = "x", mods = "OPT",  action = wezterm.action { SendString = "\x1bx" } },
     -- { key = "x", mods = "OPT",  action = wezterm.action { SendKey = { key = "x", mods = "ALT" } } },
-    { key = "x", mods = "OPT",  action = wezterm.action { SendString = "\x1ba" } },
+    { key = "x",      mods = "OPT",  action = wezterm.action { SendString = "\x1ba" } },
     -- Fix Option+Delete to delete word forward (instead of inserting tilde)
-    { key = "Delete", mods = "OPT", action = wezterm.action { SendString = "\x1bd" } },
-
+    { key = "Delete", mods = "OPT",  action = wezterm.action { SendString = "\x1bd" } },
+    {
+      key = 'L',
+      mods = 'CTRL',
+      action = wezterm.action.DisableDefaultAssignment,
+    },
   }
 end
 return apply

@@ -1,0 +1,23 @@
+-- https://www.youtube.com/watch?v=2KLFjhGjmbI
+-- return {
+--   "https://codeberg.org/andyg/leap.nvim",
+--   name = "leap.nvim",
+--   branch = "main",
+--   config = function(_, _)
+--     local leap = require('leap')
+--     --leap.add_default_mappings()
+--     --leap.opts.case_sensitive = false
+--     
+--     -- vim.keymap.set({ 'n', 'x', 'o' }, '<C-l>', function() require("leap").leap {} end,
+--     --   { desc = "Leap forwards. Use two char strokes to pinput cursor destination." })
+--     -- vim.keymap.set({ 'n', 'x', 'o' }, '<C-L>', function() require("leap").leap { backward = true } end,
+--     --   { desc = "Leap backwards. Use two char strokes to pinpoint cursor destination." })
+--     -- vim.keymap.set({ 'n', 'x', 'o' }, '<leader>gl',
+--     --   function()
+--     --     require('leap').leap {
+--     --       target_windows = require('leap.util').get_enterable_windows()
+--     --     }
+--     --   end
+--     --   , { desc = "Leap forwards across windows." })
+--   end
+-- }
