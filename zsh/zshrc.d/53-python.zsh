@@ -1,7 +1,13 @@
 # Python venv path is managed by home.sessionPath in home.nix
 # Nix manages Python installations - no need to activate venv at startup
 # Use `source ~/.local/share/python/venvs/py3.12.2/bin/activate` manually if needed
+
+# Save PS1 before virtualenv activation and restore after
+_SAVED_PS1="$PS1"
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 source ~/.local/share/python/venvs/py3.12.2/bin/activate
+PS1="$_SAVED_PS1"
+unset _SAVED_PS1
 
 
 ### # The following on-demand activation does not work with shebangs

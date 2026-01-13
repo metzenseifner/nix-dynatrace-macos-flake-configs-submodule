@@ -107,7 +107,7 @@ __update_git_prompt() {
     _git_prompt_gitdir=""
     _git_prompt_branch=""
     PROMPT_GIT=""
-    return
+    return 0
   fi
 
   headfile=$_git_prompt_gitdir/HEAD
@@ -118,7 +118,7 @@ __update_git_prompt() {
     mtime=${S[mtime]}
     if [[ $mtime == $_git_prompt_head_mtime ]]; then
       PROMPT_GIT=${_git_prompt_branch:+$BRANCH_SYMBOL $_git_prompt_branch }
-      return
+      return 0
     fi
     _git_prompt_head_mtime=$mtime
   fi
