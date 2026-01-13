@@ -13,7 +13,8 @@
 --  end
 --})
 
--- in your init.lua
+-- This can Add key stroke tips in the quickfix context
+-- WARNING: This has implicit coupling to the keymap defined elsewhere
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "qf",
   callback = function()
