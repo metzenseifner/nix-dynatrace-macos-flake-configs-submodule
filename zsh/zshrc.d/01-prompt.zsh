@@ -114,7 +114,7 @@ __update_git_prompt() {
 
   # Cheap mtime check (if zsh/stat is available)
   if zmodload -i zsh/stat 2>/dev/null; then
-    local -A S; zstat -L -A S +mtime -- "$headfile" 2>/dev/null || S[mtime]=-1
+    local -A S; zstat -H S +mtime -- "$headfile" 2>/dev/null || S[mtime]=-1
     mtime=${S[mtime]}
     if [[ $mtime == $_git_prompt_head_mtime ]]; then
       PROMPT_GIT=${_git_prompt_branch:+$BRANCH_SYMBOL $_git_prompt_branch }
