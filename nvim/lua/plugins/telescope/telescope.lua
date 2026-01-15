@@ -339,6 +339,7 @@ return {
         desc =
         "Pick find files."
       })
+
     vim.keymap.set('n', '<leader>pfc',
       function()
         local sorters = require('telescope.sorters')

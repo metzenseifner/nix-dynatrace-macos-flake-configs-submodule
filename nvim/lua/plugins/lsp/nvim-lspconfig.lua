@@ -36,19 +36,19 @@ return {
 
   dependencies = {
     { "folke/neoconf.nvim",               cmd = "Neoconf",           config = true },
-    { 
+    {
       "folke/lazydev.nvim",
       ft = "lua",
       opts = {
         library = {
-          { path = "luvit-meta/library", words = { "vim%.uv" } },
-          { path = "${3rd}/luv/library", words = { "vim%.loop", "vim%.uv" } },
+          { path = "luvit-meta/library",              words = { "vim%.uv" } },
+          { path = "${3rd}/luv/library",              words = { "vim%.loop", "vim%.uv" } },
           -- Index all lazy.nvim plugins for type inference
           { path = vim.fn.stdpath("data") .. "/lazy", words = {} },
         },
       },
     },
-    { "Bilal2453/luvit-meta", lazy = true },
+    { "Bilal2453/luvit-meta",             lazy = true },
     { 'diogo464/kubernetes.nvim',         description = "for yamlls" },
     { "mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
@@ -512,7 +512,7 @@ return {
       -- Apply fully-customized server_opts to each server we have configured
       -- Debug: show what settings we're applying
       if server == "yamlls" then
-        vim.notify(string.format("Applying yamlls config with %d schemas", 
+        vim.notify(string.format("Applying yamlls config with %d schemas",
           vim.tbl_count(server_opts.settings.yaml.schemas or {})), vim.log.levels.INFO)
       end
       vim.lsp.config(server, server_opts)
@@ -549,12 +549,30 @@ return {
     --------------------------------------------------------------------------------
     --                               Global Keymap                                --
     --------------------------------------------------------------------------------
+    -- Requires gopls via nvim-lspconfig and Telescope installed
+    vim.keymap.set('n', 'gr', function()
+      require('telescope.builtin').lsp_references({ include_declaration = false })
+    end, { desc = 'Show references with Telescope' })
+
+    -- Disabled as seems less useful than the entire workspace search without the keystroke delay
+    --vim.keymap.set('n', 'gs', require('telescope.builtin').lsp_document_symbols, {desc="Find/Search symbol within current document (buffer)"})
+
+    vim.keymap.set('n', 'gs', function()
+      --if you want to filter by symbol type: tb.lsp_document_symbols({ symbols = { 'function', 'method' } })
+      require('telescope.builtin').lsp_dynamic_workspace_symbols()
+    end, {desc="Find/Search symbol within the entire workspace. (live search)"})
+
+    
+
+
     vim.keymap.set('n', '<leader>f', format_buffer,
       { desc = "lsp.buf.format: Auto format code in buffer. TODO provide selection menu of formatters to apply." })
+
     vim.keymap.set('n', 'K', function()
       vim.notify("vim.lsp.buf.hover() called.")
       vim.lsp.buf.hover()
     end, { desc = 'Show type information in hover window.' })
+
     vim.keymap.set('n', '<leader>pls', function()
       vim.ui.input({ prompt = "Symbol: " }, function(input)
         if input == nil then

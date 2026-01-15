@@ -246,7 +246,7 @@ safe_keymap('n', '<leader>hr', '<cmd>lua vim.lsp.util.buf_highlight_references<C
   'lsp.util.buf_highlight_references', 'Highlight references')
 safe_keymap('n', '<leader>hc', '<cmd>lua vim.lsp.util.buf_clear_references<CR>', opts, 'LSP',
   'lsp.util.buf_clear_references', 'Clear highlighted references')
-safe_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts, 'LSP', 'lsp.buf.references', 'Show all references')
+-- safe_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts, 'LSP', 'lsp.buf.references', 'Show all references')
 safe_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts, 'LSP',
   'lsp.buf.add_workspace_folder', 'Add Workspace')
 safe_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts, 'LSP',

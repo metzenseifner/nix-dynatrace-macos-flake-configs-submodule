@@ -62,13 +62,13 @@ return {
       require("telescope").extensions.project_picker.projects()
     end, { desc = "Pick project (all sources)" })
 
-    vim.keymap.set("n", "<leader>ps", function()
-      require("telescope").extensions.project_picker.sources()
-    end, { desc = "Pick source, then project" })
+    -- vim.keymap.set("n", "<leader>ps", function()
+    --   require("telescope").extensions.project_picker.sources()
+    -- end, { desc = "Pick source, then project" })
 
-    -- Or jump directly to a specific source
-    vim.keymap.set("n", "<leader>pd", function()
-      require("telescope").extensions.project_picker.source({ name = "dynatrace_projects" })
-    end, { desc = "Pick project from dynatrace_projects" })
+    -- -- Or jump directly to a specific source
+    -- vim.keymap.set("n", "<leader>pd", function()
+    --   require("telescope").extensions.project_picker.source({ name = "dynatrace_projects" })
+    -- end, { desc = "Pick project from dynatrace_projects" })
   end,
 }

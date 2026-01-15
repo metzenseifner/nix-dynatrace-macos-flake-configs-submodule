@@ -216,6 +216,8 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
   end
 })
 
+vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, {desc="Open diagnostics popup floating window for cursor position"})
+
 -- Show signature help as floating window in INSERT mode
 -- vim.cmd [[autocmd CursorHoldI * lua vim.lsp.buf.signature_help() ]]
 --vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.buf..open_float(nil, {focus=false})]] -- This makes dianostics floating window auto appear
