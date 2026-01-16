@@ -28,27 +28,86 @@ return {
       if op == Worktree.Operations.Switch then
         print("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
       end
+      if op == Worktree.Operations.Create then
+        vim.notify("Worktree created: " .. metadata.path, vim.log.levels.INFO)
+      end
       if op == Worktree.Operations.Delete then
         require('notify').notify("Deleted " .. P(metadata.path))
       end
     end)
 
+    -- Use shared wt-b module (single source of truth)
+    local wt_b = require("utils.git_wt_b")
+    
+    -- Custom function to create worktree using git wt-b alias
+    local function create_worktree_wt_b_style()
+      wt_b.prompt_and_create(function(worktree_path, git_root)
+        -- After creation completes, switch to the new worktree
+        vim.defer_fn(function()
+          Worktree.switch_worktree(worktree_path)
+        end, 50)
+      end)
+    end
+
+    -- Enhanced git worktree picker with Ctrl-n to create and auto-refresh
+    local function show_worktrees_with_create()
+      local actions = require("telescope.actions")
+      
+      require("telescope").extensions.git_worktree.git_worktrees({
+        attach_mappings = function(prompt_bufnr, map)
+          -- Add Ctrl-n to create new worktree from within picker
+          map("i", "<C-n>", function()
+            actions.close(prompt_bufnr)
+            -- Use shared wt-b module with completion callback to reopen picker
+            wt_b.prompt_and_create(function(worktree_path, git_root)
+              vim.defer_fn(function()
+                -- Switch to the new worktree
+                Worktree.switch_worktree(worktree_path)
+                -- Auto-refresh picker after switching
+                vim.defer_fn(function()
+                  show_worktrees_with_create()
+                end, 200)
+              end, 50)
+            end)
+          end)
+          map("n", "<C-n>", function()
+            actions.close(prompt_bufnr)
+            -- Use shared wt-b module with completion callback to reopen picker
+            wt_b.prompt_and_create(function(worktree_path, git_root)
+              vim.defer_fn(function()
+                -- Switch to the new worktree
+                Worktree.switch_worktree(worktree_path)
+                -- Auto-refresh picker after switching
+                vim.defer_fn(function()
+                  show_worktrees_with_create()
+                end, 200)
+              end, 50)
+            end)
+          end)
+          
+          return true
+        end,
+      })
+    end
+
     ----------------------------------------------------------------------
     --                       Git Worktrees Keymap                       --
     ----------------------------------------------------------------------
-    vim.keymap.set("n", "<leader>pgw", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
-      { desc = "Pick Work Tree (git-worktree)" })
-    vim.keymap.set("n", "<leader>pwt", ":lua require('telescope').extensions.git_worktree.git_worktrees()<cr>",
-      { desc = "Pick Work Tree (git-worktree)" })
-    vim.keymap.set("n", "<leader>gwn", ":lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>",
-      { desc = "Create New Git Worktree" })
+    vim.keymap.set("n", "<leader>pgw", show_worktrees_with_create,
+      { desc = "Pick Work Tree (Ctrl-n to create)" })
+    vim.keymap.set("n", "<leader>pwt", show_worktrees_with_create,
+      { desc = "Pick Work Tree (Ctrl-n to create)" })
+    vim.keymap.set("n", "<leader>gwn", create_worktree_wt_b_style,
+      { desc = "Create New Git Worktree (wt-b style)" })
+    vim.keymap.set("n", "<leader>gwc", ":lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>",
+      { desc = "Create New Git Worktree (default)" })
 
-    return {
+    Worktree.setup({
       change_directory_command = "cd",  -- default: "cd",
       update_on_change = true,          -- default: true,
       update_on_change_command = "e .", -- default: "e .",
       clearjumps_on_change = true,      -- default: true,
       autopush = false,                 -- default: false,
-    }
+    })
   end
 }

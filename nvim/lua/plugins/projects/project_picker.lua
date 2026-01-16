@@ -41,7 +41,37 @@ return {
               telescope.load_extension('git_worktree')
             end)
             if ext_ok then
-              telescope.extensions.git_worktree.git_worktrees()
+              local actions = require("telescope.actions")
+              local wt_b = require("utils.git_wt_b")
+              local Worktree = require("git-worktree")
+              
+              -- Show worktrees with Ctrl-n to create new
+              local function show_worktrees_with_create()
+                telescope.extensions.git_worktree.git_worktrees({
+                  attach_mappings = function(prompt_bufnr, map)
+                    local function create_worktree_inline()
+                      actions.close(prompt_bufnr)
+                      -- Use shared wt-b module with completion callback
+                      wt_b.prompt_and_create(function(worktree_path, git_root)
+                        vim.defer_fn(function()
+                          -- Switch to the new worktree
+                          Worktree.switch_worktree(worktree_path)
+                          -- Auto-refresh picker after switching
+                          vim.defer_fn(function()
+                            show_worktrees_with_create()
+                          end, 200)
+                        end, 50)
+                      end)
+                    end
+                    
+                    map("i", "<C-n>", create_worktree_inline)
+                    map("n", "<C-n>", create_worktree_inline)
+                    return true
+                  end,
+                })
+              end
+              
+              show_worktrees_with_create()
               return
             end
           end
