@@ -1,5 +1,5 @@
-# Add this to the TOP of your .zshrc
-zmodload zsh/zprof
+# Add this to the TOP of your .zshrc for performance profile print to stdout
+# zmodload zsh/zprof
 
 # Shell aliases
 alias devel="cd ~/devel"
@@ -90,4 +90,4 @@ else
   # source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh &!
 fi
 # Add this to the BOTTOM of your .zshrc
-zprof
+# zprof
