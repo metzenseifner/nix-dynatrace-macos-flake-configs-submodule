@@ -1,0 +1,9 @@
+return {
+  terraformls = {
+    settings = {
+      terraform = {
+
+      }
+    }
+  }
+}

@@ -276,16 +276,6 @@ return {
       --yamlls = {}, -- configured in servers/yamlls.lua
       gopls = require("plugins.golang.lsp-gopls"),
       -- golangci-lint-langserver =
-      terraformls = {
-        settings = {
-          terraform = {
-
-          }
-        }
-      },
-      tflint = {},
-      jsonls = {},
-      ansiblels = {},
       -- CAVEAT: names of mason packages do not match names of servers
       -- hls = { -- disabled to avoid using mason version and using ghcup; also
       -- haskell-tools includes LSP language server based on your projects version
@@ -301,149 +291,7 @@ return {
       --     single_file_support = true,
       --   }
       -- }, -- haskell
-      -- currently source of truth for LSP servers besides null-ls which auto starts with buffers independently
-      pyright = {},
-      jsonls = {
-        filetypes = { 'json' },
-        settings = {
-          json = {
-            trace = {
-              server = 'on'
-            },
-            validate = { enable = true },
-            cmd = { "vscode-json-languageserver", "--stdio" },
-            schemas = {
-              --require('schemastore').json.schemas(),
-              {
-                -- git clone --depth 1 ssh://git@bitbucket.lab.dynatrace.org/rx/configuration-core.git ~/devel/dynatrace_bitbucket/
-                description = 'Dynatrace Settings 2.0 Schema',
-                fileMatch = { '/settings-2.0/*.schema.json' }, -- array of filepath names separated by /, * glob supported
-                url = 'file://' ..
-                    vim.fn.expand('~') ..
-                    '/devel/dynatrace_bitbucket/configuration-core/core-schema/src/main/resources/1/schema_strict_static.json'
-              },
-              {
-                description = 'TypeScript compiler configuration file',
-                fileMatch = { 'tsconfig.json', 'tsconfig.*.json' },
-                url = 'http://json.schemastore.org/tsconfig'
-              },
-              {
-                description = 'Lerna config',
-                fileMatch = { 'lerna.json' },
-                url = 'http://json.schemastore.org/lerna'
-              },
-              {
-                description = 'Babel configuration',
-                fileMatch = { '.babelrc.json', '.babelrc', 'babel.config.json' },
-                url = 'http://json.schemastore.org/lerna'
-              },
-              {
-                description = 'ESLint config',
-                fileMatch = { '.eslintrc.json' },
-                url = 'http://json.schemastore.org/eslintrc'
-              },
-              {
-                description = 'Bucklescript config',
-                fileMatch = { 'bsconfig.json' },
-                url = 'https://bucklescript.github.io/bucklescript/docson/build-schema.json'
-              },
-              {
-                description = 'Prettier config',
-                fileMatch = { '.prettierrc', '.prettierrc.json', 'prettier.config.json' },
-                url = 'http://json.schemastore.org/prettierrc'
-              },
-              {
-                description = 'Vercel Now config',
-                fileMatch = { 'now.json' },
-                url = 'http://json.schemastore.org/now'
-              },
-              {
-                description = 'Stylelint config',
-                fileMatch = { '.stylelintrc', '.stylelintrc.json', 'stylelint.config.json' },
-                url = 'http://json.schemastore.org/stylelintrc'
-              }
-            }
-          }
-        }
-      },
-      marksman = {
-
-      },
       --java_language_server = {},
-      --- @type vim.lsp.Config
-      kotlin_language_server = {
-
-
-        -- Force proper JSON objects:
-        settings     = vim.empty_dict(),
-        init_options = vim.empty_dict(),
-
-
-        -- Later, when you add real settings, keep them under the 'kotlin' key:
-        -- settings = {
-        --   kotlin = {
-        --     compiler = { jvm = { target = "default" } },
-        --   },
-        -- },
-
-
-        -- bug with dependencies: https://github.com/fwcd/kotlin-language-server/issues/487#issuecomment-1782096036
-        -- Debug
-        -- lua print(vim.inspect(vim.lsp.get_clients({name='kotlin_language_server'})[1].config))
-        -- Optional but helps KLS avoid edge-cases in cache path resolution
-        -- init_options = {
-        --   storagePath = vim.fn.stdpath("cache") .. "/kotlin-language-server"
-        -- }
-        -- Set bytecode version of jdk exposed in environment
-        -- settings = {
-        --   kotlin = {
-        --     compiler = {
-        --       jvm = {
-        --         target = "23"
-        --       }
-        --     },
-        --   },
-        -- }
-      },
-      bashls = {},
-      vimls = {},
-      docker_compose_language_service = {},
-      groovyls = {
-        cmd = { "java", "-jar",
-          vim.fs.normalize("~/.local/share/groovy-language-server/groovy-language-server-all.jar") },
-        filetypes = { "groovy" },
-
-        --root_dir = function(startpath)
-        --return M.search_ancestors(startpath, matchervim.stdpath)
-        --end
-      },
-      lua_ls = {
-        -- mason = false, -- set to false if you don't want this server to be installed with mason
-        settings = {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT',
-            },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                vim.env.VIMRUNTIME,
-                -- Add lazy.nvim plugins to workspace
-                "${3rd}/luv/library",
-              },
-            },
-            completion = {
-              callSnippet = "Replace",
-            },
-            telemetry = {
-              enable = false,
-            },
-          },
-        },
-      },
     }
 
     local add_server = function(servers)
@@ -462,6 +310,18 @@ return {
     servers = add_server(servers)('nix-eval-lsp')
     servers = add_server(servers)('golangci-lint-langserver')
     servers = add_server(servers)('jdtls')
+    servers = add_server(servers)('terraformls')
+    servers = add_server(servers)('tflint')
+    servers = add_server(servers)('jsonls')
+    servers = add_server(servers)('ansiblels')
+    servers = add_server(servers)('pyright')
+    servers = add_server(servers)('marksman')
+    servers = add_server(servers)('kotlin_language_server')
+    servers = add_server(servers)('bashls')
+    servers = add_server(servers)('vimls')
+    servers = add_server(servers)('docker_compose_language_service')
+    servers = add_server(servers)('groovyls')
+    servers = add_server(servers)('lua_ls')
 
     -- Configure LSP to use nvim-cmp as a completion engine
     local capabilities = require("cmp_nvim_lsp").default_capabilities() -- This is a nvim-cmp source for the built-in lsp client.
