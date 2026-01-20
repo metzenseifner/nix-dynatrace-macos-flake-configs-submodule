@@ -293,7 +293,7 @@ return {
             command = "bun x npm-groovy-lint"
           }), -- npm i -g npm-groovy-lint
           --null_ls.builtins.formatting.goimports, -- auto add or remove go imports: does both gopls imports and gopls format
-          --null_ls.builtins.diagnostics.golangci_lint, -- go linter written in go
+          require("plugins.golang.null-ls-golangci-lint"), -- golangci-lint v2 diagnostics from nix flake
           --null_ls.builtins.code_actions.gomodifytags, -- add tags to json (covered by gopher.nvim)
           --null_ls.builtins.code_actions.impl, -- generate method stubs for implementing an interface (covered by gopher.nvim)
         },
