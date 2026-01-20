@@ -1,6 +1,12 @@
 # Minimal PATH setup - Nix manages most paths via home.sessionPath
 # Only add paths for non-Nix managed tools
 
+# Ensure GNU stat takes precedence over zsh builtin stat
+# Disable the stat builtin if loaded, and create a hash to prefer external command
+disable stat 2>/dev/null
+alias stat='command stat'
+hash -d stat 2>/dev/null
+
 # Cargo/Rust (user-installed, not managed by Nix)
 path=(~/.local/share/cargo/bin $path)
 
