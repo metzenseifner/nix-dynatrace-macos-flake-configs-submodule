@@ -17,6 +17,7 @@
 	keepBackup = true
 	prompt = false
 [alias]  # Shell scripts (! prefixed cmds) run from top-level dir. See $GIT_PREFIX with git rev-parse --show-prefix if below top
+  upstream = "!git rev-parse --abbrev-ref --symbolic-full-name @{upstream}"
   # note that git log --name-only adds the names of the files per commit
   show = "!git show --show-signature"
   sincetag = "!git --no-pager log --reverse --date=local --color=always --pretty=format:'%Cred%<(12,trunc)%ci%Creset::%h::%<(15,trunc)%aN:%Cblue%D%Creset: %Cgreen%s%Creset' $(git describe --tags --abbrev=0)^1..HEAD"
