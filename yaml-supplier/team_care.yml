@@ -4,7 +4,7 @@
 
 team_members:
   - name: "Jonathan Komar"
-    roles: 
+    roles:
       - "Team Captain"
   - name: "Jan Berger"
     roles: []
@@ -13,7 +13,7 @@ team_members:
   - name: "Jonas Erhart"
     roles:
       - "Agile Advocate"
-  - name: "Dominick Einkemmer"
+  - name: "Dominik Einkemmer"
     roles: []
     special_engagements:
       - "Security Advocate"
@@ -31,11 +31,10 @@ sprint: "328"
 # Team metadata
 team_name: "Team Care"
 team_type: "care"
-
 # Available role types for reference:
 # - "Team Captain"
 # - "PO" (Product Owner)
-# - "Dev Manager" 
+# - "Dev Manager"
 # - "Org Lead"
 # - "Agile Advocate"
 # Additional fields like special_engagements are preserved but not used in snippet generation
