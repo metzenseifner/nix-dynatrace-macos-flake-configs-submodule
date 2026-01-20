@@ -308,7 +308,6 @@ return {
     -- servers = add_server(servers)('nixfmt')
     servers = add_server(servers)('nil')
     servers = add_server(servers)('nix-eval-lsp')
-    servers = add_server(servers)('golangci-lint-langserver')
     servers = add_server(servers)('jdtls')
     servers = add_server(servers)('terraformls')
     servers = add_server(servers)('tflint')
