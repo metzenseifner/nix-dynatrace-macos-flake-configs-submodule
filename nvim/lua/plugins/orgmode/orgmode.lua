@@ -41,207 +41,8 @@ local function archive_done_items()
   end
 end
 
-local make_feedback_overview = function(members)
-  local make_feedback_view_for = function(member)
-    return {
-      description = string.format("%s's Feedback", member.name),
-      types = {
-        {
-          type = "tags",                                                               -- Type can be agenda | tags | tags_todo
-          match = string.format('+TYPE="Feedback"&FOR="%s"&TODO="DONE"', member.name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-          org_agenda_overriding_header = string.format("# %s's Feedback Given", member.name),
-        },
-        {
-          type = "tags_todo",                                              -- Type can be agenda | tags | tags_todo
-          match = string.format('+TYPE="Feedback"&FOR="%s"', member.name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-          org_agenda_overriding_header = string.format("# %s's Feedback Ungiven", member.name),
-        },
-      }
-    }
-  end
-  local feedback_boards = {}
-  for i, member in ipairs(members) do
-    vim.list_extend(feedback_boards, make_feedback_view_for(member))
-  end
-end
-
-local make_team_development_view_for = function(make_personal_development_view_for, members)
-  local member_boards = {}
-  for _, member in ipairs(members) do
-    vim.list_extend(member_boards, make_personal_development_view_for(member).types)
-  end
-  return {
-    description = "Team CARE's Development Dashboard",
-    types = member_boards
-  }
-end
-
--- For my personal dashboard of things to do
-local make_dashboard_for = function(name)
- -- local members = { 'Jonathan Komar', 'Nikolas Keuck', 'Matthaeus Huber' }
-
- -- ---@return OrgAgendaCustomCommandAgenda
- -- local make_observations_types = function(members)
- --   local result = {}
- --   for i, v in ipairs(members) do
- --    --table.insert(result, 
- --    --{
- --    -- type = "tags_todo",                                       -- Type can be agenda | tags | tags_todo
- --    -- match = string.format('+TYPE="Feedback"&FOR="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
- --    -- org_agenda_overriding_header = string.format("# %s's Feedback Ungiven", name),
- --   --})
- --   --table.insert(result,
- --    -- {
- --    --   type = "tags",                                               -- Type can be agenda | tags | tags_todo
- --    --   match = string.format('+TYPE="Observation"&FOR="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
- --    --   org_agenda_overriding_header = string.format("# Observations of %s's ", name),
- --    --  })
- --   -- end
- --   return result
- -- en d
-  ---@return OrgAgendaCustomCommandAgenda
-  return function()
-    local portable = require('config.portable')
-    local sprint = vim.fn.trim(portable.safe_system("sprint_supplier", "orgmode_sprint"))
-    local sprint_num = tonumber(sprint)
-    local prev_sprint = sprint_num and (sprint_num - 1) or "N/A"
-
-    return {
-      description = string.format("%s's Dashboard of Things to Do", name),
-      types = {
-        --------------------------------------------------------------------------------
-        --                 Special Case of Daily Tasks to not forget                  --
-        --------------------------------------------------------------------------------
-        {
-          org_agenda_overriding_header = string.format("# %s's Daily Tasks", name),
-          type = "tags",
-          -- match = string.format('+TYPE="Daily"&BY="%s"&DEADLINE="<today>"', name),
-          match = string.format('+TYPE="Daily"&BY="%s"&DEADLINE<="%s +1d"', name, current_week_friday())
-          -- type = "agenda",
-          -- org_agenda_span = "day",
-          -- org_agenda_start_on_weekday = 1,
-          -- org_agenda_remove_tags = false
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Active Tasks", name),
-          type = "tags",
-          -- match = string.format('+TYPE="Daily"&BY="%s"&DEADLINE="<today>"', name),
-          match = string.format('+TYPE="INPROGRESS"', name)
-        },
-        --------------------------------------------------------------------------------
-        --               Team Captain-specific tasks that might replace               --
-        --                                Daily Tasks                                 --
-        --------------------------------------------------------------------------------
-        {
-          org_agenda_overriding_header = string.format("# %s's Team Captain Tasks", name),
-          type = "tags",
-          match = string.format('+TYPE="Team Captain"&BY="%s"', name),
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Announcements", name),
-          type = "tags_todo",
-          match = '+TYPE="Announcement"',
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Follow-ups", name),
-          type = "tags",
-          match = string.format('+TODO="TODO"&TYPE="Follow-up"&BY="%s"', name),
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's High Priority Items", name),
-          type = "tags_todo",
-          match = '+PRIORITY="A"&TODO="TODO"|+PRIORITY="A"&TODO="INPROGRESS"',
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Sprint %s Tickets", name, sprint ~= "" and sprint or "N/A"),
-          type = "tags",
-          match = string.format('BY="%s"&SPRINT="%s"', name, sprint ~= "" and sprint or "N/A"),
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Previous Sprint (%s) Tickets", name, prev_sprint),
-          type = "tags",
-          match = string.format('BY="%s"&SPRINT="%s"', name, prev_sprint),
-        },
-        {
-          org_agenda_overriding_header = "# Initiatives",
-          type = "tags",
-          match = string.format('+TYPE="Initiative"')
-        },
-        {
-          type = "tags",                                -- Type can be agenda | tags | tags_todo
-          match = string.format('+TYPE="Observation"'), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-          org_agenda_overriding_header = string.format("# Observations"),
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Agenda of Tasks with Due or Scheduled Date", name),
-          type = "agenda",
-          org_agenda_span = 'week',
-          org_agenda_start_on_weekday = 1, -- Start on Monday
-          org_agenda_remove_tags = false   -- Do not show tags only for this view
-        },
-      }
-    }
-  end
-end
-
--- Make a Performance Enablement / Growth Dashboard for each team member
-local make_personal_development_view_for = function(name)
-  return {
-    description = string.format("%s's Growth View", name),
-    types = {
-      {
-        type = "tags", -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Initiative"&BY="%s"', name, name),
-        org_agenda_overriding_header = string.format("# %s's Initiatives", name),
-      },
-      {
-        type = "tags",                                                                             -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="COMMITMENT"&BY="%s"|TYPE="Commitment"&BY="%s"', name, name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Commitments", name),
-      },
-      {
-        type = "tags",                                      -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Gap"&BY="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Gaps", name),
-      },
-      {
-        type = "tags_todo",                                  -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Wish"&BY="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Wishes / Desires", name),
-      },
-      {
-        type = "tags",                                       -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Goal"&BY="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Goals", name),
-      },
-      {
-        type = "tags",                                                        -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Feedback"&FOR="%s"&TODO="DONE"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Feedback Given", name),
-      },
-      {
-        type = "tags_todo",                                       -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Feedback"&FOR="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Feedback Ungiven", name),
-      },
-      {
-        type = "tags",                                               -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Observation"&FOR="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# Observations of %s's ", name),
-      },
-      {
-        type = "tags",                                                   -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Follow-up"&FOR="%s"', name, name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Follow-ups", name),
-      },
-      {
-        type = "tags",                                                  -- Type can be agenda | tags | tags_todo
-        match = string.format('+TYPE="Self-assessment"&BY="%s"', name), --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        org_agenda_overriding_header = string.format("# %s's Self-assessment", name),
-      },
-    },
-  }
-end
+-- Load dashboard modules
+local dashboards = require('plugins.orgmode.dashboards')
 
 
 -- Setup Checklist for things ourside of this module
@@ -410,76 +211,80 @@ return {
       org_agenda_skip_scheduled_if_done = false,
       org_agenda_skip_deadline_if_done = false,
       -- org_agenda_text_search_extra_files = {}
-      org_agenda_custom_commands = {
-        u = {
-          name = 'Unscheduled Tasks',
-          description = "Any unscheduled task",
-          command = 'agenda',
-          query = {
-            todo_only = true,
-            tags = { '-SCHEDULED', '-DEADLINE' },
-          },
-        },
-        d = make_dashboard_for("Jonathan Komar")(),
-        --f = make_feedback_overview(members),
-        j = make_personal_development_view_for("Jonathan Komar"),
-        z = make_personal_development_view_for("Jonas Erhart"),
-        x = make_personal_development_view_for("Jan Berger"),
-        y = make_personal_development_view_for("Matthaeus Huber"),
-        n = make_personal_development_view_for("Nikolas Keuck"),
-        i = make_personal_development_view_for("Matthieu Gusmini"),
-        o = make_personal_development_view_for("Nico Riedmann"),
-        g = (function()
-          local portable = require('config.portable')
-          local team_members_str = portable.safe_system("yaml-supplier --key team_members", "orgmode_yaml_supplier")
-          local team_members = team_members_str ~= "" and vim.split(team_members_str, '\n') or {}
-          return make_team_development_view_for(make_personal_development_view_for, team_members)
-        end)(),
-        s = {
-          description = 'TODOs sorter',
-          types = {
-            {
-              type = "tags_todo",
-              match = "-SCHEDULED={.+}-DEADLINE={.+}",
-              org_agenda_overriding_header = "# Unscheduled TODOs without a due date",
+      org_agenda_custom_commands = (function()
+        local portable = require('config.portable')
+        local team_members_str = portable.safe_system("yaml-supplier --key team_members", "orgmode_yaml_supplier")
+        
+        local commands = {
+          u = {
+            name = 'Unscheduled Tasks',
+            description = "Any unscheduled task",
+            command = 'agenda',
+            query = {
+              todo_only = true,
+              tags = { '-SCHEDULED', '-DEADLINE' },
             },
-            {
-              type = "tags",
-              match = 'TODO="DONE"',
-              org_agenda_overriding_header = "# Completed TODOs",
-            }
           },
-        },
-        -- c = {
-        --   description = "Combined view", -- Description shown in the prompt for the shortcut
-        --   types = {
-        --     {
-        --       type = "tags_todo",                       -- Type can be agenda | tags | tags_todo
-        --       match = '+PRIORITY="A"',                  --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        --       org_agenda_overriding_header = "High priority todos",
-        --       org_agenda_todo_ignore_deadlines = "far", -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
-        --     },
-        --     {
-        --       type = "agenda",
-        --       org_agenda_overriding_header = "My daily agenda",
-        --       org_agenda_span = "day" -- can be any value as org_agenda_span
-        --     },
-        --     {
-        --       type = "tags",
-        --       match = "WORK",                           --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
-        --       org_agenda_overriding_header = "My work todos",
-        --       org_agenda_todo_ignore_scheduled = "all", -- Ignore all headlines that are scheduled. Possible values: past | future | all
-        --     },
-        --     {
-        --       type = "agenda",
-        --       org_agenda_overriding_header = "Whole week overview",
-        --       org_agenda_span = 'week',        -- 'week' is default, so it's not necessary here, just an example
-        --       org_agenda_start_on_weekday = 1, -- Start on Monday
-        --       org_agenda_remove_tags = true    -- Do not show tags only for this view
-        --     },
-        --   }
-        -- },
-      },
+          d = dashboards.make_dashboard_for("Jonathan Komar")(),
+          g = dashboards.make_team_development_view_for(
+            dashboards.make_personal_development_view_for,
+            team_members_str ~= "" and vim.split(team_members_str, '\n') or {}
+          ),
+          s = {
+            description = 'TODOs sorter',
+            types = {
+              {
+                type = "tags_todo",
+                match = "-SCHEDULED={.+}-DEADLINE={.+}",
+                org_agenda_overriding_header = "# Unscheduled TODOs without a due date",
+              },
+              {
+                type = "tags",
+                match = 'TODO="DONE"',
+                org_agenda_overriding_header = "# Completed TODOs",
+              }
+            },
+          },
+        }
+        
+        -- Dynamically add team member development views
+        local team_shortcuts = dashboards.generate_team_member_shortcuts(team_members_str)
+        for key, view in pairs(team_shortcuts) do
+          commands[key] = view
+        end
+        
+        return commands
+      end)(),
+      -- Example combined view (commented out):
+      -- c = {
+      --   description = "Combined view", -- Description shown in the prompt for the shortcut
+      --   types = {
+      --     {
+      --       type = "tags_todo",                       -- Type can be agenda | tags | tags_todo
+      --       match = '+PRIORITY="A"',                  --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
+      --       org_agenda_overriding_header = "High priority todos",
+      --       org_agenda_todo_ignore_deadlines = "far", -- Ignore all deadlines that are too far in future (over org_deadline_warning_days). Possible values: all | near | far | past | future
+      --     },
+      --     {
+      --       type = "agenda",
+      --       org_agenda_overriding_header = "My daily agenda",
+      --       org_agenda_span = "day" -- can be any value as org_agenda_span
+      --     },
+      --     {
+      --       type = "tags",
+      --       match = "WORK",                           --Same as providing a "Match:" for tags view <leader>oa + m, See: https://orgmode.org/manual/Matching-tags-and-properties.html
+      --       org_agenda_overriding_header = "My work todos",
+      --       org_agenda_todo_ignore_scheduled = "all", -- Ignore all headlines that are scheduled. Possible values: past | future | all
+      --     },
+      --     {
+      --       type = "agenda",
+      --       org_agenda_overriding_header = "Whole week overview",
+      --       org_agenda_span = 'week',        -- 'week' is default, so it's not necessary here, just an example
+      --       org_agenda_start_on_weekday = 1, -- Start on Monday
+      --       org_agenda_remove_tags = true    -- Do not show tags only for this view
+      --     },
+      --   }
+      -- },
 
       -- Tags Settings
       --org_tags_column = "80", -- negative means flush right
