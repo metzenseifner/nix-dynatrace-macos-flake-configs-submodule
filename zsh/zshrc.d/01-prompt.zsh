@@ -182,7 +182,7 @@ setup_zsh_shell() {
   add-zsh-hook precmd  __update_worktree_root
   add-zsh-hook precmd  __update_git_prompt
 
-  PS1='${TTY}${TIMESTAMP} '"${MYUSER}"'@'"${HOSTNAME}"'${PROMPT_WTR}${PROMPT_GIT} '"${DIR}"' '"${END}"
+  PS1='${TTY} ${TIMESTAMP} '"${MYUSER}"'@'"${HOSTNAME}"'${PROMPT_WTR}${PROMPT_GIT} '"${DIR}"' '"${END}"
 }
 
 # Initialize only under zsh
