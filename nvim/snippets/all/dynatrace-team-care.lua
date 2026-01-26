@@ -273,10 +273,10 @@ generators.standup = function(members, conf)
     return nodes
   end
 
-  local nodes = {
+  local daily_standup_nodes = {
     --f(function() return string.rep('-', 80) end, {}, {}),
     --f(Utils.make_line, {}, { user_args = { line_char = "underscore", char = { "_" }, times = { 80 } }}),
-    t({ string.format('* DONE Daily Standup Sprint %s (%s)', conf.sprint, require 'date_utils'.datestamp_orgmode()) }),
+    t({ string.format('* DONE :care: Daily Standup Sprint %s (%s)', conf.sprint, require 'date_utils'.datestamp_orgmode()) }),
     LF(),
     f(function(values)
       return "  CLOSED: [" .. require 'date_utils'.timestamp_orgmode() .. "]"
@@ -313,9 +313,10 @@ generators.standup = function(members, conf)
     LF(),
     t('** :postal_horn: Announcements'),
     LF(),
+    t('[[https://dt-rnd.atlassian.net/issues?jql=summary%20~%20%22DTP%20Support%20%2F%20Enablement%22%20AND%20%20(%22Team%5BTeam%5D%22%20%3D%2039167d95-7b82-4268-8b46-83d2ac7006d7-1304)%20AND%20Sprint%20in%20openSprints()%20ORDER%20BY%20issuekey][Who is goalkeeper?]]'),
     i(1), -- convenience cursor position TODO add indexed insert notes for each position for each member
     LF(),
-    t('** Poststandup Sync Topics'),
+    t('** :wip: Poststandup Sync Topics'),
     LF(),
     LF(),
     t('** Hurdles or Action Points'),
@@ -326,7 +327,7 @@ generators.standup = function(members, conf)
     LF()
   }
 
-  Utils.insert_nodes(nodes, 2, members, team_member_to_block_nodes)
+  Utils.insert_nodes(daily_standup_nodes, 2, members, team_member_to_block_nodes)
   --for idx, member_node in pairs(member_nodes) do
   --  table.insert(nodes, member_node)
   --  --table.insert(nodes, member_node)
@@ -339,7 +340,7 @@ generators.standup = function(members, conf)
   --  f(Utils.make_line, { 1 }, { user_args = { "underscore" } })
   --)
   -- table.insert(nodes, f(function() return string.rep('_', 80) end, {}, {}))
-  return { s("standup-care", nodes) }
+  return { s("standup-care", daily_standup_nodes) }
 end
 
 local function generate_snippets(members, conf)

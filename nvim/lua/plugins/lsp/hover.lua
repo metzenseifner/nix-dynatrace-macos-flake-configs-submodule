@@ -30,6 +30,32 @@ return {
   },
   config = function(mod, opts)
     require("hover").setup(opts)
+    
+    -- Fix for hover.nvim newline bug
+    -- Wrap open_floating_preview to split any lines containing newlines
+    local hover_util = require('hover.util')
+    local original_open = hover_util.open_floating_preview
+    
+    hover_util.open_floating_preview = function(contents, bufnr, syntax, opts_inner)
+      -- If contents provided, ensure no embedded newlines
+      if contents and type(contents) == 'table' then
+        local fixed_contents = {}
+        for _, line in ipairs(contents) do
+          if type(line) == 'string' and line:find('\n') then
+            -- Split lines with embedded newlines
+            local split_lines = vim.split(line, '\n', { plain = true, trimempty = false })
+            for _, split_line in ipairs(split_lines) do
+              table.insert(fixed_contents, split_line)
+            end
+          else
+            table.insert(fixed_contents, line)
+          end
+        end
+        contents = fixed_contents
+      end
+      
+      return original_open(contents, bufnr, syntax, opts_inner)
+    end
     -- Setup keymaps
     vim.keymap.set('n', 'K', function()
       require('hover').open()

@@ -14,23 +14,25 @@ return
     },
     event = 'BufRead',
     build = ':TSUpdate',
+    keys = {
+    },
     config = function()
       -- Modern nvim-treesitter (v1.0+) works automatically when parsers are installed
       -- No setup() call needed - highlighting, indentation, etc. work out of the box
       -- Just install parsers with :TSInstall <language>
-      
+
       -- The old APIs are removed:
       -- - nvim-treesitter.configs (removed)
       -- - require('nvim-treesitter.parsers').get_parser_configs() (removed)
       -- - Manual parser configuration (no longer needed)
-      
+
       -- Modern treesitter automatically handles:
       -- ✓ TSX/JSX files (via typescript and tsx parsers)
       -- ✓ Syntax highlighting
       -- ✓ Indentation
       -- ✓ Folding
       -- ✓ Incremental selection
-      
+
       -- To install parsers: :TSInstall javascript typescript tsx python lua
       -- To update parsers: :TSUpdate
       -- To check status: :TSInstallInfo

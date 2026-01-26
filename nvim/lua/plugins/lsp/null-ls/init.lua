@@ -319,7 +319,9 @@ return {
     config = function()
       require("mason-null-ls").setup({
         ensure_installed = nil,
-        automatic_installation = true,
+        automatic_installation = {
+          exclude = { "golangci_lint" }, -- Using nix version instead
+        },
       })
     end
   },

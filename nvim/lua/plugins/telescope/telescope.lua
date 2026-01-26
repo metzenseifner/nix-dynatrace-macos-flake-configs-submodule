@@ -1,3 +1,64 @@
+local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
+  local opts = {}
+  local should_close_picker = false
+  
+  -- Check if called from within a picker (has prompt_bufnr) or standalone
+  if type(prompt_bufnr_or_opts) == "number" then
+    -- Called from within a picker with prompt_bufnr
+    local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr_or_opts)
+    if current_picker and current_picker.finder.bufnr then
+      opts.bufnr = current_picker.finder.bufnr
+    end
+    should_close_picker = true
+  elseif type(prompt_bufnr_or_opts) == "table" then
+    -- Called standalone with opts table
+    opts = vim.tbl_extend("force", opts, prompt_bufnr_or_opts)
+  end
+
+  if severity ~= "all" then
+    opts.severity = severity
+  end
+
+  local all_diags = vim.diagnostic.get(opts.bufnr)
+  local counts = { error = 0, warn = 0, info = 0, hint = 0 }
+  for _, diag in ipairs(all_diags) do
+    if diag.severity == vim.diagnostic.severity.ERROR then
+      counts.error = counts.error + 1
+    elseif diag.severity == vim.diagnostic.severity.WARN then
+      counts.warn = counts.warn + 1
+    elseif diag.severity == vim.diagnostic.severity.INFO then
+      counts.info = counts.info + 1
+    elseif diag.severity == vim.diagnostic.severity.HINT then
+      counts.hint = counts.hint + 1
+    end
+  end
+
+  local severity_label
+  if severity == "all" then
+    severity_label = "All"
+  elseif severity == vim.diagnostic.severity.ERROR then
+    severity_label = "ERROR"
+  elseif severity == vim.diagnostic.severity.WARN then
+    severity_label = "WARN"
+  elseif severity == vim.diagnostic.severity.INFO then
+    severity_label = "INFO"
+  elseif severity == vim.diagnostic.severity.HINT then
+    severity_label = "HINT"
+  else
+    severity_label = tostring(severity)
+  end
+  
+  opts.prompt_title = string.format("Diagnostics - Filter <C-x>[e:%d w:%d i:%d h:%d] - %s",
+    counts.error, counts.warn, counts.info, counts.hint, severity_label)
+
+  if should_close_picker then
+    require("telescope.actions").close(prompt_bufnr_or_opts)
+  end
+  
+  vim.schedule(function()
+    require("telescope.builtin").diagnostics(opts)
+  end)
+end
 -- Use telescope to find files on a given path
 local pick_files = function(path, config)
   local path = path or vim.loop.cwd()
@@ -34,27 +95,29 @@ return {
         },
 
         path_display = { "smart" },
-        keys = {
+        mappings = {
           i = {
             -- map actions.which_key to <C-h> (default: <C-/>)
             -- actions.which_key shows the mappings for your picker,
             -- e.g. git_{create, delete, ...}_branch for the git_branches picker
             -- ["<C-i>"] = "which_key",
+            ["<C-h>"] = actions.which_key, -- show help in insert mode
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
             ["<C-g>"] = actions.move_to_top,
             ["<C-G>"] = actions.move_to_bottom,
             ["<C-u>"] = actions.preview_scrolling_up,
             ["<C-d>"] = actions.preview_scrolling_down,
-            ["C-q"] = actions.send_selected_to_qflist,
-            ["C-l"] = actions.send_selected_to_loclist,
-            ["C-e"] = actions.select_all,
+            ["<C-q>"] = actions.send_selected_to_qflist,
+            ["<C-l>"] = actions.send_selected_to_loclist,
+            ["<C-e>"] = actions.select_all,
             ["<PageUp>"] = actions.results_scrolling_up,
             ["<PageDown>"] = actions.results_scrolling_down,
           },
           n = {
             ["esc"] = actions.close,
             ["<CR>"] = actions.select_default,
+            ["?"] = actions.which_key, -- show help in normal mode
           },
         },
       },
@@ -66,6 +129,25 @@ return {
         -- }
         -- Now the picker_config_key will be applied every time you call this
         -- builtin picker
+        diagnostics = {
+          mappings = {
+            i = {
+              ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+              ["<C-x>e"] = function(prompt_bufnr)
+                diagnostics_telescope_action(prompt_bufnr, vim.diagnostic.severity.ERROR)
+              end,
+              ["<C-x>w"] = function(prompt_bufnr)
+                diagnostics_telescope_action(prompt_bufnr, vim.diagnostic.severity.WARN)
+              end,
+              ["<C-x>i"] = function(prompt_bufnr)
+                diagnostics_telescope_action(prompt_bufnr, vim.diagnostic.severity.INFO)
+              end,
+              ["<C-x>a"] = function(prompt_bufnr)
+                diagnostics_telescope_action(prompt_bufnr, "all")
+              end,
+            },
+          },
+        },
         find_files = {
           theme = "dropdown",
           find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" },
@@ -164,6 +246,14 @@ return {
       end,
       { desc = "Grep selection in project." })
 
+    vim.keymap.set('n', "<leader>pd", function() diagnostics_telescope_action({ bufnr = 0 }, "all") end,
+      { desc = "Buffer diagnostics" })
+    vim.keymap.set('n', "<leader>pdd", function() diagnostics_telescope_action({}, "all") end,
+      { desc = "Workspace diagnostics" })
+    vim.keymap.set('n', "<leader>d", "<cmd>lua vim.diagnostic.setloclist()<cr>",
+      { desc = "Buffer diagnostics to location list" })
+    vim.keymap.set('n', "<leader>dd", "<cmd>lua vim.diagnostic.setqflist()<cr>",
+      { desc = "Workspace diagnostics to quickfix list" })
     -- Grep visual selection only within the current buffer
     vim.keymap.set('v', '<C-f>b', function()
       require("telescope-live-grep-args.shortcuts").grep_visual_selection({
@@ -420,9 +510,6 @@ return {
       end, { desc = "Pick one-on-one file." })
 
     vim.keymap.set("n", "<leader><leader>pc", "<cmd>Telescope colorscheme<CR>", { desc = "Pick colorscheme." })
-    vim.keymap.set('n', '<leader>pd', function()
-      require("telescope.builtin").diagnostics({ severity = "error" })
-    end)
   end,
 
   dependencies = {

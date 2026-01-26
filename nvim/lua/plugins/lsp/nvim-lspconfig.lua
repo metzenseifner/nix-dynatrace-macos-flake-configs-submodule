@@ -307,7 +307,7 @@ return {
     servers = add_server(servers)('tsserver')
     -- servers = add_server(servers)('nixfmt')
     servers = add_server(servers)('nil')
-    servers = add_server(servers)('nix-eval-lsp')
+    -- servers = add_server(servers)('nix-eval-lsp') -- Disabled: nix_eval_lsp not in PATH
     servers = add_server(servers)('jdtls')
     servers = add_server(servers)('terraformls')
     servers = add_server(servers)('tflint')
@@ -422,8 +422,11 @@ return {
       require('telescope.builtin').lsp_dynamic_workspace_symbols()
     end, {desc="Find/Search symbol within the entire workspace. (live search)"})
 
-    
-
+    -- intentional duplicate symbol
+    vim.keymap.set('n', 'S', function()
+      --if you want to filter by symbol type: tb.lsp_document_symbols({ symbols = { 'function', 'method' } })
+      require('telescope.builtin').lsp_dynamic_workspace_symbols()
+    end, {desc="Find symbol/Search symbol within the entire workspace. (live search)"})
 
     vim.keymap.set('n', '<leader>f', format_buffer,
       { desc = "lsp.buf.format: Auto format code in buffer. TODO provide selection menu of formatters to apply." })

@@ -1,5 +1,8 @@
 return {
   "j-hui/fidget.nvim",
+  lazy = false,
+  priority = 500, -- Load after nvim-notify
+  dependencies = { "rcarriga/nvim-notify" },
   opts = {
     -- Options related to LSP progress subsystem
     --progress = {
@@ -59,9 +62,13 @@ return {
       { default = require("fidget.notification").default_config },
       redirect =                    -- Conditionally redirect notifications to another backend
           function(msg, level, opts)
-            if opts and opts.on_open then
-              return require("fidget.integration.nvim-notify").delegate(msg, level, opts)
+            -- Always send to nvim-notify for history, but let Fidget display
+            local ok, nvim_notify = pcall(require, "notify")
+            if ok then
+              nvim_notify(msg, level, vim.tbl_extend("force", opts or {}, { replace = false }))
             end
+            -- Don't delegate display to nvim-notify (return nil to let Fidget handle display)
+            return nil
           end,
 
       -- Options related to how notifications are rendered as text
