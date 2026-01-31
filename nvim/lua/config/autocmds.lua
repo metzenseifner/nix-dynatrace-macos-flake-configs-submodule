@@ -21,10 +21,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.schedule(function()
       vim.api.nvim_echo({
         { "Quickfix opened → use ", "Normal" },
-        { "<C-P>", "Identifier" },
+        { "<C-p>", "Identifier" },
         { " for previous, ", "Normal" },
-        { "<C-N>", "Identifier" },
-        { " for next", "Normal" },
+        { "<C-n>", "Identifier" },
+        { " for next, ", "Normal" },
+        { "<C-d>", "Identifier" },
+        { " for delete", "Normal" }
       }, false, {})
     end)
   end,
@@ -38,7 +40,7 @@ vim.api.nvim_create_user_command('GitAutoCommitOnSave', function()
   -- Set up the autocommand to trigger on file save
   vim.api.nvim_create_autocmd('BufWritePost', {
     group = 'GitAutoCommit',
-    buffer = 0,  -- Use the current buffer
+    buffer = 0, -- Use the current buffer
     callback = function()
       vim.cmd('!git add %:p')
       vim.cmd('!git commit -m "Auto-commit on save."')
@@ -216,7 +218,8 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
   end
 })
 
-vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, {desc="Open diagnostics popup floating window for cursor position"})
+vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, { desc =
+"Open diagnostics popup floating window for cursor position" })
 
 -- Show signature help as floating window in INSERT mode
 -- vim.cmd [[autocmd CursorHoldI * lua vim.lsp.buf.signature_help() ]]
@@ -248,7 +251,7 @@ local attach_to_buffer = function(output_bufnr, pattern, command)
       end
 
       vim.api.nvim_buf_set_lines(output_bufnr, 0, -1, false, { "output: " })
-      
+
       local portable = require('config.portable')
       portable.safe_jobstart(command, {
         stdout_buffered = true,
@@ -292,13 +295,12 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
   callback = function(args)
     -- Extract the command being executed
     local command = args.match -- The full shell command (e.g., `!ls`, `!jq`)
-    
+
     -- Get the current buffer's content (stdin for the filter function)
     local buffer_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-    
+
     -- Log the command and buffer content
     vim.notify("Filter Command: " .. command, vim.log.levels.INFO)
     vim.notify("Buffer Content (stdin):\n" .. buffer_content, vim.log.levels.DEBUG)
   end,
 })
-
