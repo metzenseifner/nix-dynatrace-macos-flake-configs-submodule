@@ -8,7 +8,7 @@ function M.storage_to_readable(content)
   
   -- Convert common HTML tags to more readable format
   readable = readable:gsub("<p>", "")
-  readable = readable:gsub("</p>", "\n\n")
+  readable = readable:gsub("</p>", "\n")
   readable = readable:gsub("<br/>", "\n")
   readable = readable:gsub("<br>", "\n")
   readable = readable:gsub("<strong>(.-)</strong>", "**%1**")
@@ -39,7 +39,7 @@ function M.readable_to_storage(content)
   local storage = content
   
   -- Convert markdown-like formatting back to HTML
-  storage = storage:gsub("\n\n", "</p><p>")
+  storage = storage:gsub("\n", "</p><p>")
   storage = storage:gsub("^(.)", "<p>%1")
   storage = storage:gsub("(.)$", "%1</p>")
   
@@ -85,7 +85,7 @@ function M.create_confluence_buffer(page_info, content, version, format)
     readable_content = M.storage_to_readable(content)
   end
   
-  local lines = vim.split(readable_content, "\n")
+  local lines = vim.split(readable_content, "\n", { plain = true })
   
   -- Set buffer content
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)

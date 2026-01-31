@@ -33,7 +33,7 @@ end
 
 -- Update page content
 function M.update_page_content(page_id, content, version, callback)
-  local url = get_api_url("content/" .. page_id .. "?expand=body.storage")
+  local url = get_api_url("content/" .. page_id .. "?status=current&expand=body.storage")
   
   -- First get current page info to preserve title and space
   M.get_page_info(page_id, function(page_info, err)

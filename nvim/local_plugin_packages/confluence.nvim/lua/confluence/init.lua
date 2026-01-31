@@ -208,7 +208,7 @@ function M.reload()
       readable_content = buffer.storage_to_readable(content)
     end
     
-    local lines = vim.split(readable_content, "\n")
+    local lines = vim.split(readable_content, "\n", { plain = true })
     
     -- Replace buffer content
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
