@@ -8,7 +8,9 @@ local apply = function(wezterm, config)
     -- { key = "x", mods = "OPT",  action = wezterm.action { SendString = "\x1bx" } },
     -- { key = "x", mods = "OPT",  action = wezterm.action { SendKey = { key = "x", mods = "ALT" } } },
     { key = "x",      mods = "OPT",  action = wezterm.action { SendString = "\x1ba" } },
-    -- Fix Option+Delete to delete word forward (instead of inserting tilde)
+    -- Fix forward delete key to actually delete forward (not insert tilde)
+    { key = "Delete", mods = "NONE", action = wezterm.action { SendString = "\x1b[3~" } },
+    -- Fix Option+Delete to delete word forward
     { key = "Delete", mods = "OPT",  action = wezterm.action { SendString = "\x1bd" } },
     {
       key = 'L',
