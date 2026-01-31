@@ -313,11 +313,11 @@ generators.standup = function(members, conf)
     LF(),
     t('** :postal_horn: Announcements'),
     LF(),
-    t('[[https://dt-rnd.atlassian.net/issues?jql=summary%20~%20%22DTP%20Support%20%2F%20Enablement%22%20AND%20%20(%22Team%5BTeam%5D%22%20%3D%2039167d95-7b82-4268-8b46-83d2ac7006d7-1304)%20AND%20Sprint%20in%20openSprints()%20ORDER%20BY%20issuekey][Who is goalkeeper?]]'),
     i(1), -- convenience cursor position TODO add indexed insert notes for each position for each member
     LF(),
     t('** :wip: Poststandup Sync Topics'),
     LF(),
+    t("*** Standup of Standups"),
     LF(),
     t('** Hurdles or Action Points'),
     LF(),

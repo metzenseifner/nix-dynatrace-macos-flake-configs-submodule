@@ -1,5 +1,6 @@
 lastupdatecheck: 0
 recentrepos:
+    - /Users/jonathan.komar/devel/tampermonkey_scripts
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/NOISSUE_golangcilint_v2-migration
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-promotion-service/branches/ASDY-18688_promotion_stages-prop-promo-logic
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-promotion-service/branches/ASDY-18688_customfields_add-promote-according-to-stages-logic
@@ -9,7 +10,6 @@ recentrepos:
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/ASDY-19560_qualitygates_pr-content-fix
     - /Users/jonathan.komar/devel/nixos-configuration
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/team-care-vacation-plans
-    - /Users/jonathan.komar/devel/flake-templates
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/build-units-service/branches/ASDY-17722_vulnerability_tomcat
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/ASDY-14769_approveandmerge_add-new-deployment-ring-support
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-tools/branches/ASDY-14769_prs_update-support-for-deployment-ring-titles

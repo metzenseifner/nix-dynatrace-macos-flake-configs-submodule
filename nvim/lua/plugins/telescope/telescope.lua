@@ -73,6 +73,30 @@ return {
   config = function(_, opts)
     local actions = require("telescope.actions")
     local live_grep_args_actions = require("telescope-live-grep-args.actions")
+    local action_state = require("telescope.actions.state")
+    
+    -- Custom action to open Oil with selected file
+    local open_in_oil = function(prompt_bufnr)
+      local entry = action_state.get_selected_entry()
+      actions.close(prompt_bufnr)
+      
+      if entry then
+        local filepath = entry.path or entry.filename or entry.value
+        if filepath then
+          -- Open oil in the directory containing the file
+          local dir = vim.fn.fnamemodify(filepath, ":h")
+          require("oil").open(dir)
+          
+          -- Schedule cursor positioning after oil opens
+          vim.schedule(function()
+            local filename = vim.fn.fnamemodify(filepath, ":t")
+            -- Search for the file in the oil buffer
+            vim.fn.search("\\V" .. vim.fn.escape(filename, "\\"), "w")
+          end)
+        end
+      end
+    end
+    
     local conf =
     {
       defaults = {
@@ -108,9 +132,11 @@ return {
             ["<C-G>"] = actions.move_to_bottom,
             ["<C-u>"] = actions.preview_scrolling_up,
             ["<C-d>"] = actions.preview_scrolling_down,
-            ["<C-q>"] = actions.send_selected_to_qflist,
+            --["<C-q>"] = actions.send_selected_to_qflist,
+            ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
             ["<C-l>"] = actions.send_selected_to_loclist,
             ["<C-e>"] = actions.select_all,
+            ["<C-n>"] = open_in_oil,
             ["<PageUp>"] = actions.results_scrolling_up,
             ["<PageDown>"] = actions.results_scrolling_down,
           },
