@@ -8,7 +8,7 @@ vim.keymap.set('n', '<C-p>', '<Cmd>try | cprevious | catch | clast | catch | end
   { desc = "Previous in quickfix list" })
 
 -- Remove current item from quickfix list
-vim.keymap.set('n', '<C-d>', function()
+vim.keymap.set('n', '<C-r>', function()
   local qf_list = vim.fn.getqflist()
   local cur_pos = vim.fn.line('.')
   table.remove(qf_list, cur_pos)
