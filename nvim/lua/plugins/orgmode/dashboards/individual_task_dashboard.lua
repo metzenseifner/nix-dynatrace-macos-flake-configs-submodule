@@ -1,3 +1,5 @@
+require('plugins.orgmode.dashboards.types')
+
 local function current_week_monday()
   local current_day = os.date("*t").wday
   local days_to_monday = (current_day == 1) and 6 or (current_day - 2)
@@ -10,8 +12,10 @@ local function current_week_friday()
   return os.date("%Y-%m-%d", os.time() + (days_to_friday * 24 * 60 * 60))
 end
 
-local make_dashboard_for = function(name)
-  ---@return OrgAgendaCustomCommandAgenda
+---Creates a task dashboard for an individual team member
+---@param name string The name of the team member
+---@return fun(): OrgAgendaCustomCommand A function that returns the dashboard configuration
+local make_individual_task_dashboard_for = function(name)
   return function()
     local portable = require('config.portable')
     local sprint = vim.fn.trim(portable.safe_system("sprint_supplier", "orgmode_sprint"))
@@ -84,5 +88,5 @@ local make_dashboard_for = function(name)
 end
 
 return {
-  make_dashboard_for = make_dashboard_for,
+  make_task_dashboard_for = make_individual_task_dashboard_for,
 }

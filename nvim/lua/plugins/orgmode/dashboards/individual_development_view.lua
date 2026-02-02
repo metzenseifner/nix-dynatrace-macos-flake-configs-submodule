@@ -1,10 +1,20 @@
-local make_personal_development_view_for = function(name)
+require('plugins.orgmode.dashboards.types')
+
+---Creates a development view for an individual team member
+---@param name string The name of the team member
+---@return OrgAgendaCustomCommand The agenda custom command configuration
+local make_individual_development_view_for = function(name)
   return {
     description = string.format("%s's Growth View", name),
     types = {
       {
+        org_agenda_overriding_header = string.format("# My Observations of %s", name),
         type = "tags",
-        match = string.format('+TYPE="Initiative"&BY="%s"', name, name),
+        match = string.format('+TYPE="Observation"&BY="%s"', name)
+      },
+      {
+        type = "tags",
+        match = string.format('+TYPE="Initiative"&BY="%s"', name),
         org_agenda_overriding_header = string.format("# %s's Initiatives", name),
       },
       {
@@ -57,5 +67,5 @@ local make_personal_development_view_for = function(name)
 end
 
 return {
-  make_personal_development_view_for = make_personal_development_view_for,
+  make_personal_development_view_for = make_individual_development_view_for,
 }

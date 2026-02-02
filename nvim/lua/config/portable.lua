@@ -1,13 +1,19 @@
 local M = {}
 local notified = {}
+local suppress_notifications = false
 
 local function notify(msg, level)
+  if suppress_notifications then return end
   local ok, n = pcall(require, "notify")
   if ok and type(n) == "function" then
     n(msg, level or vim.log.levels.INFO, { title = "Portable check" })
   else
     vim.notify(msg, level or vim.log.levels.INFO, { title = "Portable check" })
   end
+end
+
+function M.suppress_notifications(should_suppress)
+  suppress_notifications = should_suppress
 end
 
 function M.has(bin)

@@ -132,7 +132,8 @@ end
 return {
   'nvim-orgmode/orgmode',
   enabled = true,
-  lazy = true,
+  lazy = false,
+  priority = 1000,
   ft = { "org" },
   keys = {
     { '<leader>oa', function() require('orgmode').action('agenda.prompt') end,  desc = 'Open orgmode agenda' },
@@ -213,8 +214,18 @@ return {
       -- org_agenda_text_search_extra_files = {}
       org_agenda_custom_commands = (function()
         local portable = require('config.portable')
-        local team_members_str = portable.safe_system("yaml-supplier --key team_members", "orgmode_yaml_supplier")
         
+        -- Suppress notifications during plugin setup to avoid E565 error
+        portable.suppress_notifications(true)
+        
+        -- Extract team member names from YAML using yq
+        local team_members_str = portable.safe_system(
+          "yq -r '.team_members[].name' ~/.config/yaml-supplier/team_care.yml 2>/dev/null",
+          "orgmode_team_members"
+        )
+        
+        portable.suppress_notifications(false)
+
         local commands = {
           u = {
             name = 'Unscheduled Tasks',
@@ -225,7 +236,7 @@ return {
               tags = { '-SCHEDULED', '-DEADLINE' },
             },
           },
-          d = dashboards.make_dashboard_for("Jonathan Komar")(),
+          d = dashboards.make_task_dashboard_for("Jonathan Komar")(),
           g = dashboards.make_team_development_view_for(
             dashboards.make_personal_development_view_for,
             team_members_str ~= "" and vim.split(team_members_str, '\n') or {}
@@ -246,13 +257,13 @@ return {
             },
           },
         }
-        
+
         -- Dynamically add team member development views
         local team_shortcuts = dashboards.generate_team_member_shortcuts(team_members_str)
         for key, view in pairs(team_shortcuts) do
           commands[key] = view
         end
-        
+
         return commands
       end)(),
       -- Example combined view (commented out):
@@ -371,7 +382,7 @@ return {
               vim.notify('Export Error!')
               vim.api.nvim_echo({ { table.concat(err, '\n'), 'ErrorMsg' } }, true, {})
             end
-            return exporter(command, target, on_success, on_error)
+            return exporter(command, cxt.target_file, on_success, on_error)
           end
         },
         x = {
@@ -501,7 +512,7 @@ return {
           current_date.year = current_date.year + math.floor((current_date.month - 1) / 12)
           current_date.month = current_date.month % 12 + 12
         end
-        local target_date = os.time(current_date)
+        local target_date = os.time(string(current_date))
 
         for _, file in ipairs(agenda_files) do
           local items = orgmode.api.parse_file(file)
@@ -613,7 +624,7 @@ return {
       vim.cmd('normal! ' .. current_line .. 'G')
     end
 
-    function toggle_checkbox()
+    local function toggle_checkbox()
       local mode = vim.fn.mode()
       local start_line, end_line
 
@@ -625,7 +636,19 @@ return {
         end_line = start_line
       end
 
-      local lines = vim.fn.getline(start_line, end_line)
+      local function normalize_to_string_array(v)
+        if v == nil then
+          return {}
+        elseif type(v) == "string" then
+          return { v }
+        elseif type(v) == "table" then
+          return v
+        else
+          error("unexpected type from getline: " .. type(v))
+        end
+      end
+
+      local lines = normalize_to_string_array(vim.fn.getline(start_line, end_line))
       local checkbox_pattern = "%[.%]"
       local checked_pattern = "%[X%]"
       local unchecked_pattern = "%[ %]"
@@ -947,90 +970,90 @@ return {
     -- the previous bullet (not the text content). This preserves nested list
     -- structure while avoiding unwanted indentation of continuation text.
     -- Preserves indentexpr for text wrapping (gw command).
-    
-    local function get_bullet_column(line)
-      -- Match org list bullets: -, +, *, or numbers followed by . or )
-      local bullet_start, bullet_end = line:find("^%s*[%-%+%*]%s")
-      if not bullet_start then
-        bullet_start, bullet_end = line:find("^%s*%d+[%.%)]%s")
-      end
-      if bullet_start then
-        return bullet_end - 2  -- Column of the bullet character (0-indexed)
-      end
-      return nil  -- Not a list item
-    end
-    
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = "org",
-      callback = function()
-        -- Map Enter to insert newline and indent to bullet column
-        vim.keymap.set('i', '<CR>', function()
-          local line = vim.api.nvim_get_current_line()
-          local bullet_col = get_bullet_column(line)
-          if bullet_col then
-            -- Get cursor position (col is 0-indexed, byte position)
-            local cursor = vim.api.nvim_win_get_cursor(0)
-            local row, col = cursor[1], cursor[2]
-            
-            -- Split the line at cursor position
-            -- col is the byte index where cursor is, so text before is 1 to col
-            -- and text after starts at col+1
-            local before = line:sub(1, col)
-            local after = line:sub(col + 1)
-            
-            -- Replace current line with before part
-            vim.api.nvim_buf_set_lines(0, row - 1, row, false, {before})
-            
-            -- Insert new line with proper indent and after text
-            local indent = string.rep(' ', bullet_col)
-            vim.api.nvim_buf_set_lines(0, row, row, false, {indent .. after})
-            
-            -- Move cursor to correct position (row+1, bullet_col in 0-indexed)
-            vim.api.nvim_win_set_cursor(0, {row + 1, bullet_col})
-            
-            return ''
-          else
-            -- Not on a list item: use default Enter behavior
-            return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
-          end
-        end, {
-          buffer = true,
-          expr = true,
-          silent = true,
-          desc = "Insert newline with bullet-level indent"
-        })
-        
-        -- Map o in normal mode to open line below with bullet-level indent
-        vim.keymap.set('n', 'o', function()
-          local line = vim.api.nvim_get_current_line()
-          local bullet_col = get_bullet_column(line)
-          if bullet_col then
-            -- Get cursor position
-            local cursor = vim.api.nvim_win_get_cursor(0)
-            local row = cursor[1]
-            
-            -- Insert new line with proper indent
-            local indent = string.rep(' ', bullet_col)
-            vim.api.nvim_buf_set_lines(0, row, row, false, {indent})
-            
-            -- Move cursor to end of new line and enter insert mode
-            vim.api.nvim_win_set_cursor(0, {row + 1, bullet_col})
-            vim.cmd('startinsert')
-            
-            return ''
-          else
-            -- Not on a list item: use default o behavior
-            return vim.api.nvim_replace_termcodes('o', true, false, true)
-          end
-        end, {
-          buffer = true,
-          expr = true,
-          silent = true,
-          desc = "Open line below with bullet-level indent"
-        })
-      end,
-      desc = "Smart indentation for org list items"
-    })
+
+    -- local function get_bullet_column(line)
+    --   -- Match org list bullets: -, +, *, or numbers followed by . or )
+    --   local bullet_start, bullet_end = line:find("^%s*[%-%+%*]%s")
+    --   if not bullet_start then
+    --     bullet_start, bullet_end = line:find("^%s*%d+[%.%)]%s")
+    --   end
+    --   if bullet_start then
+    --     return bullet_end - 2  -- Column of the bullet character (0-indexed)
+    --   end
+    --   return nil  -- Not a list item
+    -- end
+
+    -- vim.api.nvim_create_autocmd("FileType", {
+    --   pattern = "org",
+    --   callback = function()
+    --     -- Map Enter to insert newline and indent to bullet column
+    --     vim.keymap.set('i', '<CR>', function()
+    --       local line = vim.api.nvim_get_current_line()
+    --       local bullet_col = get_bullet_column(line)
+    --       if bullet_col then
+    --         -- Get cursor position (col is 0-indexed, byte position)
+    --         local cursor = vim.api.nvim_win_get_cursor(0)
+    --         local row, col = cursor[1], cursor[2]
+    --
+    --         -- Split the line at cursor position
+    --         -- col is the byte index where cursor is, so text before is 1 to col
+    --         -- and text after starts at col+1
+    --         local before = line:sub(1, col)
+    --         local after = line:sub(col + 1)
+    --
+    --         -- Replace current line with before part
+    --         vim.api.nvim_buf_set_lines(0, row - 1, row, false, {before})
+    --
+    --         -- Insert new line with proper indent and after text
+    --         local indent = string.rep(' ', bullet_col)
+    --         vim.api.nvim_buf_set_lines(0, row, row, false, {indent .. after})
+    --
+    --         -- Move cursor to correct position (row+1, bullet_col in 0-indexed)
+    --         vim.api.nvim_win_set_cursor(0, {row + 1, bullet_col})
+    --
+    --         return ''
+    --       else
+    --         -- Not on a list item: use default Enter behavior
+    --         return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
+    --       end
+    --     end, {
+    --       buffer = true,
+    --       expr = true,
+    --       silent = true,
+    --       desc = "Insert newline with bullet-level indent"
+    --     })
+    --
+    --     -- Map o in normal mode to open line below with bullet-level indent
+    --     vim.keymap.set('n', 'o', function()
+    --       local line = vim.api.nvim_get_current_line()
+    --       local bullet_col = get_bullet_column(line)
+    --       if bullet_col then
+    --         -- Get cursor position
+    --         local cursor = vim.api.nvim_win_get_cursor(0)
+    --         local row = cursor[1]
+    --
+    --         -- Insert new line with proper indent
+    --         local indent = string.rep(' ', bullet_col)
+    --         vim.api.nvim_buf_set_lines(0, row, row, false, {indent})
+    --
+    --         -- Move cursor to end of new line and enter insert mode
+    --         vim.api.nvim_win_set_cursor(0, {row + 1, bullet_col})
+    --         vim.cmd('startinsert')
+    --
+    --         return ''
+    --       else
+    --         -- Not on a list item: use default o behavior
+    --         return vim.api.nvim_replace_termcodes('o', true, false, true)
+    --       end
+    --     end, {
+    --       buffer = true,
+    --       expr = true,
+    --       silent = true,
+    --       desc = "Open line below with bullet-level indent"
+    --     })
+    --   end,
+    --   desc = "Smart indentation for org list items"
+    -- })
   end,
 }
 
