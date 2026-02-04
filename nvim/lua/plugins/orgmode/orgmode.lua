@@ -214,16 +214,16 @@ return {
       -- org_agenda_text_search_extra_files = {}
       org_agenda_custom_commands = (function()
         local portable = require('config.portable')
-        
+
         -- Suppress notifications during plugin setup to avoid E565 error
         portable.suppress_notifications(true)
-        
+
         -- Extract team member names from YAML using yq
         local team_members_str = portable.safe_system(
           "yq -r '.team_members[].name' ~/.config/yaml-supplier/team_care.yml 2>/dev/null",
           "orgmode_team_members"
         )
-        
+
         portable.suppress_notifications(false)
 
         local commands = {
@@ -815,6 +815,12 @@ return {
         '--metadata', 'title=' .. vim.fn.fnamemodify(current_file, ':t:r')
       }
 
+      -- Add properties filter for org files
+      if is_org then
+        local filter_path = vim.fn.expand('$HOME/.local/share/pandoc/org-properties-filter.lua')
+        table.insert(command, 2, '--lua-filter=' .. filter_path)
+      end
+
       -- Execute pandoc
       local result = vim.fn.system(command)
       local exit_code = vim.v.shell_error
@@ -890,6 +896,12 @@ return {
           '--metadata', 'title=' .. vim.fn.fnamemodify(current_file, ':t:r'),
           '--metadata', 'header-includes=<meta http-equiv="refresh" content="2">'
         }
+
+        -- Add properties filter for org files
+        if is_org then
+          local filter_path = vim.fn.expand('$HOME/.local/share/pandoc/org-properties-filter.lua')
+          table.insert(command, 2, '--lua-filter=' .. filter_path)
+        end
 
         vim.fn.system(command)
         if vim.v.shell_error == 0 then
