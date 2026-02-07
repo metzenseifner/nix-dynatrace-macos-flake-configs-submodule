@@ -24,8 +24,8 @@ return {
               -- Press 'q' in normal mode to close quickly
               vim.api.nvim_buf_set_keymap(t.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
               -- Press <C-o> to switch to horizontal split
-              vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", { 
-                noremap = true, 
+              vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", {
+                noremap = true,
                 silent = true,
                 callback = function()
                   t:close()
