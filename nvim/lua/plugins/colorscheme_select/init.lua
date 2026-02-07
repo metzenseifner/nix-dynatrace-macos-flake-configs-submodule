@@ -9,6 +9,7 @@ return {
     local conf = {
       startup_mode = "dark", -- "light" | "dark"
       dark_schemes = {
+        "ayu-mirage",
         "grail",
         "nightfox",
         "slate",

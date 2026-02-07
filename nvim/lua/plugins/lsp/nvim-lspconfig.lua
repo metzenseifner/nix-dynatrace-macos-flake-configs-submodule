@@ -399,7 +399,16 @@ return {
     end
 
     if have_mason then
-      mason_lspconfig.setup({ ensure_installed = ensure_installed })
+      -- Filter out jdtls from mason management (handled by nix)
+      local mason_servers = vim.tbl_filter(function(s)
+        return s ~= "jdtls"
+      end, ensure_installed)
+
+      if #mason_servers ~= #ensure_installed then
+        vim.notify("jdtls excluded from mason (using nix environment)", vim.log.levels.INFO)
+      end
+
+      mason_lspconfig.setup({ ensure_installed = mason_servers })
       -- Manually call setup for each mason-installed server
       for _, server in ipairs(ensure_installed) do
         setup(server)
@@ -420,13 +429,31 @@ return {
     vim.keymap.set('n', 'gs', function()
       --if you want to filter by symbol type: tb.lsp_document_symbols({ symbols = { 'function', 'method' } })
       require('telescope.builtin').lsp_dynamic_workspace_symbols()
-    end, {desc="Find/Search symbol within the entire workspace. (live search)"})
+    end, { desc = "Find/Search symbol within the entire workspace. (live search)" })
 
     -- intentional duplicate symbol
     vim.keymap.set('n', 'S', function()
       --if you want to filter by symbol type: tb.lsp_document_symbols({ symbols = { 'function', 'method' } })
       require('telescope.builtin').lsp_dynamic_workspace_symbols()
-    end, {desc="Find symbol/Search symbol within the entire workspace. (live search)"})
+    end, { desc = "Find symbol/Search symbol within the entire workspace. (live search)" })
+
+    -- Visual/select mode: grab selection and use it as default_text
+    vim.keymap.set('v', 'S', function()
+      -- get selection via Lua API
+      local pos_start = vim.api.nvim_buf_get_mark(0, '<')
+      local pos_end   = vim.api.nvim_buf_get_mark(0, '>')
+
+      local lines     = vim.api.nvim_buf_get_text(
+        0,
+        pos_start[1] - 1, pos_start[2],
+        pos_end[1] - 1, pos_end[2],
+        {}
+      )
+
+      local text = table.concat(lines, '\n'):gsub('^%s+', ''):gsub('%s+', '')
+
+      require('telescope.builtin').lsp_dynamic_workspace_symbols({ default_text = text })
+    end, { desc = "Workspace symbols from visual selection" })
 
     vim.keymap.set('n', '<leader>f', format_buffer,
       { desc = "lsp.buf.format: Auto format code in buffer. TODO provide selection menu of formatters to apply." })

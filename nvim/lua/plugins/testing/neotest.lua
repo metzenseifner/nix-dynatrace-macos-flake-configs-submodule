@@ -8,22 +8,39 @@ return {
       { "nvim-neotest/nvim-nio" },
       { "nvim-lua/plenary.nvim" },
       { "antoinemadec/FixCursorHold.nvim" },
-      { "nvim-treesitter/nvim-treesitter" },               -- important for detecting tests
-      { "nvim-treesitter/nvim-treesitter" },               -- nvim-treesitter can be added if you have it lazily loaded. It must be loaded before for this plugin to work.
-      { "fredrikaverpil/neotest-golang",  version = "*" }, -- Installation
-      { "nvim-contrib/nvim-ginkgo"}
+      { "nvim-treesitter/nvim-treesitter" }, -- important for detecting tests
+
+      -- Load adapter plugins from separate files
+      { import = "plugins.testing.adapters.golang" },
+      { import = "plugins.testing.adapters.ginkgo" },
     },
     config = function()
+      -- Dynamically load adapters
+      local adapters = {}
+
+      -- Go adapter
+      local ok_go, neotest_go = pcall(require, "neotest-golang")
+      if ok_go then
+        -- neotest-golang needs to be called as a function to initialize
+        table.insert(adapters, neotest_go({
+          -- Let neotest-golang auto-detect build tags from files
+          dap_go_enabled = false, -- Disable DAP integration if not needed
+        }))
+      end
+
+      -- Ginkgo adapter (if enabled)
+      -- local ok_ginkgo, ginkgo = pcall(require, "nvim-ginkgo")
+      -- if ok_ginkgo then
+      --   table.insert(adapters, ginkgo)
+      -- end
+
       require("neotest").setup({
         log_level = 3,
         quickfix = {
           enabled = true,
           open = false,
         },
-        adapters = {
-          require("neotest-golang"),
-          -- require("nvim-ginkgo")
-        },
+        adapters = adapters,
         -- output_panel = {
         --   enabled = true,
         --   open = true,
@@ -76,13 +93,13 @@ return {
         end,
         desc = "Attach to nearest test."
       },
-      { "<leader><leader>tam", function() require("neotest").summary.run_marked() end,   desc = "Neotest run all marked tests in summary." },
-      { "<leader><leader>tw",  function() require("neotest").watch.watch() end,          desc = "Watch files for changes and run tests." },
-      { "<leader><leader>tus", function() require("neotest").summary.toggle() end,       desc = "Neotest Toggle Test Summary Window" },
-      { "<leader><leader>tuo", function() require("neotest").output_panel.open() end,  desc = "Neotest Open Test Output Panel Window" },
-      { "<leader><leader>tuoc", function() require("neotest").output_panel.close() end,  desc = "Neotest Close Test Output Panel Window" },
+      { "<leader><leader>tam",  function() require("neotest").summary.run_marked() end,   desc = "Neotest run all marked tests in summary." },
+      { "<leader><leader>tw",   function() require("neotest").watch.watch() end,          desc = "Watch files for changes and run tests." },
+      { "<leader><leader>tus",  function() require("neotest").summary.toggle() end,       desc = "Neotest Toggle Test Summary Window" },
+      { "<leader><leader>tuo",  function() require("neotest").output_panel.open() end,    desc = "Neotest Open Test Output Panel Window" },
+      { "<leader><leader>tuoc", function() require("neotest").output_panel.close() end,   desc = "Neotest Close Test Output Panel Window" },
       { "<leader><leader>tuot", function() require("neotest").output_panel.toggle() end,  desc = "Neotest Toggle Test Output Panel Window" },
-      { "<leader><leader>tcm", function() require("neotest").summary.clear_marked() end, desc = "Neotest Clear marked to tests in summary." },
+      { "<leader><leader>tcm",  function() require("neotest").summary.clear_marked() end, desc = "Neotest Clear marked to tests in summary." },
     }
   },
 }

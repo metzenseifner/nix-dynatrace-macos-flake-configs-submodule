@@ -1,8 +1,49 @@
 return {
-    "akinsho/toggleterm.nvim",
-  }
-    --version = "*",
-    --opts = {
+  "akinsho/toggleterm.nvim",
+
+  config = function(_, _)
+    local Terminal = require('toggleterm.terminal').Terminal
+
+    vim.keymap.set('n', '<leader>gc', function()
+      vim.ui.input({
+        prompt = 'Git command: ',
+        default = 'git ',
+      }, function(input)
+        if input then
+          local term = Terminal:new({
+            cmd = input,
+            direction = "float",
+            close_on_exit = false,
+            float_opts = {
+              border = "curved",
+              width = math.floor(vim.o.columns * 0.9),
+              height = math.floor(vim.o.lines * 0.9),
+            },
+            on_open = function(t)
+              vim.cmd("startinsert!")
+              -- Press 'q' in normal mode to close quickly
+              vim.api.nvim_buf_set_keymap(t.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+              -- Press <C-o> to switch to horizontal split
+              vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", { 
+                noremap = true, 
+                silent = true,
+                callback = function()
+                  t:close()
+                  t.direction = "horizontal"
+                  t:open()
+                  vim.cmd("startinsert!")
+                end
+              })
+            end,
+          })
+          term:toggle()
+        end
+      end)
+    end, { desc = 'Run git command in terminal' })
+  end
+}
+--version = "*",
+--opts = {
 --      -- size can be a number or function which is passed the current terminal
 --  size = 20 | function(term)
 --    if term.direction == "horizontal" then
@@ -68,4 +109,3 @@ return {
 --  },
 --    }
 --  }
-

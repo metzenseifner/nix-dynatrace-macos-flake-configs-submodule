@@ -10,12 +10,12 @@ local function get_dynamic_triggers()
   if vim.fn.executable("yaml-supplier") ~= 1 then
     return { "team-member-unavailable" }
   end
-  
+
   local ok, result = pcall(vim.fn.system, "yaml-supplier --key team_members")
   if not ok or result == "" then
     return { "team-member-unavailable" }
   end
-  
+
   local choices = vim.split(result, '\n')
   local triggers = {}
   for _, value in ipairs(choices) do

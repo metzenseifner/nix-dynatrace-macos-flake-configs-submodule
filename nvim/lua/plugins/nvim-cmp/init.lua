@@ -80,15 +80,21 @@ return {
             -- end
           end,
 
-          ["<C-y>"] = function()
-            -- if require 'luasnip'.choice_active() then
-            --  cmp.confirm()
-            -- else
-            cmp.confirm({
-              -- behavior = cmp.ConfirmBehavior.Insert,
-              select = true,
-            })
-            -- end
+          ["<C-y>"] = function(fallback)
+            local ls = require 'luasnip'
+            if ls.choice_active() then
+              -- When choice is active, jump forward to finalize the selection
+              if ls.jumpable(1) then
+                ls.jump(1)
+              else
+                fallback()
+              end
+            else
+              cmp.confirm({
+                -- behavior = cmp.ConfirmBehavior.Insert,
+                select = true,
+              })
+            end
           end,
           --["<C-o>"] = cmp.mapping.complete(select_opts), -- overrides builtin <C-o> which enteres normal mode for one command and switches back. this is control + space on VS Code (triggers the autocompletion menu)
           -- ["<C-o>"] = function()

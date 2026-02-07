@@ -1,7 +1,19 @@
+local shared_rg_args = {
+  "--color=never",
+  "--no-heading",
+  "--with-filename",
+  "--line-number",
+  "--column",    -- Show column numbers (1-based). This only shows the column numbers for the first match on each line.
+  '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
+  '--hidden',    -- Search hidden files and directories.
+  '--follow',    --ripgrep will follow symbolic links while traversing directories.
+  '--',
+  ' ',
+}
 local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
   local opts = {}
   local should_close_picker = false
-  
+
   -- Check if called from within a picker (has prompt_bufnr) or standalone
   if type(prompt_bufnr_or_opts) == "number" then
     -- Called from within a picker with prompt_bufnr
@@ -47,14 +59,14 @@ local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
   else
     severity_label = tostring(severity)
   end
-  
+
   opts.prompt_title = string.format("Diagnostics - Filter <C-x>[e:%d w:%d i:%d h:%d] - %s",
     counts.error, counts.warn, counts.info, counts.hint, severity_label)
 
   if should_close_picker then
     require("telescope.actions").close(prompt_bufnr_or_opts)
   end
-  
+
   vim.schedule(function()
     require("telescope.builtin").diagnostics(opts)
   end)
@@ -74,19 +86,19 @@ return {
     local actions = require("telescope.actions")
     local live_grep_args_actions = require("telescope-live-grep-args.actions")
     local action_state = require("telescope.actions.state")
-    
+
     -- Custom action to open Oil with selected file
     local open_in_oil = function(prompt_bufnr)
       local entry = action_state.get_selected_entry()
       actions.close(prompt_bufnr)
-      
+
       if entry then
         local filepath = entry.path or entry.filename or entry.value
         if filepath then
           -- Open oil in the directory containing the file
           local dir = vim.fn.fnamemodify(filepath, ":h")
           require("oil").open(dir)
-          
+
           -- Schedule cursor positioning after oil opens
           vim.schedule(function()
             local filename = vim.fn.fnamemodify(filepath, ":t")
@@ -96,7 +108,7 @@ return {
         end
       end
     end
-    
+
     local conf =
     {
       defaults = {
@@ -266,11 +278,13 @@ return {
         require("telescope-live-grep-args.shortcuts").grep_visual_selection({
           quote = false,
           trim = true,
-          postfix =
-          ""
+          default_text = table.concat(shared_rg_args, " "),
+          postfix = "",
+          prompt_title = "Search in Buffer",
+          search_dirs = { vim.api.nvim_buf_get_name(0) },
         })
       end,
-      { desc = "Grep selection in project." })
+      { desc = "Grep selection in current buffer." })
 
     vim.keymap.set('n', "<leader>pd", function() diagnostics_telescope_action({ bufnr = 0 }, "all") end,
       { desc = "Buffer diagnostics" })
@@ -280,15 +294,16 @@ return {
       { desc = "Buffer diagnostics to location list" })
     vim.keymap.set('n', "<leader>dd", "<cmd>lua vim.diagnostic.setqflist()<cr>",
       { desc = "Workspace diagnostics to quickfix list" })
-    -- Grep visual selection only within the current buffer
-    vim.keymap.set('v', '<C-f>b', function()
+    -- Grep visual selection in the whole workspace (recursive search)
+    vim.keymap.set('v', '<C-f><C-f>', function()
       require("telescope-live-grep-args.shortcuts").grep_visual_selection({
         quote = false,
         trim = true,
+        default_text = table.concat(shared_rg_args, " "),
         postfix = "",
-        search_dirs = { vim.api.nvim_buf_get_name(0) },
+        prompt_title = "Search in Workspace",
       })
-    end, { desc = "Grep selection in current buffer." })
+    end, { desc = "Grep selection in workspace." })
 
     -- vim.keymap.set('n', '<leader>fg', rhs, opts)
     vim.keymap.set('v', '<C-s>',
@@ -410,23 +425,11 @@ return {
     local values = require('telescope.config').values
     vim.keymap.set('n', '<leader>pfgg',
       function()
-        local default_text = {
-          "--color=never",
-          "--no-heading",
-          "--with-filename",
-          "--line-number",
-          "--column",    -- Show column numbers (1-based). This only shows the column numbers for the first match on each line.
-          '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
-          '--hidden',    -- Search hidden files and directories.
-          '--follow',    --ripgrep will follow symbolic links while traversing directories.
-          '--',
-          ' ',
-        }
         local cmd_str = table.concat(values.vimgrep_arguments or {}, ' ')
         require('telescope').extensions.live_grep_args.live_grep_args(
           object_assign(
             {
-              default_text = table.concat(default_text, " "),
+              default_text = table.concat(shared_rg_args, " "),
               prompt_title = string.format('live_grep_args: %s', cmd_str)
               -- prompt_title =
               -- "live_grep_args (Ripgrep) . (+/- files with --iglob **/dir/**) (--no-ignore to ignore gitignore)",

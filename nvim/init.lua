@@ -44,4 +44,5 @@ require('config/autocmds')
 require('config/diagnostic')
 require('config/highlight_groups')
 require('config/portable')
+require('config/gopls_build_tags').setup() -- Auto-detect build tags for gopls
 --"--lua require()

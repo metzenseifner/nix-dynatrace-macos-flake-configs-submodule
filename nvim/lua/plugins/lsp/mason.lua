@@ -12,6 +12,11 @@ return {
       --"flake8",
     },
     --automatic_installation = true, --unnecessary because we call setup with ensure_installed
+    -- Prevent mason from managing jdtls (use nix instead)
+    ui = {
+      check_outdated_packages_on_open = true,
+      border = "rounded",
+    },
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}
   config = function(_, opts)

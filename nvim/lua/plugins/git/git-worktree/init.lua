@@ -38,7 +38,7 @@ return {
 
     -- Use shared wt-b module (single source of truth)
     local wt_b = require("utils.git_wt_b")
-    
+
     -- Custom function to create worktree using git wt-b alias
     local function create_worktree_wt_b_style()
       wt_b.prompt_and_create(function(worktree_path, git_root)
@@ -52,42 +52,45 @@ return {
     -- Enhanced git worktree picker with Ctrl-n to create and auto-refresh
     local function show_worktrees_with_create()
       local actions = require("telescope.actions")
-      
-      require("telescope").extensions.git_worktree.git_worktrees({
-        attach_mappings = function(prompt_bufnr, map)
-          -- Add Ctrl-n to create new worktree from within picker
-          map("i", "<C-n>", function()
-            actions.close(prompt_bufnr)
-            -- Use shared wt-b module with completion callback to reopen picker
-            wt_b.prompt_and_create(function(worktree_path, git_root)
-              vim.defer_fn(function()
-                -- Switch to the new worktree
-                Worktree.switch_worktree(worktree_path)
-                -- Auto-refresh picker after switching
+
+      require("telescope").extensions.git_worktree.git_worktrees(object_assign(
+        {
+          attach_mappings = function(prompt_bufnr, map)
+            -- Add Ctrl-n to create new worktree from within picker
+            map("i", "<C-n>", function()
+              actions.close(prompt_bufnr)
+              -- Use shared wt-b module with completion callback to reopen picker
+              wt_b.prompt_and_create(function(worktree_path, git_root)
                 vim.defer_fn(function()
-                  show_worktrees_with_create()
-                end, 200)
-              end, 50)
+                  -- Switch to the new worktree
+                  Worktree.switch_worktree(worktree_path)
+                  -- Auto-refresh picker after switching
+                  vim.defer_fn(function()
+                    show_worktrees_with_create()
+                  end, 200)
+                end, 50)
+              end)
             end)
-          end)
-          map("n", "<C-n>", function()
-            actions.close(prompt_bufnr)
-            -- Use shared wt-b module with completion callback to reopen picker
-            wt_b.prompt_and_create(function(worktree_path, git_root)
-              vim.defer_fn(function()
-                -- Switch to the new worktree
-                Worktree.switch_worktree(worktree_path)
-                -- Auto-refresh picker after switching
+            map("n", "<C-n>", function()
+              actions.close(prompt_bufnr)
+              -- Use shared wt-b module with completion callback to reopen picker
+              wt_b.prompt_and_create(function(worktree_path, git_root)
                 vim.defer_fn(function()
-                  show_worktrees_with_create()
-                end, 200)
-              end, 50)
+                  -- Switch to the new worktree
+                  Worktree.switch_worktree(worktree_path)
+                  -- Auto-refresh picker after switching
+                  vim.defer_fn(function()
+                    show_worktrees_with_create()
+                  end, 200)
+                end, 50)
+              end)
             end)
-          end)
-          
-          return true
-        end,
-      })
+
+            return true
+          end,
+        },
+        require 'telescope.themes'.get_ivy({ previewer = true })
+      ))
     end
 
     ----------------------------------------------------------------------
