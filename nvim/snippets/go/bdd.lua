@@ -19,10 +19,10 @@ func Step(t *testing.T, label, desc string, fn func()) {
 	fn()
 }
 
-func Given(t *testing.T, desc string, fn func()) { Step(t, "Given", desc, fn) }
-func When(t *testing.T, desc string, fn func())  { Step(t, "When", desc, fn) }
-func Then(t *testing.T, desc string, fn func())  { Step(t, "Then", desc, fn) }
-func And(t *testing.T, desc string, fn func())   { Step(t, "And", desc, fn) }
+func Given(t *testing.T, desc string, fn func()) { t.Helper(); Step(t, "Given", desc, fn) }
+func When(t *testing.T, desc string, fn func())  { t.Helper(); Step(t, "When", desc, fn) }
+func Then(t *testing.T, desc string, fn func())  { t.Helper(); Step(t, "Then", desc, fn) }
+func And(t *testing.T, desc string, fn func())   { t.Helper(); Step(t, "And", desc, fn) }
 ]]
 return {
   s("bdd", fmt(bdd_template, {}, {delimiters="<>"}))

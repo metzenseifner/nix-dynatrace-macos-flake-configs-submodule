@@ -58,9 +58,13 @@ return {
           -- end,
           -- Contextual mappings for the nvim-cmp floating pop-up window
           ["<C-n>"] = function()
-            if require 'luasnip'.choice_active() then
+            local ls = require 'luasnip'
+            if ls.choice_active() then
               vim.notify("Changing choice")
-              require "luasnip".change_choice(1)
+              ls.change_choice(1)
+            elseif ls.jumpable(1) then
+              vim.notify("Jumping to next snippet node")
+              ls.jump(1)
             elseif cmp.visible() then
               vim.notify("nvim-cmp selecting next item")
               cmp.select_next_item(select_opts)
@@ -82,18 +86,20 @@ return {
 
           ["<C-y>"] = function(fallback)
             local ls = require 'luasnip'
+            -- First handle choice node confirmation by jumping forward
             if ls.choice_active() then
-              -- When choice is active, jump forward to finalize the selection
-              if ls.jumpable(1) then
-                ls.jump(1)
-              else
-                fallback()
-              end
-            else
+              -- Jump forward to confirm/leave the choice node
+              ls.jump(1)
+              return
+            end
+            -- Then handle completion confirmation
+            if cmp.visible() then
               cmp.confirm({
                 -- behavior = cmp.ConfirmBehavior.Insert,
                 select = true,
               })
+            else
+              fallback()
             end
           end,
           --["<C-o>"] = cmp.mapping.complete(select_opts), -- overrides builtin <C-o> which enteres normal mode for one command and switches back. this is control + space on VS Code (triggers the autocompletion menu)

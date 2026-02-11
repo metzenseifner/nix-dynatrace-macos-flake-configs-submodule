@@ -9,14 +9,14 @@ return {
   keys = {
     { -- lazy style key map
       -- Choose your own keys, this works for me
-      "<leader>si",
+      "<leader>pi",
       "<cmd>Telescope hierarchy incoming_calls<cr>",
-      desc = "LSP: [S]earch [I]ncoming Calls",
+      desc = "LSP: [P]ick [I]ncoming Calls",
     },
     {
-      "<leader>so",
+      "<leader>po",
       "<cmd>Telescope hierarchy outgoing_calls<cr>",
-      desc = "LSP: [S]earch [O]utgoing Calls",
+      desc = "LSP: [P]ick [O]utgoing Calls",
     },
   },
   opts = {

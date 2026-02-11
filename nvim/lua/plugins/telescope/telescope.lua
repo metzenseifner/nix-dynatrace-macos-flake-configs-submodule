@@ -7,8 +7,6 @@ local shared_rg_args = {
   '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
   '--hidden',    -- Search hidden files and directories.
   '--follow',    --ripgrep will follow symbolic links while traversing directories.
-  '--',
-  ' ',
 }
 local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
   local opts = {}
@@ -248,7 +246,6 @@ return {
     install_extension("bookmarks")
     install_extension("repo")
     install_extension("gh")
-    install_extension("harpoon")
     install_extension("git_worktree")
     install_extension("env")
     install_extension("luasnip")
@@ -306,7 +303,7 @@ return {
     end, { desc = "Grep selection in workspace." })
 
     -- vim.keymap.set('n', '<leader>fg', rhs, opts)
-    vim.keymap.set('v', '<C-s>',
+    vim.keymap.set('v', '<C-f>',
       function()
         local function grep_in_selection_effect()
           -- Get start and end line of visual selection

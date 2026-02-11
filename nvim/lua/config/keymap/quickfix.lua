@@ -16,3 +16,12 @@ vim.keymap.set('n', '<C-p>', '<Cmd>try | cprevious | catch | clast | catch | end
 --   vim.fn.setqflist(qf_list, 'r')
 --   vim.cmd('cc ' .. math.min(cur_pos, #qf_list))
 -- end, { desc = "Remove current item from quickfix list", buffer = true })
+
+-- Add current cursor position to quickfix list
+vim.keymap.set('n', '<leader>qa', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local filename = vim.api.nvim_buf_get_name(bufnr)
+  vim.fn.setqflist({{ filename = filename, lnum = cursor[1], col = cursor[2] + 1 }}, 'a')
+  print('Added ' .. filename .. ':' .. cursor[1] .. ' to quickfix list')
+end, { desc = "[Quickfix] Add current position" })

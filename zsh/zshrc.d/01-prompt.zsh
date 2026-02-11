@@ -170,6 +170,7 @@ setup_zsh_shell() {
   typeset -g DIR="%1d"
   typeset -g END=$'\n'"%B%F{green}$%f%b "
   typeset -g NEWLINE=$'\n'
+  typeset -g NIX_INDICATOR="${IN_NIX_SHELL:+($IN_NIX_SHELL ${NIX_BUILD_TOP}) }"
 
   # Compute initial prompt parts
   __update_worktree_root
@@ -182,7 +183,7 @@ setup_zsh_shell() {
   add-zsh-hook precmd  __update_worktree_root
   add-zsh-hook precmd  __update_git_prompt
 
-  PS1='${TTY} ${TIMESTAMP} '"${MYUSER}"'@'"${HOSTNAME}"'${PROMPT_WTR}${PROMPT_GIT} '"${DIR}"' '"${END}"
+  PS1='${TTY} ${TIMESTAMP} ${NIX_INDICATOR}'"${MYUSER}"'@'"${HOSTNAME}"'${PROMPT_WTR}${PROMPT_GIT} '"${DIR}"' '"${END}"
 }
 
 # Initialize only under zsh
