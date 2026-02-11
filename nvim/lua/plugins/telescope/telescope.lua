@@ -7,6 +7,7 @@ local shared_rg_args = {
   '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
   '--hidden',    -- Search hidden files and directories.
   '--follow',    --ripgrep will follow symbolic links while traversing directories.
+  ' ',           -- required to separate args from search string
 }
 local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
   local opts = {}
@@ -427,7 +428,7 @@ return {
           object_assign(
             {
               default_text = table.concat(shared_rg_args, " "),
-              prompt_title = string.format('live_grep_args: %s', cmd_str)
+              prompt_title = string.format('live_grep_args (hint: use -g|--glob to exclude filepath pattern): %s', cmd_str)
               -- prompt_title =
               -- "live_grep_args (Ripgrep) . (+/- files with --iglob **/dir/**) (--no-ignore to ignore gitignore)",
               -- results_title = cmd_str
