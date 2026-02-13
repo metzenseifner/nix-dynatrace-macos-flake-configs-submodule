@@ -1,4 +1,9 @@
 return {
+  s("dql-clusters", fmt([[
+    fetch logs
+    | limit 100
+    | summarize count = count(), by:{k8s.cluster.name}
+  ]], {}, { delimiters = "<>" })),
   s("dql-github-prs", fmt([[
     fetch events
     | filter contains(dt.openpipeline.source, "github")

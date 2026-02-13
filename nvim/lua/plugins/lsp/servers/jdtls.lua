@@ -140,6 +140,10 @@ return {
         trace = {
           server = "verbose"
         },
+        -- Symbol settings for workspace symbol search
+        symbols = {
+          includeSourceMethodDeclarations = true,
+        },
         -- Formatter settings will be auto-detected and configured in on_init
         configuration = {
           -- Use Java 17 for Gradle builds (from JAVA_17_HOME env var set by nix shell)
