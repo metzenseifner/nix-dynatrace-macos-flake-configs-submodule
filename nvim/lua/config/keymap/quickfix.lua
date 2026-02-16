@@ -2,10 +2,30 @@
 -- vim.keymap.set("n", "<C-n>", ":cnext<CR>zz", { desc = "Forward qfixlist" })
 -- vim.keymap.set("n", "<C-b>;", ":cprev<CR>zz", { desc = "Backward qfixlist" })
 
--- Cycle through quickfix list items
-vim.keymap.set('n', '<C-n>', '<Cmd>try | cnext | catch | cfirst | catch | endtry<CR>', { desc = "Next in quickfix list" })
-vim.keymap.set('n', '<C-p>', '<Cmd>try | cprevious | catch | clast | catch | endtry<CR>',
-  { desc = "Previous in quickfix list" })
+-- Cycle through quickfix list items (only when quickfix window is open)
+local function is_quickfix_open()
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win.quickfix == 1 then
+      return true
+    end
+  end
+  return false
+end
+
+local function safe_qf_next()
+  if is_quickfix_open() then
+    vim.cmd('try | cnext | catch | cfirst | catch | endtry')
+  end
+end
+
+local function safe_qf_prev()
+  if is_quickfix_open() then
+    vim.cmd('try | cprevious | catch | clast | catch | endtry')
+  end
+end
+
+vim.keymap.set('n', '<C-n>', safe_qf_next, { desc = "Next in quickfix list (if open)" })
+vim.keymap.set('n', '<C-p>', safe_qf_prev, { desc = "Previous in quickfix list (if open)" })
 
 -- Remove current item from quickfix list (do not use C-d or C-r to avoid collisions)
 -- TODO must fix this and others to do nothing if quickfix list is not open

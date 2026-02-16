@@ -7,7 +7,7 @@ return {
         -- dynatrace_projects = {
         --   roots = { "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/*" },
         -- },
-        ["dynatrace_bitbucket/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/*"
+        ["dynatrace_bitbucket/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/*",
         -- add more sources here if you like
         -- monorepo = { roots = { "/path/to/monorepo/branches/*" } },
       },
@@ -18,12 +18,12 @@ return {
       -- end
       on_select = function(path)
         vim.cmd('cd ' .. vim.fn.fnameescape(path))
-        
+
         local has_worktrees = function(project_path)
           local normalized_path = project_path:gsub('/$', '')
           local git_dir = normalized_path .. '/.git'
           local worktree_dir = git_dir .. '/worktrees'
-          
+
           if vim.fn.isdirectory(worktree_dir) == 1 then
             local worktrees = vim.fn.readdir(worktree_dir)
             local valid_worktrees = vim.tbl_filter(function(name)
@@ -33,7 +33,7 @@ return {
           end
           return false
         end
-        
+
         if has_worktrees(path) then
           local ok, telescope = pcall(require, 'telescope')
           if ok then
@@ -44,7 +44,7 @@ return {
               local actions = require("telescope.actions")
               local wt_b = require("utils.git_wt_b")
               local Worktree = require("git-worktree")
-              
+
               -- Show worktrees with Ctrl-n to create new
               local function show_worktrees_with_create()
                 telescope.extensions.git_worktree.git_worktrees({
@@ -63,20 +63,20 @@ return {
                         end, 50)
                       end)
                     end
-                    
+
                     map("i", "<C-n>", create_worktree_inline)
                     map("n", "<C-n>", create_worktree_inline)
                     return true
                   end,
                 })
               end
-              
+
               show_worktrees_with_create()
               return
             end
           end
         end
-        
+
         local ok_builtin, telescope_builtin = pcall(require, 'telescope.builtin')
         if ok_builtin then
           telescope_builtin.find_files({ cwd = path })

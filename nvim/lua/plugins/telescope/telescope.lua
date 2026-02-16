@@ -271,7 +271,7 @@ return {
     --------------------------------------------------------------------------------
     vim.keymap.set('n', '<leader>r', require('telescope.builtin').registers, { desc = 'Telescope registers' })
     -- putting in telescope package was not working (prob due to lazy loading)
-    vim.keymap.set('v', '<C-f>',
+    vim.keymap.set('v', '<C-s>',
       function()
         require("telescope-live-grep-args.shortcuts").grep_visual_selection({
           quote = false,
@@ -293,7 +293,7 @@ return {
     vim.keymap.set('n', "<leader>dd", "<cmd>lua vim.diagnostic.setqflist()<cr>",
       { desc = "Workspace diagnostics to quickfix list" })
     -- Grep visual selection in the whole workspace (recursive search)
-    vim.keymap.set('v', '<C-f><C-f>', function()
+    vim.keymap.set('v', '<C-s><C-s>', function()
       require("telescope-live-grep-args.shortcuts").grep_visual_selection({
         quote = false,
         trim = true,
