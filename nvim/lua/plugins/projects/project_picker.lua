@@ -8,6 +8,7 @@ return {
         --   roots = { "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/*" },
         -- },
         ["dynatrace_bitbucket/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/*",
+        ["state/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/state/*",
         -- add more sources here if you like
         -- monorepo = { roots = { "/path/to/monorepo/branches/*" } },
       },
