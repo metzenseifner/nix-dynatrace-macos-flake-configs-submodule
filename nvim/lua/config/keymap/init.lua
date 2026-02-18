@@ -403,6 +403,20 @@ safe_keymap({ "i", "s" }, "<c-s>", luasnip_safe_expand_or_jump, opts, 'Snippets'
 --local FORWARD = 1
 --safe_keymap({ "i", "s" }, "<C-c>", require 'luasnip'.change_choice(FORWARD), 'Snippets', 'luasnip.change_choice_forward', 'Switch to next choice.')
 
+local function luasnip_confirm_choice()
+  local ls = require('luasnip')
+  if ls.choice_active() then
+    -- Confirm the choice and exit choice selection
+    -- Jump forward to exit the choice node
+    if ls.jumpable(1) then
+      ls.jump(1)
+    end
+  end
+end
+
+safe_keymap({ "i", "s" }, "<C-y>", luasnip_confirm_choice, opts, 'Snippets', 'luasnip_confirm_choice',
+  'Confirm choice and exit choice selection')
+
 safe_keymap("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/setup/luasnip.lua<CR>", opts, "Snippets", "reload",
   "Reload the luasnip file at runtime.")
 
