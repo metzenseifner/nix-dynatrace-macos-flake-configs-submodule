@@ -6,7 +6,7 @@ return {
 
     vim.keymap.set('n', '<leader>gc', function()
       vim.ui.input({
-        prompt = 'Git command: ',
+        prompt = 'Command: ',
         default = 'git ',
       }, function(input)
         if input then
