@@ -1,8 +1,8 @@
 lastupdatecheck: 0
 recentrepos:
+    - /Users/jonathan.komar/devel/nix-dynatrace-macos-flake
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/00_DYNATRACE_CLOUD_APP_INFRA/com-dynatrace-ace-monitoring-configuration/branches/ASDY-21488_buildunitsservice_fix-metric-schema
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/00_DYNATRACE_CLOUD_APP_INFRA/com-dynatrace-ace-monitoring-configuration/branches/ASDY-21488_buildunitsservice_read-version-alerts
-    - /Users/jonathan.komar/devel/nix-dynatrace-macos-flake
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/dtp-orchestration/branches/NOISSUE_golangcilint_v2-migration
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/build-units-service/branches/ASDY-21488_legacydeployable_extract-version-error-handling
     - /Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/build-units-service/branches/main
