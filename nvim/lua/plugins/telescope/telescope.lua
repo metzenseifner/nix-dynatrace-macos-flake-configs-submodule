@@ -498,9 +498,8 @@ return {
     vim.keymap.set('n', '<leader><leader>pn',
       function()
         --local path = vim.fn.stdpath('data') .. "/jonathans_special_files/1on1-team-care"
-        local path = vim.g.jonathans_special_files
-        --vim.fn.expand("$HOME") ..
-        --    "/Library/CloudStorage/OneDrive-Dynatrace/Dokumente/jonathans_special_files"
+        local path = vim.fn.expand("$HOME") ..
+            "/Library/CloudStorage/OneDrive-Dynatrace/Dokumente/jonathans_special_files"
         require("telescope.builtin").find_files(object_assign(
           { cwd = path, hidden = false, prompt_title = "Pick file under: " .. path },
           require("telescope.themes").get_ivy({ previewer = true })))
@@ -530,7 +529,7 @@ return {
 
     vim.keymap.set('n', '<leader><leader>p1',
       function()
-        local path = vim.g.jonathans_special_files .. "/1on1-team-care"
+        local path = vim.fn.expand('~') .. '/devel/1on1s'
         require("telescope.builtin").find_files(object_assign(
           { cwd = path, hidden = false, prompt_title = "Pick file under: " .. path },
           require("telescope.themes").get_ivy({ previewer = true })))

@@ -81,7 +81,7 @@ local files_dir = {
   vim.g.jonathans_special_files .. "/tasks.org",
   vim.g.jonathans_special_files .. "/standup.org",
   vim.g.jonathans_special_files .. "/learn.org",
-  vim.g.jonathans_special_files .. "/1on1-team-care/**/*.org",
+  vim.fn.expand('~') .. "/devel/1on1s/**/*.org",
   vim.fn.expand("~") .. "/devel/team-development/**/*.org"
 }
 

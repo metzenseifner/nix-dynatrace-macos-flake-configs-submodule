@@ -953,6 +953,9 @@ local_links:
   Time_Booking:
     - url: "https://dynatrace.sharepoint.com/sites/RnD/SitePages/Time-Tracking-Austria.aspx"
       name: "Time Booking Guide Austria"
+    - name: "Working on the train (not business travel, rather commuting)"
+      url: https://dynatrace.sharepoint.com/sites/Austria/SitePages/Time-Tracking.aspx#am-i-allowed-to-work-from-my-laptop-or-mobile-phone-in-public-transport-systems-(e.g.-train%2C-bus%2C...)
+      description: 'It used to state "Commute-working: if you work on the train within Austria and it is not a business trip, please book Office." It now states it is not allowed.'
     - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Data-Completeness---what-it-is-about-.aspx"
       name: "Why my team needs to report all our time?"
     - url: "https://dynatrace.sharepoint.com/sites/InEx/SitePages/Data-Completeness---what-it-is-about-.aspx#how-to-report-out-of-office-time"

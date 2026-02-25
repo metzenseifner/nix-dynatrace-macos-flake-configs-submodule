@@ -1,4 +1,8 @@
 return {
+  s("in-array-matcher", fmt([[
+  # Given an array of strings, true if dt.app.id matches any element of array
+  | filter in(dt.app.id, array("dynatrace.jira" , "dynatrace.microsoft365.connector", "dynatrace.email", "dynatrace.github", "dynatrace.ownership", "dynatrace.teams.internal.importer"))
+  ]], {}, { delimiters = "[]" })),
   s("dql-clusters", fmt([[
     fetch logs
     | limit 100
