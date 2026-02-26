@@ -74,7 +74,7 @@ return telescope.register_extension({
             actions.close(bufnr)
             local path = selection.value.path
             local cb = (config.on_select or function(p)
-              vim.cmd('cd ' .. vim.fn.fnameescape(p))
+              vim.cmd('tcd ' .. vim.fn.fnameescape(p))
               require('telescope.builtin').find_files({ cwd = p })
             end)
             cb(path)
@@ -192,7 +192,7 @@ return telescope.register_extension({
             actions.close(bufnr)
             local path = selection.value.path
             local cb = (config.on_select or function(p)
-              vim.cmd('cd ' .. vim.fn.fnameescape(p))
+              vim.cmd('tcd ' .. vim.fn.fnameescape(p))
               require('telescope.builtin').find_files({ cwd = p })
             end)
             cb(path)

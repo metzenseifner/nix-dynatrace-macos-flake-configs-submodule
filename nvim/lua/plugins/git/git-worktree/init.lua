@@ -106,7 +106,7 @@ return {
       { desc = "Create New Git Worktree (default)" })
 
     Worktree.setup({
-      change_directory_command = "cd",  -- default: "cd",
+      change_directory_command = "tcd",  -- use tab-local cwd instead of global cd
       update_on_change = true,          -- default: true,
       update_on_change_command = "e .", -- default: "e .",
       clearjumps_on_change = true,      -- default: true,

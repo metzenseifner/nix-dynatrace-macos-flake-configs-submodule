@@ -8,7 +8,7 @@ return {
         --   roots = { "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/*" },
         -- },
         ["dynatrace_bitbucket/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/*",
-        ["state/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/state/*",
+        ["state/*"] = "/Users/jonathan.komar/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS/*",
         -- add more sources here if you like
         -- monorepo = { roots = { "/path/to/monorepo/branches/*" } },
       },
@@ -18,7 +18,7 @@ return {
       --   require('telescope.builtin').find_files({ cwd = path })
       -- end
       on_select = function(path)
-        vim.cmd('cd ' .. vim.fn.fnameescape(path))
+        vim.cmd('tcd ' .. vim.fn.fnameescape(path))
 
         local has_worktrees = function(project_path)
           local normalized_path = project_path:gsub('/$', '')

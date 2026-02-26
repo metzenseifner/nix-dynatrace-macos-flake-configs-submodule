@@ -68,7 +68,7 @@ end
 
 local function default_on_select(path)
   local ok_tb, tb = pcall(require, 'telescope.builtin')
-  vim.cmd('cd ' .. vim.fn.fnameescape(path))
+  vim.cmd('tcd ' .. vim.fn.fnameescape(path))
   if ok_tb then
     tb.find_files({ cwd = path })
   else
