@@ -85,6 +85,22 @@ return {
     local actions = require("telescope.actions")
     local live_grep_args_actions = require("telescope-live-grep-args.actions")
     local action_state = require("telescope.actions.state")
+    local cwd_util = require("utils.cwd")
+
+    -- Custom action to open in new tab with proper cwd
+    local select_tab_with_cwd = function(prompt_bufnr)
+      local entry = action_state.get_selected_entry()
+      actions.select_tab(prompt_bufnr)
+      
+      vim.schedule(function()
+        if not entry then return end
+        local filepath = entry.path or entry.filename
+        if type(filepath) == "string" and filepath ~= "" and vim.fn.filereadable(filepath) == 1 then
+          local dir = vim.fn.fnamemodify(filepath, ":h")
+          cwd_util.set_tab(dir)
+        end
+      end)
+    end
 
     -- Custom action to open Oil with selected file
     local open_in_oil = function(prompt_bufnr)
@@ -148,6 +164,7 @@ return {
             ["<C-l>"] = actions.send_selected_to_loclist,
             ["<C-e>"] = actions.select_all,
             ["<C-n>"] = open_in_oil,
+            ["<C-t>"] = select_tab_with_cwd,
             ["<PageUp>"] = actions.results_scrolling_up,
             ["<PageDown>"] = actions.results_scrolling_down,
           },
@@ -304,28 +321,28 @@ return {
     end, { desc = "Grep selection in workspace." })
 
     -- vim.keymap.set('n', '<leader>fg', rhs, opts)
-    vim.keymap.set('v', '<C-f>',
-      function()
-        local function grep_in_selection_effect()
-          -- Get start and end line of visual selection
-          local start_line = vim.fn.line("'<")
-          local end_line = vim.fn.line("'>")
+    -- vim.keymap.set('v', '<C-f>',
+    --   function()
+    --     local function grep_in_selection_effect()
+    --       -- Get start and end line of visual selection
+    --       local start_line = vim.fn.line("'<")
+    --       local end_line = vim.fn.line("'>")
 
-          -- Build ripgrep argument
-          local range_arg = string.format("--line-range %d:%d", start_line, end_line)
+    --       -- Build ripgrep argument
+    --       local range_arg = string.format("--line-range %d:%d", start_line, end_line)
 
-          -- Call Telescope live_grep_args with extra args
-          require('telescope').extensions.live_grep_args.live_grep_args({
-            additional_args = function()
-              return { range_arg }
-            end
-          })
-        end
-        -- function() require("telescope-live-grep-args.shortcuts").grep_visual_selection({ quote = false, trim = true }) end
-        grep_in_selection_effect()
-      end
-      ,
-      { desc = "Grep within selection." })
+    --       -- Call Telescope live_grep_args with extra args
+    --       require('telescope').extensions.live_grep_args.live_grep_args({
+    --         additional_args = function()
+    --           return { range_arg }
+    --         end
+    --       })
+    --     end
+    --     -- function() require("telescope-live-grep-args.shortcuts").grep_visual_selection({ quote = false, trim = true }) end
+    --     grep_in_selection_effect()
+    --   end
+    --   ,
+    --   { desc = "Grep within selection." })
 
     -- vim.keymap.set('n', '<leader>pp',
     --   function() pick_files(vim.fn.expand("~") .. "/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS") end,
@@ -447,7 +464,7 @@ return {
       })
     vim.keymap.set('n', '<leader>pff',
       function()
-        local path = vim.loop.cwd()
+        local path = cwd_util.get()
         require 'telescope.builtin'.find_files(object_assign(
           { cwd = path, hidden = true, prompt_title = "find_files " .. path },
           require 'telescope.themes'.get_ivy({ previewer = true })))
@@ -460,7 +477,7 @@ return {
     vim.keymap.set('n', '<leader>pfc',
       function()
         local sorters = require('telescope.sorters')
-        local path = vim.loop.cwd()
+        local path = cwd_util.get()
         local path_under_cursor = vim.fn.expand("<cfile>")
         -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/builtin/__files.lua#L274-L275
         -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/builtin/__files.lua#L323-L325

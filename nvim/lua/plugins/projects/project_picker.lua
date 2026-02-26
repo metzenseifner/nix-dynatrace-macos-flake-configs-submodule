@@ -2,6 +2,8 @@ return {
   dir = vim.fn.stdpath('config') .. "/local_plugin_packages/project_picker.nvim",
   dependencies = { "vim-telescope/telescope.nvim" },
   config = function()
+    local cwd_util = require("utils.cwd")
+    
     require("project_picker").setup({
       sources = {
         -- dynatrace_projects = {
@@ -18,8 +20,6 @@ return {
       --   require('telescope.builtin').find_files({ cwd = path })
       -- end
       on_select = function(path)
-        vim.cmd('tcd ' .. vim.fn.fnameescape(path))
-
         local has_worktrees = function(project_path)
           local normalized_path = project_path:gsub('/$', '')
           local git_dir = normalized_path .. '/.git'
@@ -35,6 +35,7 @@ return {
           return false
         end
 
+        -- Check for worktrees first, before changing directory
         if has_worktrees(path) then
           local ok, telescope = pcall(require, 'telescope')
           if ok then
@@ -45,6 +46,9 @@ return {
               local actions = require("telescope.actions")
               local wt_b = require("utils.git_wt_b")
               local Worktree = require("git-worktree")
+              
+              -- First, change to the project root so git-worktree can find worktrees
+              cwd_util.set_tab(path)
 
               -- Show worktrees with Ctrl-n to create new
               local function show_worktrees_with_create()
@@ -78,6 +82,8 @@ return {
           end
         end
 
+        -- No worktrees - just change directory and show files
+        cwd_util.set_tab(path)
         local ok_builtin, telescope_builtin = pcall(require, 'telescope.builtin')
         if ok_builtin then
           telescope_builtin.find_files({ cwd = path })

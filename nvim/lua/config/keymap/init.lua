@@ -279,7 +279,26 @@ safe_keymap('n', '<leader>dl', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts
 safe_keymap('n', '<leader>dq', '<cmd>lua vim.diagnostic.set_qflist()<CR>', opts, 'LSP', 'vim.diagnostic.set_qflist',
   'Put all diagnostic messages into quickfix list.')
 
-safe_keymap('n', '<leader>qw', function() print(vim.loop.cwd()) end, opts, 'Query', 'vim.fn.getwd',
+safe_keymap('n', '<leader>qw', function()
+  local cwd_util = require("utils.cwd")
+  local tab_cwd = vim.fn.getcwd(-1, 0)
+  local win_cwd = vim.fn.getcwd(0, 0)
+  local global_cwd = vim.fn.getcwd()
+  local effective_cwd = cwd_util.get()
+  
+  local msg = string.format(
+    "CWD Info:\n" ..
+    "  Effective: %s\n" ..
+    "  Tab:       %s\n" ..
+    "  Window:    %s\n" ..
+    "  Global:    %s",
+    effective_cwd,
+    tab_cwd == global_cwd and "(none)" or tab_cwd,
+    win_cwd == global_cwd and "(none)" or win_cwd,
+    global_cwd
+  )
+  print(msg)
+end, opts, 'Query', 'vim.fn.getwd',
   'Query current working directory.')
 
 -- Does not work properly
