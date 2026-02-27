@@ -25,7 +25,7 @@ vim.api.nvim_create_autocmd("FileType", {
         { " for previous, ", "Normal" },
         { "<C-n>", "Identifier" },
         { " for next, ", "Normal" },
-        { "<C-D>", "Identifier" },
+        { "dd", "Identifier" },
         { " for delete", "Normal" }
       }, false, {})
     end)

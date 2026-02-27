@@ -431,26 +431,46 @@ return {
       require('telescope.builtin').lsp_dynamic_workspace_symbols()
     end, { desc = "Find/Search symbol within the entire workspace. (live search)" })
 
-    -- intentional duplicate symbol
+    -- S: Search symbols within current buffer
     vim.keymap.set('n', 'S', function()
-      --if you want to filter by symbol type: tb.lsp_document_symbols({ symbols = { 'function', 'method' } })
-      require('telescope.builtin').lsp_dynamic_workspace_symbols()
-    end, { desc = "Find symbol/Search symbol within the entire workspace. (live search)" })
+      require('telescope.builtin').lsp_document_symbols()
+    end, { desc = "Find symbol within current buffer" })
 
-    -- Visual/select mode: grab selection and use it as default_text
+    -- Visual S: Search symbols within current buffer with selection
     vim.keymap.set('v', 'S', function()
-      -- get selection via Lua API
       local pos_start = vim.api.nvim_buf_get_mark(0, '<')
       local pos_end   = vim.api.nvim_buf_get_mark(0, '>')
 
       local lines     = vim.api.nvim_buf_get_text(
         0,
         pos_start[1] - 1, pos_start[2],
-        pos_end[1] - 1, pos_end[2],
+        pos_end[1] - 1, pos_end[2] + 1,
         {}
       )
 
-      local text = table.concat(lines, '\n'):gsub('^%s+', ''):gsub('%s+', '')
+      local text = table.concat(lines, '\n')
+
+      require('telescope.builtin').lsp_document_symbols({ default_text = text })
+    end, { desc = "Buffer symbols from visual selection" })
+
+    -- SS: Search symbols across workspace
+    vim.keymap.set('n', 'SS', function()
+      require('telescope.builtin').lsp_dynamic_workspace_symbols()
+    end, { desc = "Find symbol across entire workspace" })
+
+    -- Visual SS: Search symbols across workspace with selection
+    vim.keymap.set('v', 'SS', function()
+      local pos_start = vim.api.nvim_buf_get_mark(0, '<')
+      local pos_end   = vim.api.nvim_buf_get_mark(0, '>')
+
+      local lines     = vim.api.nvim_buf_get_text(
+        0,
+        pos_start[1] - 1, pos_start[2],
+        pos_end[1] - 1, pos_end[2] + 1,
+        {}
+      )
+
+      local text = table.concat(lines, '\n')
 
       require('telescope.builtin').lsp_dynamic_workspace_symbols({ default_text = text })
     end, { desc = "Workspace symbols from visual selection" })
