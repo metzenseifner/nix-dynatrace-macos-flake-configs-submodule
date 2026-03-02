@@ -22,8 +22,14 @@ return {
     require("nvim-treesitter-textobjects").setup(conf)
 
     -- You can use the capture groups defined in `textobjects.scm`
-    vim.keymap.set({ "n", "x", "o" }, "gm", function()
+    vim.keymap.set({ "n", "x", "o" }, "gf", function()
       require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+      vim.cmd("normal! zz") -- Center the viewport vertically on cursor line
+    end)
+
+    -- You can also pass a list to group multiple queries.
+    vim.keymap.set({ "n", "x", "o" }, "gl", function()
+      require("nvim-treesitter-textobjects.move").goto_next_start({ "@loop.inner", "@loop.outer" }, "textobjects")
     end)
   end
 }
