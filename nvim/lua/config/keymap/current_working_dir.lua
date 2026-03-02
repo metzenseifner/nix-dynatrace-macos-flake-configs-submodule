@@ -12,6 +12,12 @@ vim.keymap.set("n", "<leader>cwdy",
   end,
   { desc = "Set current working directory to directory." })
 
+vim.keymap.set("n", "<leader>cwdd",
+  function()
+    require('utils.cwd').detect_and_set({ scope = "tab" })
+  end,
+  { desc = "Detect and set CWD based on filetype (tab-scoped)" })
+
 -- vim.keymap.set("n", "<leader>scwd",
 --   function()
 --     local buffer_path = vim.fn.expand("%:p")

@@ -87,6 +87,34 @@ return {
     local action_state = require("telescope.actions.state")
     local cwd_util = require("utils.cwd")
 
+    -- Smart CWD detection function
+    -- Detects appropriate working directory based on LSP client's root_dir
+    local function smart_cwd_open(prompt_bufnr, open_action)
+      local entry = action_state.get_selected_entry()
+      if not entry then return end
+      
+      local filepath = entry.path or entry.filename or entry.value
+      if not filepath or filepath == "" then return end
+      
+      -- Close picker and open file
+      open_action(prompt_bufnr)
+      
+      -- Schedule CWD detection after file is opened and LSP attaches
+      vim.schedule(function()
+        local bufnr = vim.fn.bufnr(filepath)
+        
+        -- Wait a bit for LSP to attach if it's going to
+        vim.defer_fn(function()
+          -- Detect and set CWD using LSP's root_dir
+          cwd_util.detect_and_set({
+            filepath = filepath,
+            bufnr = bufnr,
+            scope = "tab"
+          })
+        end, 100) -- Small delay to let LSP attach
+      end)
+    end
+
     -- Custom action to open in new tab with proper cwd
     local select_tab_with_cwd = function(prompt_bufnr)
       local entry = action_state.get_selected_entry()
@@ -100,6 +128,11 @@ return {
           cwd_util.set_tab(dir)
         end
       end)
+    end
+
+    -- Smart select default for oldfiles picker
+    local select_default_with_smart_cwd = function(prompt_bufnr)
+      smart_cwd_open(prompt_bufnr, actions.select_default)
     end
 
     -- Custom action to open Oil with selected file
@@ -183,6 +216,16 @@ return {
         -- }
         -- Now the picker_config_key will be applied every time you call this
         -- builtin picker
+        oldfiles = {
+          mappings = {
+            i = {
+              ["<CR>"] = select_default_with_smart_cwd,
+            },
+            n = {
+              ["<CR>"] = select_default_with_smart_cwd,
+            },
+          },
+        },
         diagnostics = {
           mappings = {
             i = {
