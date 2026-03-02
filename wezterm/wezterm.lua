@@ -42,21 +42,20 @@ config.send_composed_key_when_right_alt_is_pressed = true
 -- raw: prefix.
 -- Raw codes are hardware and windowing system dependent, so there is no portable way to list which key does what.
 --config.debug_key_events = true -- start wezterm in terminal and use new window
-config.keys = { -- ALT, OPT, META - these are all equivalent
-  {
-    -- Send tilde character directly instead of normal dead-key hold-state composition
-    key = 'n',
-    mods = 'ALT',
-    action = wezterm.action.SendString '~' -- send ~ to terminal when pressing OPT-n
-  },
-  {
-    -- causes issues with tmux using space bar
-    -- follow by CTRL-Z leads to WezTerm Update Available that cannot be escaped
-    key = 'phys:Space',
-    mods = 'SHIFT|CTRL',
-    action = wezterm.action.DisableDefaultAssignment,
-  }
-}
+-- Append additional key mappings (keys module already sets config.keys)
+table.insert(config.keys, {
+  -- Send tilde character directly instead of normal dead-key hold-state composition
+  key = 'n',
+  mods = 'ALT',
+  action = wezterm.action.SendString '~' -- send ~ to terminal when pressing OPT-n
+})
+table.insert(config.keys, {
+  -- causes issues with tmux using space bar
+  -- follow by CTRL-Z leads to WezTerm Update Available that cannot be escaped
+  key = 'phys:Space',
+  mods = 'SHIFT|CTRL',
+  action = wezterm.action.DisableDefaultAssignment,
+})
 -- Input Method Editor (IME) - An OS-provided service which allows for rich composition of input
 -- WezTerm is now able to perform dead-key expansion when use_ime = false
 config.use_ime = true
