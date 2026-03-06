@@ -17,6 +17,9 @@ return
     keys = {
     },
     config = function()
+      require("nvim-treesitter.configs").setup({
+        highlight = { enable = true }
+      })
       -- Modern nvim-treesitter (v1.0+) works automatically when parsers are installed
       -- No setup() call needed - highlighting, indentation, etc. work out of the box
       -- Just install parsers with :TSInstall <language>
@@ -36,6 +39,23 @@ return
       -- To install parsers: :TSInstall javascript typescript tsx python lua
       -- To update parsers: :TSUpdate
       -- To check status: :TSInstallInfo
+      
+      -- Set fold settings initially
+      vim.opt.foldenable = true
+      vim.opt.foldlevel = 99
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      
+      -- Reapply fold settings on buffer entry to prevent sessions/ftplugins from overriding
+      vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+        group = vim.api.nvim_create_augroup("treesitter_fold_settings", { clear = true }),
+        callback = function()
+          vim.opt.foldenable = true
+          vim.opt.foldlevel = 99
+          vim.opt.foldmethod = "expr"
+          vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        end,
+      })
     end,
     -- build = "TSUpdate",
     -- {'do': ':TSUpdate'}

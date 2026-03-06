@@ -30,7 +30,8 @@ return
       --completion = true,
       usePlaceholders = true,
       analyses = { -- static analysis options: https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md
-        unusedparams = true
+        unusedparams = true,
+        fillstruct = true,
       },
       codelenses = {
         generate = true,  -- Don't show the `go generate` lens.

@@ -134,3 +134,81 @@ vim.keymap.set('n', '<leader>qa', function()
   vim.fn.setqflist({{ filename = filename, lnum = cursor[1], col = cursor[2] + 1, text = line_text }}, 'a')
   vim.notify('Added ' .. filename .. ':' .. cursor[1] .. ' to quickfix list')
 end, { desc = "[Quickfix] Add current position" })
+
+-- Save quickfix list to file
+vim.keymap.set('n', '<leader>qs', function()
+  local qf_list = vim.fn.getqflist()
+  if #qf_list == 0 then
+    vim.notify('Quickfix list is empty', vim.log.levels.WARN)
+    return
+  end
+  
+  local date = vim.fn.strftime('%F')
+  local default_name = 'quickfix-' .. date .. '.json'
+  local cursor_pos = #'quickfix-'
+  
+  vim.ui.input({
+    prompt = 'Save quickfix as: ',
+    default = default_name,
+    cursor_pos = cursor_pos,
+  }, function(filename)
+    if not filename or filename == '' then
+      vim.notify('Save cancelled', vim.log.levels.INFO)
+      return
+    end
+    
+    local cwd = vim.fn.getcwd()
+    local filepath = cwd .. '/' .. filename
+    local file = io.open(filepath, 'w')
+    if not file then
+      vim.notify('Failed to open file: ' .. filepath, vim.log.levels.ERROR)
+      return
+    end
+    
+    local data = vim.fn.json_encode(qf_list)
+    file:write(data)
+    file:close()
+    
+    vim.notify('Saved ' .. #qf_list .. ' items to ' .. filepath)
+  end)
+end, { desc = "[Quickfix] Save to file" })
+
+-- Load quickfix list from file
+vim.keymap.set('n', '<leader>ql', function()
+  local date = vim.fn.strftime('%F')
+  local default_name = 'quickfix-' .. date .. '.json'
+  local cursor_pos = #'quickfix-'
+  
+  vim.ui.input({
+    prompt = 'Load quickfix from: ',
+    default = default_name,
+    cursor_pos = cursor_pos,
+    completion = 'file',
+  }, function(filename)
+    if not filename or filename == '' then
+      vim.notify('Load cancelled', vim.log.levels.INFO)
+      return
+    end
+    
+    local cwd = vim.fn.getcwd()
+    local filepath = cwd .. '/' .. filename
+    local file = io.open(filepath, 'r')
+    if not file then
+      vim.notify('File not found: ' .. filepath, vim.log.levels.WARN)
+      return
+    end
+    
+    local content = file:read('*all')
+    file:close()
+    
+    local ok, qf_list = pcall(vim.fn.json_decode, content)
+    if not ok or type(qf_list) ~= 'table' then
+      vim.notify('Failed to parse quickfix file', vim.log.levels.ERROR)
+      return
+    end
+    
+    vim.fn.setqflist(qf_list, 'r')
+    vim.notify('Loaded ' .. #qf_list .. ' items from ' .. filepath)
+    vim.cmd('copen')
+  end)
+end, { desc = "[Quickfix] Load from file" })
