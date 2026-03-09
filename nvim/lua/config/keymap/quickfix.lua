@@ -125,6 +125,32 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Edit quickfix item text (context-sensitive: only in quickfix window)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  callback = function(event)
+    vim.keymap.set('n', '<leader>e', function()
+      local qf_list = vim.fn.getqflist()
+      local cur_pos = vim.fn.line('.')
+      if #qf_list > 0 and cur_pos <= #qf_list then
+        local item = qf_list[cur_pos]
+        vim.ui.input({
+          prompt = 'Edit quickfix text: ',
+          default = item.text or "",
+        }, function(new_text)
+          if new_text then
+            item.text = new_text
+            qf_list[cur_pos] = item
+            vim.fn.setqflist(qf_list, 'r')
+            vim.fn.cursor(cur_pos, 1)
+            vim.notify('Updated quickfix item text')
+          end
+        end)
+      end
+    end, { desc = "Edit quickfix item text", buffer = event.buf })
+  end,
+})
+
 -- Add current cursor position to quickfix list
 vim.keymap.set('n', '<leader>qa', function()
   local bufnr = vim.api.nvim_get_current_buf()
