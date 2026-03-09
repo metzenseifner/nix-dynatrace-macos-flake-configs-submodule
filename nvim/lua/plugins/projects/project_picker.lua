@@ -3,7 +3,7 @@ return {
   dependencies = { "vim-telescope/telescope.nvim" },
   config = function()
     local cwd_util = require("utils.cwd")
-    
+
     require("project_picker").setup({
       sources = {
         -- dynatrace_projects = {
@@ -20,6 +20,8 @@ return {
       --   require('telescope.builtin').find_files({ cwd = path })
       -- end
       on_select = function(path)
+        path = vim.trim(path):gsub('/$', '')
+
         local has_worktrees = function(project_path)
           local normalized_path = project_path:gsub('/$', '')
           local git_dir = normalized_path .. '/.git'
@@ -46,25 +48,48 @@ return {
               local actions = require("telescope.actions")
               local wt_b = require("utils.git_wt_b")
               local Worktree = require("git-worktree")
-              
+
               -- First, change to the project root so git-worktree can find worktrees
               cwd_util.set_tab(path)
 
               -- Show worktrees with Ctrl-n to create new
               local function show_worktrees_with_create()
                 telescope.extensions.git_worktree.git_worktrees({
+                  cwd = path,
                   attach_mappings = function(prompt_bufnr, map)
+                    -- Override default selection to add error handling
+                    actions.select_default:replace(function()
+                      local selection = require("telescope.actions.state").get_selected_entry()
+                      actions.close(prompt_bufnr)
+                      if selection and selection.path then
+                        local worktree_path = vim.trim(selection.path)
+
+                        -- Validate worktree exists before attempting switch
+                        if vim.fn.isdirectory(worktree_path) == 0 then
+                          vim.notify("Worktree directory does not exist: " .. worktree_path, vim.log.levels.ERROR)
+                          vim.notify("Git worktree may be misconfigured. Run: git worktree prune", vim.log.levels.WARN)
+                          return
+                        end
+
+                        Worktree.switch_worktree(worktree_path)
+                      end
+                    end)
+
                     local function create_worktree_inline()
                       actions.close(prompt_bufnr)
                       -- Use shared wt-b module with completion callback
                       wt_b.prompt_and_create(function(worktree_path, git_root)
                         vim.defer_fn(function()
                           -- Switch to the new worktree
-                          Worktree.switch_worktree(worktree_path)
-                          -- Auto-refresh picker after switching
-                          vim.defer_fn(function()
-                            show_worktrees_with_create()
-                          end, 200)
+                          local ok, err = pcall(Worktree.switch_worktree, worktree_path)
+                          if ok then
+                            -- Auto-refresh picker after switching
+                            vim.defer_fn(function()
+                              show_worktrees_with_create()
+                            end, 200)
+                          else
+                            vim.notify("Failed to switch to new worktree: " .. tostring(err), vim.log.levels.ERROR)
+                          end
                         end, 50)
                       end)
                     end

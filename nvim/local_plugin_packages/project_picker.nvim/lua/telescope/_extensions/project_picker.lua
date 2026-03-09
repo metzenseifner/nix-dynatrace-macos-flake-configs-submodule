@@ -14,7 +14,7 @@ return telescope.register_extension({
     projects = function(opts)
       local all_projects = {}
       local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
-      {}
+          {}
 
       for name, src in pairs(config.sources or {}) do
         local function expand_globs(pattern)
@@ -68,17 +68,41 @@ return telescope.register_extension({
           end
         }),
         sorter = conf_module.values.generic_sorter(opts or {}),
-        attach_mappings = function(bufnr, _)
-          actions.select_default:replace(function()
+        attach_mappings = function(bufnr, map)
+          local function handle_selection(open_cmd)
             local selection = action_state.get_selected_entry()
             actions.close(bufnr)
-            local path = selection.value.path
+            local path = vim.trim(selection.value.path):gsub('/$', '')
+
             local cb = (config.on_select or function(p)
               vim.cmd('tcd ' .. vim.fn.fnameescape(p))
               require('telescope.builtin').find_files({ cwd = p })
             end)
-            cb(path)
+
+            if open_cmd then
+              vim.cmd(open_cmd)
+              -- Create a scratch buffer in the new tab to establish context
+              vim.cmd('enew')
+              -- Schedule callback to run after new tab and buffer are ready
+              vim.schedule(function()
+                cb(path)
+              end)
+            else
+              cb(path)
+            end
+          end
+
+          actions.select_default:replace(function()
+            handle_selection()
           end)
+
+          map("i", "<C-t>", function()
+            handle_selection("tabnew")
+          end)
+          map("n", "<C-t>", function()
+            handle_selection("tabnew")
+          end)
+
           return true
         end,
       }):find()
@@ -86,7 +110,7 @@ return telescope.register_extension({
 
     sources = function(opts)
       local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
-      {}
+          {}
       local sources_list = {}
 
       for name, _ in pairs(config.sources or {}) do
@@ -130,7 +154,7 @@ return telescope.register_extension({
       end
 
       local config = project_picker._get_config and project_picker._get_config() or require('project_picker')._config or
-      {}
+          {}
       local src = (config.sources or {})[name]
       if not src then
         vim.notify('Source not found: ' .. name, vim.log.levels.ERROR)
@@ -186,17 +210,41 @@ return telescope.register_extension({
           end
         }),
         sorter = conf_module.values.generic_sorter(opts or {}),
-        attach_mappings = function(bufnr, _)
-          actions.select_default:replace(function()
+        attach_mappings = function(bufnr, map)
+          local function handle_selection(open_cmd)
             local selection = action_state.get_selected_entry()
             actions.close(bufnr)
-            local path = selection.value.path
+            local path = vim.trim(selection.value.path):gsub('/$', '')
+
             local cb = (config.on_select or function(p)
               vim.cmd('tcd ' .. vim.fn.fnameescape(p))
               require('telescope.builtin').find_files({ cwd = p })
             end)
-            cb(path)
+
+            if open_cmd then
+              vim.cmd(open_cmd)
+              -- Create a scratch buffer in the new tab to establish context
+              vim.cmd('enew')
+              -- Schedule callback to run after new tab and buffer are ready
+              vim.schedule(function()
+                cb(path)
+              end)
+            else
+              cb(path)
+            end
+          end
+
+          actions.select_default:replace(function()
+            handle_selection()
           end)
+
+          map("i", "<C-t>", function()
+            handle_selection("tabnew")
+          end)
+          map("n", "<C-t>", function()
+            handle_selection("tabnew")
+          end)
+
           return true
         end,
       }):find()
