@@ -26,6 +26,16 @@ local make_individual_task_dashboard_for = function(name)
       description = string.format("%s's Dashboard of Things to Do", name),
       types = {
         {
+          org_agenda_overriding_header = string.format("# %s's High Priority Items", name),
+          type = "tags_todo",
+          match = '+PRIORITY="A"&TODO="TODO"|+PRIORITY="A"&TODO="INPROGRESS"',
+        },
+        {
+          org_agenda_overriding_header = string.format("# %s's Sprint %s Tickets", name, sprint ~= "" and sprint or "N/A"),
+          type = "tags",
+          match = string.format('BY="%s"&SPRINT="%s"', name, sprint ~= "" and sprint or "N/A"),
+        },
+        {
           org_agenda_overriding_header = string.format("# %s's Daily Tasks", name),
           type = "tags",
           match = string.format('+TYPE="Daily"&BY="%s"&DEADLINE<="%s +1d"', name, current_week_friday())
@@ -49,16 +59,6 @@ local make_individual_task_dashboard_for = function(name)
           org_agenda_overriding_header = string.format("# %s's Follow-ups", name),
           type = "tags",
           match = string.format('+TODO="TODO"&TYPE="Follow-up"&BY="%s"', name),
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's High Priority Items", name),
-          type = "tags_todo",
-          match = '+PRIORITY="A"&TODO="TODO"|+PRIORITY="A"&TODO="INPROGRESS"',
-        },
-        {
-          org_agenda_overriding_header = string.format("# %s's Sprint %s Tickets", name, sprint ~= "" and sprint or "N/A"),
-          type = "tags",
-          match = string.format('BY="%s"&SPRINT="%s"', name, sprint ~= "" and sprint or "N/A"),
         },
         {
           org_agenda_overriding_header = string.format("# %s's Previous Sprint (%s) Tickets", name, prev_sprint),
