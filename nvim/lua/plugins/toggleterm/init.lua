@@ -5,107 +5,132 @@ return {
     local Terminal = require('toggleterm.terminal').Terminal
 
     vim.keymap.set('n', '<leader>gc', function()
-      vim.ui.input({
-        prompt = 'Command: ',
-        default = 'git ',
-      }, function(input)
-        if input then
-          local term = Terminal:new({
-            cmd = input,
-            direction = "float",
-            close_on_exit = false,
-            float_opts = {
-              border = "curved",
-              width = math.floor(vim.o.columns * 0.9),
-              height = math.floor(vim.o.lines * 0.9),
-            },
-            on_open = function(t)
-              vim.cmd("startinsert!")
-              -- Press 'q' in normal mode to close quickly
-              vim.api.nvim_buf_set_keymap(t.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-              -- Press <C-o> to switch to horizontal split
-              vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", {
-                noremap = true,
-                silent = true,
-                callback = function()
-                  t:close()
-                  t.direction = "horizontal"
-                  t:open()
-                  vim.cmd("startinsert!")
-                end
-              })
-            end,
-          })
-          term:toggle()
-        end
-      end)
+      -- Guard: check if we're inside a git repo
+      vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null")
+      if vim.v.shell_error ~= 0 then
+        vim.notify("⚠️  Not a git repository.", vim.log.levels.WARN)
+        return
+      end
+
+
+      --------------------------------------------------------------------------------
+      --              This stuff was a safe check when I used the more              --
+      --                  destructive git fetch; git reset --hard                   --
+      --                           origin/main approach.                            --
+      --------------------------------------------------------------------------------
+
+      -- local remote = "origin"
+      -- local base = vim.fn.system(
+      --   string.format("git symbolic-ref -q --short refs/remotes/%s/HEAD 2>/dev/null", remote)
+      -- )
+      -- base = base:gsub("%s+", "")
+      -- if base == "" then
+      --   base = remote .. "/main"
+      -- end
+
+      -- local branch = base:gsub("^origin/", "") -- e.g. "main"
+      -- local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+
+      local function open_terminal(input)
+        local term = Terminal:new({
+          direction = "horizontal",
+          close_on_exit = false,
+          on_open = function(t)
+            t:send(input)
+            vim.api.nvim_buf_set_keymap(t.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+            vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", {
+              noremap = true,
+              silent = true,
+              callback = function()
+                t:close()
+                t.direction = "horizontal"
+                t:open()
+                vim.cmd("startinsert!")
+              end
+            })
+          end,
+        })
+        term:toggle()
+      end
+
+      local function prompt_command()
+        vim.ui.input({
+          prompt = 'Command: ',
+          -- default = string.format('git fetch && git reset --hard %s', base),
+          default = string.format('git pull'),
+        }, function(input)
+          if input then
+            open_terminal(input)
+          end
+        end)
+      end
+
+
+      prompt_command()
+      --if cwd == branch then
+      --  -- Convention matches, proceed normally
+      --  prompt_command()
+      --else
+      --  -- Warn the user they are NOT in the expected worktree
+      --  vim.notify(
+      --    string.format(
+      --      "⚠️  WARNING: Current dir '%s' does not match branch '%s'.\n" ..
+      --      "This will OVERWRITE your local branch with the remote.\n" ..
+      --      "Select 'Yes, overwrite' to continue or 'Cancel' to abort.",
+      --      cwd, branch
+      --    ),
+      --    vim.log.levels.WARN
+      --  )
+
+      --  vim.ui.select(
+      --    { "Cancel", "Yes, overwrite" },
+      --    {
+      --      prompt = string.format("⚠️Overwrite branch: %s?", branch)
+      --    },
+      --    function(choice)
+      --      if choice == "Yes, overwrite" then
+      --        prompt_command()
+      --      end
+      --    end
+      --  )
+      --end
+
+
+      --   vim.ui.input({
+      --     prompt = 'Command: ',
+      --     default = 'git fetch && git reset --hard origin/HEAD',
+      --   }, function(input)
+      --     if input then
+      --       local term = Terminal:new({
+      --         -- cmd = input, -- overrides default shell
+      --         direction = "horizontal",
+      --         close_on_exit = false,
+      --         -- float_opts = {
+      --         --   border = "curved",
+      --         --   width = math.floor(vim.o.columns * 0.9),
+      --         --   height = math.floor(vim.o.lines * 0.9),
+      --         -- },
+      --         on_open = function(t)
+      --           t:send(input)
+      --           -- vim.cmd("startinsert!") -- if you want to enter insert mode
+      --           -- Press 'q' in normal mode to close quickly
+      --           vim.api.nvim_buf_set_keymap(t.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+      --           -- Press <C-o> to switch to horizontal split
+      --           vim.api.nvim_buf_set_keymap(t.bufnr, "t", "<C-o>", "", {
+      --             noremap = true,
+      --             silent = true,
+      --             callback = function()
+      --               t:close()
+      --               t.direction = "horizontal"
+      --               t:open()
+      --               vim.cmd("startinsert!")
+      --             end
+      --           })
+      --         end,
+      --       })
+      --       term:toggle()
+      --     end
+      --   end)
     end, { desc = 'Run git command in terminal' })
   end
 }
---version = "*",
---opts = {
---      -- size can be a number or function which is passed the current terminal
---  size = 20 | function(term)
---    if term.direction == "horizontal" then
---      return 15
---    elseif term.direction == "vertical" then
---      return vim.o.columns * 0.4
---    end
---  end,
---  open_mapping = [[<c-\>]],
---  on_create = fun(t: Terminal), -- function to run when the terminal is first created
---  on_open = fun(t: Terminal), -- function to run when the terminal opens
---  on_close = fun(t: Terminal), -- function to run when the terminal closes
---  on_stdout = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stdout
---  on_stderr = fun(t: Terminal, job: number, data: string[], name: string) -- callback for processing output on stderr
---  on_exit = fun(t: Terminal, job: number, exit_code: number, name: string) -- function to run when terminal process exits
---  hide_numbers = true, -- hide the number column in toggleterm buffers
---  shade_filetypes = {},
---  autochdir = false, -- when neovim changes it current directory the terminal will change it's own when next it's opened
---  highlights = {
---    -- highlights which map to a highlight group name and a table of it's values
---    -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
---    Normal = {
---      guibg = "<VALUE-HERE>",
---    },
---    NormalFloat = {
---      link = 'Normal'
---    },
---    FloatBorder = {
---      guifg = "<VALUE-HERE>",
---      guibg = "<VALUE-HERE>",
---    },
---  },
---  shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
---  shading_factor = '<number>', -- the percentage by which to lighten terminal background, default: -30 (gets multiplied by -3 if background is light)
---  start_in_insert = true,
---  insert_mappings = true, -- whether or not the open mapping applies in insert mode
---  terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
---  persist_size = true,
---  persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
---  direction = 'vertical' | 'horizontal' | 'tab' | 'float',
---  close_on_exit = true, -- close the terminal window when the process exits
---   -- Change the default shell. Can be a string or a function returning a string
---  shell = vim.o.shell,
---  auto_scroll = true, -- automatically scroll to the bottom on terminal output
---  -- This field is only relevant if direction is set to 'float'
---  float_opts = {
---    -- The border key is *almost* the same as 'nvim_open_win'
---    -- see :h nvim_open_win for details on borders however
---    -- the 'curved' border is a custom border type
---    -- not natively supported but implemented in this plugin.
---    border = 'single' | 'double' | 'shadow' | 'curved' | ... other options supported by win open
---    -- like `size`, width and height can be a number or function which is passed the current terminal
---    width = <value>,
---    height = <value>,
---    winblend = 3,
---    zindex = <value>,
---  },
---  winbar = {
---    enabled = false,
---    name_formatter = function(term) --  term: Terminal
---      return term.name
---    end
---  },
---    }
---  }

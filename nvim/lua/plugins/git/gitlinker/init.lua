@@ -105,11 +105,11 @@ return {
           end,
         },
         -- default mapping to call url generation with action_callback
-        mappings = "<leader>gy",
+        mappings = "<leader>yg", -- yank git
       })
 
       -- Custom function to generate links for all quickfix items (async with progress)
-      vim.keymap.set("n", "<leader>gY", function()
+      vim.keymap.set("n", "<leader>yq", function()
         local qflist = vim.fn.getqflist()
         if #qflist == 0 then
           vim.notify("Quickfix list is empty", vim.log.levels.WARN)
@@ -126,34 +126,34 @@ return {
           local current_buf = vim.api.nvim_get_current_buf()
           local current_win = vim.api.nvim_get_current_win()
           local processed = 0
-          
+
           -- Process items in batches to allow UI updates
           local function process_batch(start_idx)
             local batch_size = 5
             local end_idx = math.min(start_idx + batch_size - 1, total)
-            
+
             for i = start_idx, end_idx do
               local item = qflist[i]
               processed = processed + 1
-              
+
               if item.bufnr > 0 and item.lnum > 0 then
                 local filepath = vim.fn.bufname(item.bufnr)
                 if filepath ~= "" then
                   -- Switch to the buffer temporarily
                   pcall(function()
                     vim.api.nvim_set_current_buf(item.bufnr)
-                    vim.api.nvim_win_set_cursor(current_win, {item.lnum, item.col or 0})
-                    
+                    vim.api.nvim_win_set_cursor(current_win, { item.lnum, item.col or 0 })
+
                     -- Generate the URL using gitlinker's internal method
                     local url = gitlinker.get_buf_range_url("n")
-                    
+
                     if url then
                       table.insert(links, "- " .. url)
                     end
                   end)
                 end
               end
-              
+
               -- Update progress every 10% or on last item
               if processed % math.max(1, math.floor(total / 10)) == 0 or processed == total then
                 vim.schedule(function()
@@ -165,7 +165,7 @@ return {
                 end)
               end
             end
-            
+
             -- Continue with next batch or finish
             if end_idx < total then
               vim.schedule(function()
@@ -177,11 +177,11 @@ return {
                 pcall(function()
                   vim.api.nvim_set_current_buf(current_buf)
                 end)
-                
+
                 if #links > 0 then
                   local result = table.concat(links, "\n")
                   vim.api.nvim_command("let @\" = '" .. result:gsub("'", "''") .. "'")
-                  
+
                   -- Copy to clipboard asynchronously
                   vim.schedule(function()
                     require("osc52").copy(result)
@@ -197,11 +197,11 @@ return {
               end)
             end
           end
-          
+
           -- Start processing first batch
           process_batch(1)
         end)
-      end, { desc = "Copy quickfix list as git links (async)", silent = true })
+      end, { desc = "Yank quickfix. Copy quickfix list as git links (async)", silent = true })
 
       -- Extensible formatter for quickfix list with menu
       local formatters = {
@@ -223,7 +223,7 @@ return {
         },
       }
 
-      vim.keymap.set("n", "<leader>gYY", function()
+      vim.keymap.set("n", "<leader>yqq", function()
         local qflist = vim.fn.getqflist()
         if #qflist == 0 then
           vim.notify("Quickfix list is empty", vim.log.levels.WARN)
@@ -245,7 +245,8 @@ return {
 
           local selected_formatter = formatters[idx]
           local total = #qflist
-          vim.notify(string.format("Processing %d quickfix entries with %s...", total, selected_formatter.name), vim.log.levels.INFO)
+          vim.notify(string.format("Processing %d quickfix entries with %s...", total, selected_formatter.name),
+            vim.log.levels.INFO)
 
           -- Process asynchronously
           vim.schedule(function()
@@ -268,7 +269,7 @@ return {
                   if filepath ~= "" then
                     pcall(function()
                       vim.api.nvim_set_current_buf(item.bufnr)
-                      vim.api.nvim_win_set_cursor(current_win, {item.lnum, item.col or 0})
+                      vim.api.nvim_win_set_cursor(current_win, { item.lnum, item.col or 0 })
 
                       local url = gitlinker.get_buf_range_url("n")
                       if url then
@@ -326,7 +327,7 @@ return {
             process_batch(1)
           end)
         end)
-      end, { desc = "Copy quickfix list with format menu", silent = true })
+      end, { desc = "Yank quickfix, recursive (more options). Copy quickfix list with format menu", silent = true })
     end,
   },
 }

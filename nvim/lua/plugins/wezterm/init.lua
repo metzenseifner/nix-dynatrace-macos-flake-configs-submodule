@@ -3,13 +3,15 @@ return {
   lazy = true,
   event = "VeryLazy",
   config = function()
-    local wezterm_path = '/Applications/WezTerm.app/Contents/MacOS/wezterm'
-    
-    -- Only setup if wezterm exists
-    if vim.fn.executable(wezterm_path) == 1 then
+    local wezterm_path = vim.fn.exepath("wezterm")
+
+    ---- Only setup if wezterm exists
+    if wezterm_path ~= "" then
       require('wezterm').setup({
         path = wezterm_path
       })
+    else
+      vim.notify("Wezterm executable not found, skipping loading wezterm plugin.", vim.log.levels.WARN)
     end
   end
 }

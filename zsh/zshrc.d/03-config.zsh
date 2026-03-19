@@ -1,1 +1,1 @@
-alias config="cd ~/devel/nix-dynatrace-macos-flake/"
+#alias config="cd ~/devel/nix-dynatrace-macos-flake/"
