@@ -695,7 +695,9 @@ local_links:
         Authorization: Bearer <platformtoken>
         for service user token generation, requires scope: ALLOW iam:service-users:use
         cite: https://docs.dynatrace.com/docs/manage/identity-access-management/access-tokens-and-oauth-clients/platform-tokens
-
+    - name: Access Tokens when you need to integrate without Oauth2.0 (Adding tokens to EP Vault)
+      url: https://dt-rnd.atlassian.net/wiki/x/oIECIg
+      description: https://bitbucket.lab.dynatrace.org/projects/DOPS/repos/com-dynatrace-access-token-control/pull-requests/362/diff#ace-vault%2Fcreate%2Fprod%2Fmonaco%2Fteam-care-sdlc%2Fharbor-labelling-token.yaml
     - name: "Deployment Rings-Wiki"
       url: "https://dt-rnd.atlassian.net/l/cp/1TwQ9Y8p"
     - name: "Deployment Rings-Defined"

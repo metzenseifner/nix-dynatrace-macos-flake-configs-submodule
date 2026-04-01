@@ -6,4 +6,5 @@ return {
   { import = "plugins.git.git-blame" },
   { import = "plugins.git.gitsigns" },
   { import = "plugins.git.neogit" },
+  { import = "plugins.git.changed_files" },
 }

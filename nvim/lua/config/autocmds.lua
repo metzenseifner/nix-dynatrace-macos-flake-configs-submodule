@@ -26,7 +26,11 @@ vim.api.nvim_create_autocmd("FileType", {
         { "<C-n>", "Identifier" },
         { " for next, ", "Normal" },
         { "dd", "Identifier" },
-        { " for delete", "Normal" }
+        { " for delete, ", "Normal" },
+        { "cdo s/foo/bar/g | update", "Identifier" },
+        { " by line no %, ", "Normal"},
+        { "cfdo %s/foo/bar/g | update", "Identifier" },
+        { " by file; need %, ", "Normal"},
       }, false, {})
     end)
   end,
@@ -190,18 +194,10 @@ vim.api.nvim_create_autocmd("FileType",
   })
 
 -- Show diagnostics in a pop-up window on hover helper
--- see https://stackoverflow.com/questions/35910099/how-special-is-the-global-variable-g
-local LspDiagnosticsPopupHandler = function()
-  local current_cursor = vim.api.nvim_win_get_cursor(0)
-  local last_popup_cursor = vim.w.lsp_diagnostics_last_cursor or { nil, nil }
-
-  -- Show the popup diagnostics window,
-  -- but only once for the current cursor location (unless moved afterwards).
-  if not (current_cursor[1] == last_popup_cursor[1] and current_cursor[2] == last_popup_cursor[2]) then
-    vim.w.lsp_diagnostics_last_cursor = current_cursor
-    vim.diagnostic.open_float(0, { scope = "cursor" })
-  end
-end
+-- Refactored to use functional diagnostic_popup module
+local diagnostic_popup = require('config.diagnostic_popup')
+local LspDiagnosticsPopupHandler = diagnostic_popup.create_debounced_handler()
+local FullDiagnosticPopupHandler = diagnostic_popup.create_full_diagnostic_handler()
 
 --------------------------------------------------------------------------------
 --          This the the autopopup for LSP Auto Completion nvim-cmp           --
@@ -220,6 +216,9 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
 
 vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, { desc =
 "Open diagnostics popup floating window for cursor position" })
+
+vim.keymap.set("n", "<S-d>", FullDiagnosticPopupHandler, { desc =
+"Open full diagnostics popup (no truncation) for cursor position" })
 
 -- Show signature help as floating window in INSERT mode
 -- vim.cmd [[autocmd CursorHoldI * lua vim.lsp.buf.signature_help() ]]

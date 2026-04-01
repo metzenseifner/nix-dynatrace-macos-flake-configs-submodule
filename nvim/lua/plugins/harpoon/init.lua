@@ -25,32 +25,32 @@ return {
       desc =
       "Open Harpoon menu."
     },
-    {
-      "<C-j>",
-      function()
-        local harpoon = require("harpoon")
-        harpoon:list():next()
-        local current = harpoon:list():get(harpoon:list()._index)
-        if current then
-          vim.notify(string.format("Harpoon [%d]: %s", harpoon:list()._index, current.value))
-        end
-      end,
-      desc =
-      "Harpoon cycle to next mark."
-    },
-    {
-      "<C-k>",
-      function()
-        local harpoon = require("harpoon")
-        harpoon:list():prev()
-        local current = harpoon:list():get(harpoon:list()._index)
-        if current then
-          vim.notify(string.format("Harpoon [%d]: %s", harpoon:list()._index, current.value))
-        end
-      end,
-      desc =
-      "Harpoon cycle to previous mark."
-    },
+    -- {
+    --   "<C-j>", -- TODO need to find better binding
+    --   function()
+    --     local harpoon = require("harpoon")
+    --     harpoon:list():next()
+    --     local current = harpoon:list():get(harpoon:list()._index)
+    --     if current then
+    --       vim.notify(string.format("Harpoon [%d]: %s", harpoon:list()._index, current.value))
+    --     end
+    --   end,
+    --   desc =
+    --   "Harpoon cycle to next mark."
+    -- },
+    -- {
+    --   "<C-k>", -- TODO need to find better binding
+    --   function()
+    --     local harpoon = require("harpoon")
+    --     harpoon:list():prev()
+    --     local current = harpoon:list():get(harpoon:list()._index)
+    --     if current then
+    --       vim.notify(string.format("Harpoon [%d]: %s", harpoon:list()._index, current.value))
+    --     end
+    --   end,
+    --   desc =
+    --   "Harpoon cycle to previous mark."
+    -- },
   },
   config = function()
     local harpoon = require("harpoon")

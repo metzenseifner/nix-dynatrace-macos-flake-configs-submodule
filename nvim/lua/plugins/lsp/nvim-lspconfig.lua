@@ -420,7 +420,12 @@ return {
     --------------------------------------------------------------------------------
     -- Requires gopls via nvim-lspconfig and Telescope installed
     vim.keymap.set('n', 'gr', function()
-      require('telescope.builtin').lsp_references({ include_declaration = false })
+      require('telescope.builtin').lsp_references(
+        require('telescope.themes').get_ivy({
+          include_declaration = false,
+          jump_type = "never", -- do not auto jump on singleton result set
+        })
+      )
     end, { desc = 'Show references with Telescope' })
 
     -- Disabled as seems less useful than the entire workspace search without the keystroke delay
@@ -448,7 +453,7 @@ return {
         {}
       )
 
-      local text = table.concat(lines, '\n')
+      local text      = table.concat(lines, '\n')
 
       require('telescope.builtin').lsp_document_symbols({ default_text = text })
     end, { desc = "Buffer symbols from visual selection" })
@@ -470,7 +475,7 @@ return {
         {}
       )
 
-      local text = table.concat(lines, '\n')
+      local text      = table.concat(lines, '\n')
 
       require('telescope.builtin').lsp_dynamic_workspace_symbols({ default_text = text })
     end, { desc = "Workspace symbols from visual selection" })

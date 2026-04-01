@@ -92,17 +92,17 @@ return {
     local function smart_cwd_open(prompt_bufnr, open_action)
       local entry = action_state.get_selected_entry()
       if not entry then return end
-      
+
       local filepath = entry.path or entry.filename or entry.value
       if not filepath or filepath == "" then return end
-      
+
       -- Close picker and open file
       open_action(prompt_bufnr)
-      
+
       -- Schedule CWD detection after file is opened and LSP attaches
       vim.schedule(function()
         local bufnr = vim.fn.bufnr(filepath)
-        
+
         -- Wait a bit for LSP to attach if it's going to
         vim.defer_fn(function()
           -- Detect and set CWD using LSP's root_dir
@@ -119,7 +119,7 @@ return {
     local select_tab_with_cwd = function(prompt_bufnr)
       local entry = action_state.get_selected_entry()
       actions.select_tab(prompt_bufnr)
-      
+
       vim.schedule(function()
         if not entry then return end
         local filepath = entry.path or entry.filename
@@ -488,12 +488,21 @@ return {
           object_assign(
             {
               default_text = table.concat(shared_rg_args, " "),
-              prompt_title = string.format('live_grep_args (hint: use -g|--glob to exclude filepath pattern): %s', cmd_str)
+              prompt_title = string.format('live_grep_args (hint: use -g|--glob to exclude filepath pattern): %s',
+                cmd_str)
               -- prompt_title =
               -- "live_grep_args (Ripgrep) . (+/- files with --iglob **/dir/**) (--no-ignore to ignore gitignore)",
               -- results_title = cmd_str
             }, -- sits above the results pane
-            require 'telescope.themes'.get_ivy({ previewer = true }))
+            require 'telescope.themes'.get_ivy({ previewer = true }), {
+              {
+                layout_config = {
+                  width = 0.95,               -- give it most of the screen
+                  height = 0.85,
+                  preview_width = 0.55,       -- tune: smaller preview => more results width
+                },
+              }
+            })
         )
       end,
       {

@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd('FileType', {
       if start_line > end_line then
         start_line, end_line = end_line, start_line
       end
-      
+
       if #qf_list > 0 then
         -- Remove items in reverse order to maintain indices
         for i = end_line, start_line, -1 do
@@ -148,6 +148,14 @@ vim.api.nvim_create_autocmd('FileType', {
         end)
       end
     end, { desc = "Edit quickfix item text", buffer = event.buf })
+
+    -- Prefill command line for quickfix substitution (cdo)
+    vim.keymap.set('n', '<C-d>', ':cdo s/foo/bar/g | update<C-Left><C-Left><Left><Left><Left>',
+      { desc = "[Quickfix] Prefill cdo substitution command", buffer = event.buf })
+
+    -- Prefill command line for quickfix file substitution (cfdo)
+    vim.keymap.set('n', '<C-f>', ':cfdo %s/foo/bar/g | update<C-Left><C-Left><Left><Left><Left>',
+      { desc = "[Quickfix] Prefill cfdo substitution command", buffer = event.buf })
   end,
 })
 
@@ -157,8 +165,11 @@ vim.keymap.set('n', '<leader>qa', function()
   local cursor = vim.api.nvim_win_get_cursor(0)
   local filename = vim.api.nvim_buf_get_name(bufnr)
   local line_text = vim.api.nvim_buf_get_lines(bufnr, cursor[1] - 1, cursor[1], false)[1] or ""
-  vim.fn.setqflist({{ filename = filename, lnum = cursor[1], col = cursor[2] + 1, text = line_text }}, 'a')
-  vim.notify('Added ' .. filename .. ':' .. cursor[1] .. ' to quickfix list')
+  vim.schedule(function()
+    vim.fn.setqflist({ { filename = filename, lnum = cursor[1], col = cursor[2] + 1, text = line_text } }, 'a')
+    vim.notify('Added ' .. filename .. ':' .. cursor[1] .. ' to quickfix list')
+    vim.cmd('copen | wincmd p')
+  end)
 end, { desc = "[Quickfix] Add current position" })
 
 -- Save quickfix list to file
@@ -168,11 +179,11 @@ vim.keymap.set('n', '<leader>qs', function()
     vim.notify('Quickfix list is empty', vim.log.levels.WARN)
     return
   end
-  
+
   local date = vim.fn.strftime('%F')
   local default_name = 'quickfix-' .. date .. '.json'
   local cursor_pos = #'quickfix-'
-  
+
   vim.ui.input({
     prompt = 'Save quickfix as: ',
     default = default_name,
@@ -182,7 +193,7 @@ vim.keymap.set('n', '<leader>qs', function()
       vim.notify('Save cancelled', vim.log.levels.INFO)
       return
     end
-    
+
     local cwd = vim.fn.getcwd()
     local filepath = cwd .. '/' .. filename
     local file = io.open(filepath, 'w')
@@ -190,11 +201,11 @@ vim.keymap.set('n', '<leader>qs', function()
       vim.notify('Failed to open file: ' .. filepath, vim.log.levels.ERROR)
       return
     end
-    
+
     local data = vim.fn.json_encode(qf_list)
     file:write(data)
     file:close()
-    
+
     vim.notify('Saved ' .. #qf_list .. ' items to ' .. filepath)
   end)
 end, { desc = "[Quickfix] Save to file" })
@@ -204,7 +215,7 @@ vim.keymap.set('n', '<leader>ql', function()
   local date = vim.fn.strftime('%F')
   local default_name = 'quickfix-' .. date .. '.json'
   local cursor_pos = #'quickfix-'
-  
+
   vim.ui.input({
     prompt = 'Load quickfix from: ',
     default = default_name,
@@ -215,7 +226,7 @@ vim.keymap.set('n', '<leader>ql', function()
       vim.notify('Load cancelled', vim.log.levels.INFO)
       return
     end
-    
+
     local cwd = vim.fn.getcwd()
     local filepath = cwd .. '/' .. filename
     local file = io.open(filepath, 'r')
@@ -223,16 +234,16 @@ vim.keymap.set('n', '<leader>ql', function()
       vim.notify('File not found: ' .. filepath, vim.log.levels.WARN)
       return
     end
-    
+
     local content = file:read('*all')
     file:close()
-    
+
     local ok, qf_list = pcall(vim.fn.json_decode, content)
     if not ok or type(qf_list) ~= 'table' then
       vim.notify('Failed to parse quickfix file', vim.log.levels.ERROR)
       return
     end
-    
+
     vim.fn.setqflist(qf_list, 'r')
     vim.notify('Loaded ' .. #qf_list .. ' items from ' .. filepath)
     vim.cmd('copen')

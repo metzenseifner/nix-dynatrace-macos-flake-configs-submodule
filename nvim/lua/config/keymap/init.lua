@@ -466,6 +466,14 @@ require('config.keymap.json')
 require('config.keymap.help')
 
 --------------------------------------------------------------------------------
+--                           Line Swapping                                    --
+--------------------------------------------------------------------------------
+safe_keymap('n', '<C-j>', ':move .+1<CR>==', opts, 'Edit', 'swap_line_down', 'Swap current line with line below')
+safe_keymap('n', '<C-k>', ':move .-2<CR>==', opts, 'Edit', 'swap_line_up', 'Swap current line with line above')
+safe_keymap('v', '<C-j>', ':move \'>+1<CR>gv=gv', opts, 'Edit', 'swap_selection_down', 'Swap selected lines down')
+safe_keymap('v', '<C-k>', ':move \'<-2<CR>gv=gv', opts, 'Edit', 'swap_selection_up', 'Swap selected lines up')
+
+--------------------------------------------------------------------------------
 --                      Orgmode Global Keybindings                            --
 --------------------------------------------------------------------------------
 -- Orgmode keybindings moved to lua/plugins/orgmode/orgmode.lua `keys` property
