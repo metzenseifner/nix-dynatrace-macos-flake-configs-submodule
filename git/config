@@ -117,17 +117,31 @@
   #  | xargs -I {} git worktree remove -f {}; \
   #  }; effect"
 
+  # wt-b = "!effect() { \
+  #   git fetch;\
+  #   local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
+  #   local branch=${1-NOISSUE_${timestamp}}; \
+  #   local base=${2-origin/main}; \
+  #   local path=${3-$(perl -pe 's|/|_|g'<<<${branch})}; \
+  #   echo \"==> Format: git wt-b [<branch>] [<base>] [<path>]\"; \
+  #   local cmd='git worktree add -b \"${branch}\" \"branches/${path}\" \"${base}\"'; \
+  #   eval \"echo ==\\> Executing: $cmd\"; \
+  #   eval $cmd; \
+  #   echo cd $(git rev-parse --show-toplevel)/branches/${path}; \
+  #   }; effect"
   wt-b = "!effect() { \
-    git fetch;\
-    local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
-    local branch=${1-NOISSUE_${timestamp}}; \
-    local base=${2-origin/main}; \
-    local path=${3-$(perl -pe 's|/|_|g'<<<${branch})}; \
+    git fetch; \
+    timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \
+    branch=${1:-NOISSUE_${timestamp}}; \
+    default=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|.*/||'); \
+    default=${default:-$(git config init.defaultBranch 2>/dev/null)}; \
+    default=${default:-main}; \
+    base=${2:-origin/${default}}; \
+    path=${3:-$(printf '%s' \"${branch}\" | tr '/' '_')}; \
     echo \"==> Format: git wt-b [<branch>] [<base>] [<path>]\"; \
-    local cmd='git worktree add -b \"${branch}\" \"branches/${path}\" \"${base}\"'; \
-    eval \"echo ==\\> Executing: $cmd\"; \
-    eval $cmd; \
-    echo cd $(git rev-parse --show-toplevel)/branches/${path}; \
+    echo \"==> Executing: git worktree add -b '${branch}' 'branches/${path}' '${base}'\"; \
+    git worktree add -b \"${branch}\" \"branches/${path}\" \"${base}\"; \
+    echo cd \"$(git rev-parse --show-toplevel)/branches/${path}\"; \
     }; effect"
   wt-u = "!effect() { \
     local timestamp=$(date +'%Y-%m-%dT%H-%M-%S'); \

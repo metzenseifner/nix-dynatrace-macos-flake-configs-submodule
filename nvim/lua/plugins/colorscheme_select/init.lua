@@ -7,7 +7,7 @@ return {
   },
   config = function(modname, opts)
     local conf = {
-      startup_mode = "dark", -- "light" | "dark"
+      startup_mode = "light", -- "light" | "dark"
       dark_schemes = {
         "ayu-mirage",
         "grail",

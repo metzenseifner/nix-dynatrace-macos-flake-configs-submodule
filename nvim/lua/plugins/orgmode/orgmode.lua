@@ -4,6 +4,9 @@
 --------------------------------------------------------------------------------
 -- Filtering https://orgmode.org/manual/Matching-tags-and-properties.html
 
+local html_template_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/templates/easy_template/easy_template.html.template"
+local html_css_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/templates/easy_template/elegant_boostrap.css"
+
 local function current_week_monday()
   local current_day = os.date("*t").wday
   local days_to_monday = (current_day == 1) and 6 or (current_day - 2)
@@ -426,8 +429,8 @@ return {
           action = function(exporter)
             local current_file = vim.api.nvim_buf_get_name(0)
             local target = vim.fn.fnamemodify(current_file, ':p:r') .. '.html'
-            local template_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/easy_template.html.template"
-            local css_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/elegant_boostrap.css"
+            local template_path = html_template_path
+            local css_path = html_css_path
             local command = { 'pandoc', current_file, '-o', target, '--write', 'html', '--template=' .. template_path,
               '--toc', '--standalone', '--embed-resources', '--css=' .. css_path }
             local on_success = function(output)
@@ -796,9 +799,16 @@ return {
 
       -- Generate temporary HTML file
       local temp_html = vim.fn.tempname() .. '.html'
-      local template_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/easy_template.html.template"
-      local css_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/elegant_boostrap.css"
+      --------------------------------------------------------------------------------
+      --             A collection of portable pandoc templates with no              --
+      --                                dependencies                                --
+      --------------------------------------------------------------------------------
 
+      --local template_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/easy_template.html.template"
+      --local css_path = vim.fn.stdpath('config') .. "/lua/plugins/orgmode/elegant_boostrap.css"
+
+      local template_path = html_template_path
+      local css_path = html_css_path
       -- Build pandoc command
       local from_format = is_org and 'org' or 'markdown'
       local command = {
