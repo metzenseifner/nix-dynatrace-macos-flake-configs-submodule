@@ -7,8 +7,8 @@ disable stat 2>/dev/null
 alias stat='command stat'
 hash -d stat 2>/dev/null
 
-# Add .local/bin to PATH
-path=($HOME/.local/bin:$PATH)
+# Add .local/bin to PATH (also in home.sessionPath, but needed for non-NixOS shells)
+path=($HOME/.local/bin $path)
 
 # Cargo/Rust (user-installed, not managed by Nix)
 path=(~/.local/share/cargo/bin $path)
