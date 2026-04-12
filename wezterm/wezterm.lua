@@ -20,6 +20,8 @@ require('color')(wezterm, config)
 require('hyperlinks')(wezterm, config)
 require('bell')(wezterm, config)
 require('keys')(wezterm, config)
+require('window')(config)
+require('resizing')(wezterm, config)
 
 -- TODO check whether tmux avail, if so, set it as default program
 config.hide_tab_bar_if_only_one_tab = true
@@ -72,8 +74,5 @@ config.term = "xterm-256color"
 --  -- make ctrl-\ work (or not)
 --  { key = "phys:7", mods = "CTRL|ALT|SHIFT", action = "DisableDefaultAssignment" }
 --}
-
-config.initial_cols = 140 -- tput cols
-config.initial_rows = 41  -- tput lines
 
 return config

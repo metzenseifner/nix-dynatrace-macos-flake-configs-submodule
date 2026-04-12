@@ -1,51 +1,41 @@
+-- Dynamic window sizing and font scaling based on screen geometry.
+--
+-- On gui-attached: queries the active screen's pixel dimensions and DPI,
+-- computes an appropriate font size (linearly scaled from a 144-DPI
+-- reference), then resizes the window to ~85% of the screen, centered.
+
 local apply = function(wezterm, config)
-  local readjust_font_size = function(window, pane)
-    local window_dims = window:get_dimensions()
-    local pane_dims = pane:get_dimensions()
+  local resized = false
 
-    local config_overrides = {}
-    local initial_font_size = 12 -- Set to your desired font size
-    config_overrides.font_size = initial_font_size
-
-    local max_iterations = 5
-    local iteration_count = 0
-    local tolerance = 3
-
-    -- Calculate the initial difference between window and pane heights
-    local current_diff = window_dims.pixel_height - pane_dims.pixel_height
-    local min_diff = math.abs(current_diff)
-    local best_font_size = initial_font_size
-
-    -- Loop to adjust font size until the difference is within tolerance or max iterations reached
-    while current_diff > tolerance and iteration_count < max_iterations do
-      -- Increment the font size slightly
-      config_overrides.font_size = config_overrides.font_size + 0.5
-      window:set_config_overrides(config_overrides)
-
-      -- Update dimensions after changing font size
-      window_dims = window:get_dimensions()
-      pane_dims = pane:get_dimensions()
-      current_diff = window_dims.pixel_height - pane_dims.pixel_height
-
-      -- Check if the current difference is the smallest seen so far
-      local abs_diff = math.abs(current_diff)
-      if abs_diff < min_diff then
-        min_diff = abs_diff
-        best_font_size = config_overrides.font_size
-      end
-
-      iteration_count = iteration_count + 1
+  wezterm.on('window-config-reloaded', function(window, pane)
+    if resized then
+      return
     end
+    resized = true
 
-    -- If no acceptable difference was found, set the font size to the best one encountered
-    if current_diff > tolerance then
-      config_overrides.font_size = best_font_size
-      window:set_config_overrides(config_overrides)
-    end
-  end
+    local screens = wezterm.gui.screens()
+    local active = screens.active
 
-  wezterm.on("window-resized", function(window, pane)
-    readjust_font_size(window, pane)
+    -- Reference: 15 pt looked right on a Retina MacBook (144 effective DPI).
+    local ref_dpi = 144
+    local ref_font_size = 15.0
+
+    local dpi = active.effective_dpi or 96
+    local font_size = ref_font_size * (dpi / ref_dpi)
+
+    -- Clamp to a sensible range
+    font_size = math.max(9.0, math.min(font_size, 18.0))
+
+    -- Size the window to ~85% of the screen, centered
+    local width  = math.floor(active.width * 0.85)
+    local height = math.floor(active.height * 0.85)
+    local x = active.x + math.floor((active.width  - width)  / 2)
+    local y = active.y + math.floor((active.height - height) / 2)
+
+    window:set_inner_size(width, height)
+    window:set_position(x, y)
+    window:set_config_overrides({ font_size = font_size })
   end)
 end
+
 return apply
