@@ -176,11 +176,11 @@ return {
         DELEGATED = ':background #FFFFFF :foreground:#000000 :slant italic :underline on',
         TODO = ':foreground red :slant italic :weight normal', -- overrides builtin color for `TODO` keyword
         NEXT = ':foreground red :slant italic :weight bold',
-        COMMITMENT = ':foreground orange :slant italic :weight bold',
+        COMMITMENT = ':foreground #FF8C00 :slant italic :weight bold',
         GAP = ':foreground blue :background white :slant italic :weight bold',
         GAP_CLOSED = ':foreground green :slant italic :weight bold',
         COMMITMENT_FULFILLED = ':foreground green :slant italic :weight bold',
-        INPROGRESS = ':foreground orange :weight bold',
+        INPROGRESS = ':foreground #FF8C00 :weight bold',
         FEEDBACK = ':foreground gray :slant italic :weight normal', -- overrides builtin color for `TODO` keyword
         BLOCKED = ':background yellow :slant italic',
         REVIEW = ':foreground blue :slant italic :weight normal',   -- overrides builtin color for `TODO` keyword
