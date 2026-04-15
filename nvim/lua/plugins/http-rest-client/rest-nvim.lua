@@ -5,8 +5,10 @@ return {
     "nvim-treesitter/nvim-treesitter",
     { "j-hui/fidget.nvim", opts = {} },
   },
-  build = "rockspec",
-  rocks = { "mimetypes", "xml2lua" },
+  -- All lua rock dependencies (mimetypes, xml2lua, nvim-nio, fidget-nvim,
+  -- tree-sitter-http) are provided via Nix extraLuaPackages in home.nix.
+  -- Skipping rockspec build avoids luarocks path issues in Nix.
+  build = false,
   -- Conditionally enable based on luarocks availability
   cond = function()
     local has_luarocks = vim.fn.executable("luarocks") == 1
