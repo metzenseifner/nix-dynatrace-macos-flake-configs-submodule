@@ -194,7 +194,7 @@
     }; f"
 [init]
 	templatedir = ~/.config/git/template
-	defaultBranch = =
+	defaultBranch = main
 [core]
 	hooksPath = ~/.config/git/scripts
   excludesfile = ~/.config/git/ignore
