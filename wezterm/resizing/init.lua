@@ -23,8 +23,8 @@ local apply = function(wezterm, config)
     local dpi = active.effective_dpi or 96
     local font_size = ref_font_size * (dpi / ref_dpi)
 
-    -- Clamp to a sensible range
-    font_size = math.max(9.0, math.min(font_size, 18.0))
+    -- Clamp to a sensible range (font size makes difference in scale between huawei and macbook for example)
+    font_size = math.max(9.0, math.min(font_size, 10.0))
 
     -- Size the window to ~85% of the screen, centered
     local width  = math.floor(active.width * 0.85)
