@@ -293,6 +293,10 @@ return {
             command = "bun x npm-groovy-lint"
           }), -- npm i -g npm-groovy-lint
           --null_ls.builtins.formatting.goimports, -- auto add or remove go imports: does both gopls imports and gopls format
+          null_ls.builtins.formatting.nixfmt.with({
+            command = "nixfmt", -- provided by nixfmt-rfc-style nix package
+            filetypes = { "nix" },
+          }),
           require("plugins.golang.null-ls-golangci-lint"), -- golangci-lint v2 diagnostics from nix flake
           --null_ls.builtins.code_actions.gomodifytags, -- add tags to json (covered by gopher.nvim)
           --null_ls.builtins.code_actions.impl, -- generate method stubs for implementing an interface (covered by gopher.nvim)
@@ -320,7 +324,7 @@ return {
       require("mason-null-ls").setup({
         ensure_installed = nil,
         automatic_installation = {
-          exclude = { "golangci_lint" }, -- Using nix version instead
+          exclude = { "golangci_lint", "nixfmt" }, -- Using nix versions instead
         },
       })
     end
