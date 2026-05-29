@@ -1,21 +1,3 @@
-[user]
-	name = Jonathan L. Komar
-	email = Jonathan.Komar@dynatrace.com
-  signingKey = 94DF5329EB1E98E5EED8D15BFE24E158147151F1
-[commit]
-	gpgsign = true
-#[credential]
-#	helper = osxkeychain
-[merge]
-	tool = nvim
-[mergetool "nvim"]
-  cmd = "nvim -c \"DiffviewOpen\""
-  #cmd = "nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\""
-  # https://lyz-code.github.io/blue-book/diffview/#resolve-merge-conflicts
-  # https://github.com/sindrets/diffview.nvim/blob/3afa6a053f680e9f1329c4a151db988a482306cd/lua/diffview/config.lua
-[mergetool]
-	keepBackup = true
-	prompt = false
 [alias]  # Shell scripts (! prefixed cmds) run from top-level dir. See $GIT_PREFIX with git rev-parse --show-prefix if below top
   upstream = "!git rev-parse --abbrev-ref --symbolic-full-name @{upstream}"
   # note that git log --name-only adds the names of the files per commit
@@ -192,10 +174,3 @@
     local base=${2-origin/main}; \
     echo Running git worktree add -b \\\"${path}\\\" \\\"${base}\\\"; \
     }; f"
-[init]
-	templatedir = ~/.config/git/template
-	defaultBranch = main
-[core]
-	hooksPath = ~/.config/git/scripts
-  excludesfile = ~/.config/git/ignore
-  editor = vim
