@@ -1,3 +1,21 @@
+-- Mason is retained as an EXPLICIT FALLBACK only.
+--
+-- The canonical providers for language servers live in
+-- `modules/neovim/lsps/` as sibling pairs:
+--
+--   <name>.nix  — declares the package(s) (e.g. pkgs.lua-language-server)
+--   <name>.lua  — holds the lspconfig settings table
+--
+-- nvim-lspconfig.lua scans NIX_LSP_DIR (exported by the wrapper flake)
+-- at startup, dofile()s every .lua, and merges the configs. Whatever
+-- it finds is stripped from mason-lspconfig's ensure_installed below,
+-- so Mason only touches servers NOT yet declared in modules/neovim/lsps.
+--
+-- The LspAttach audit (config/lsp_provider_audit.lua) emits a
+-- WARN-level vim.notify whenever an attached server's binary resolves
+-- outside /nix/store/ — typically a Mason-installed binary under
+-- ~/.local/share/nvim/mason/. Treat that warning as a TODO: add the
+-- matching <name>.nix + <name>.lua under modules/neovim/lsps/.
 return {
   "williamboman/mason.nvim",
   cmd = "Mason",
@@ -7,6 +25,10 @@ return {
   },
   opts = {
     ensure_installed = {
+      -- Intentionally empty: declare LSPs/formatters in Nix instead
+      -- (modules/neovim/lsps/<name>.{nix,lua}). Mason auto-installs
+      -- only what mason-lspconfig requests for servers NOT covered by
+      -- that directory (i.e. fallbacks).
       --"stylua",
       --"shfmt",
       --"flake8",

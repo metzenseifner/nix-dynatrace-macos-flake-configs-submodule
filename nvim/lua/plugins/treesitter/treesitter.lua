@@ -1,19 +1,36 @@
+-- Locate nvim-treesitter on the runtimepath. The plugin (with grammars)
+-- is provided by the Nix wrapper via wlib's `specs.nvim-treesitter`
+-- (see modules/neovim/flake.nix), so lazy.nvim should not clone it.
+--
+-- Algebraic shape:
+--   find_rtp_plugin : Name -> Maybe Path
+--
+-- Plain English: walk runtimepath, return the first entry whose basename
+-- equals `name`. nil if not present (e.g. when running this config
+-- outside the Nix wrapper, in which case lazy will fall back to cloning).
+local function find_rtp_plugin(name)
+  for _, p in ipairs(vim.api.nvim_list_runtime_paths()) do
+    if vim.fn.fnamemodify(p, ':t') == name then
+      return p
+    end
+  end
+  return nil
+end
+
+local nvim_ts_dir = find_rtp_plugin('nvim-treesitter')
+
 return
 {
   --{ import = "plugins.treesitter.treesitter-custom-queries" },
   {
     "nvim-treesitter/nvim-treesitter",
+    dir = nvim_ts_dir,
+    lazy = false,
     enable = true,
-    --lock = true,
-    --tag = 'v0.9.2',
-    --branch = "main",-- check build status at https://github.com/nvim-treesitter/nvim-treesitter/branches
-    -- indentation module could influence indentexpr; verbose set indentexpr?
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
       --{ "nvim-treesitter/nvim-tree-docs" },
     },
-    event = 'BufRead',
-    build = ':TSUpdate',
     keys = {
     },
     config = function()

@@ -266,61 +266,50 @@ return {
     --  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
     --end
     --vim.diagnostic.config(opts.diagnostics)
-    -- LSP Server Settings
-    ---@type lspconfig.options
-    local servers = { -- deprecated: prefer separate files for each config
-      --efm = {}, -- similar to null-ls / zero-ls
-      --jdtls = {enable = false},
-      --["java-test"] = {},
-      --["java-debug-adapter"] = {},
-      --yamlls = {}, -- configured in servers/yamlls.lua
-      gopls = require("plugins.golang.lsp-gopls"),
-      -- golangci-lint-langserver =
-      -- CAVEAT: names of mason packages do not match names of servers
-      -- hls = { -- disabled to avoid using mason version and using ghcup; also
-      -- haskell-tools includes LSP language server based on your projects version
-      --   mason = false,
-      --   cmd = { "haskell-language-server-wrapper-2.2.0.0", "--lsp" },
-      --   haskell = {
-      --     -- Setting this to true could have a performance impact on large mono repos.
-      --     checkProject = true,
-      --     -- root_dir = { '.git' }
-      --     --filetypes = { 'haskell', 'lhaskell', 'cabal' },
-      --     --cabalFormattingProvider = "cabalfmt",
-      --     formattingProvider = "ormolu",
-      --     single_file_support = true,
-      --   }
-      -- }, -- haskell
-      --java_language_server = {},
-    }
+    -- LSP Server Settings.
+    --
+    -- Algebraic shape:
+    --   servers : Map ServerName Config
+    --   servers = ⋃ { dofile(f) | f ∈ NIX_LSP_DIR, f endsWith .lua }
+    --
+    -- Plain English: each Nix-managed LSP lives as a sibling
+    -- (<name>.nix, <name>.lua) pair under modules/neovim/lsps/. The
+    -- working-tree path of that directory is exported by the wrapper
+    -- flake as NIX_LSP_DIR. We scan it, dofile() each .lua, and merge
+    -- the resulting tables into one config map keyed by lspconfig
+    -- server name. This is the only registration site — adding a new
+    -- server is a two-file change in modules/neovim/lsps/.
+    local servers = {}
 
-    local add_server = function(servers)
-      return function(server_module_name)
-        return vim.tbl_deep_extend('error',
-          servers
-          , require('plugins.lsp.servers.' .. server_module_name))
+    local nix_lsp_dir = vim.env.NIX_LSP_DIR
+    local nix_provided = {} ---@type table<string, boolean>
+    if nix_lsp_dir and nix_lsp_dir ~= "" then
+      local handle = vim.uv and vim.uv.fs_scandir(nix_lsp_dir) or vim.loop.fs_scandir(nix_lsp_dir)
+      while handle do
+        local name, ftype = (vim.uv and vim.uv.fs_scandir_next or vim.loop.fs_scandir_next)(handle)
+        if not name then break end
+        if (ftype == 'file' or ftype == 'link') and name:match('%.lua$') then
+          local ok, mod = pcall(dofile, nix_lsp_dir .. '/' .. name)
+          if ok and type(mod) == 'table' then
+            for server_name, cfg in pairs(mod) do
+              servers[server_name] = cfg
+              nix_provided[server_name] = true
+            end
+          else
+            vim.notify(
+              string.format("Failed to load Nix LSP config %s: %s", name, tostring(mod)),
+              vim.log.levels.ERROR
+            )
+          end
+        end
       end
+    else
+      vim.notify(
+        "NIX_LSP_DIR is unset — no Nix-provided LSP configs will be loaded.\n" ..
+        "Check modules/neovim/flake.nix (home.sessionVariables.NIX_LSP_DIR).",
+        vim.log.levels.WARN
+      )
     end
-
-    --servers = add_server(servers)('eslint')
-    servers = add_server(servers)('yamlls')
-    servers = add_server(servers)('tsserver')
-    -- servers = add_server(servers)('nixfmt')
-    servers = add_server(servers)('nil')
-    -- servers = add_server(servers)('nix-eval-lsp') -- Disabled: nix_eval_lsp not in PATH
-    servers = add_server(servers)('jdtls')
-    servers = add_server(servers)('terraformls')
-    servers = add_server(servers)('tflint')
-    servers = add_server(servers)('jsonls')
-    servers = add_server(servers)('ansiblels')
-    servers = add_server(servers)('pyright')
-    servers = add_server(servers)('marksman')
-    servers = add_server(servers)('kotlin_language_server')
-    servers = add_server(servers)('bashls')
-    servers = add_server(servers)('vimls')
-    servers = add_server(servers)('docker_compose_language_service')
-    servers = add_server(servers)('groovyls')
-    servers = add_server(servers)('lua_ls')
 
     -- Configure LSP to use nvim-cmp as a completion engine
     local capabilities = require("cmp_nvim_lsp").default_capabilities() -- This is a nvim-cmp source for the built-in lsp client.
@@ -399,17 +388,38 @@ return {
     end
 
     if have_mason then
-      -- Filter out jdtls from mason management (handled by nix)
+      -- Filter out servers we provide via Nix. The set was computed
+      -- when we loaded modules/neovim/lsps/*.lua above — it's literally
+      -- "every key found in those files".
+      --
+      -- Algebraic shape:
+      --   mason_servers : List ServerName = ensure_installed ∖ nix_provided
+      --
+      -- Plain English: anything declared in Nix gets manual setup
+      -- (against $PATH), everything else is left to Mason as the
+      -- explicit fallback. The LspAttach audit
+      -- (config/lsp_provider_audit.lua) will warn whenever Mason's
+      -- fallback actually fires.
       local mason_servers = vim.tbl_filter(function(s)
-        return s ~= "jdtls"
+        return not nix_provided[s]
       end, ensure_installed)
 
-      if #mason_servers ~= #ensure_installed then
-        vim.notify("jdtls excluded from mason (using nix environment)", vim.log.levels.INFO)
+      local excluded = {}
+      for _, s in ipairs(ensure_installed) do
+        if nix_provided[s] then
+          table.insert(excluded, s)
+        end
+      end
+      if #excluded > 0 then
+        vim.notify(
+          "Mason will not manage these servers (provided by Nix):\n  " ..
+          table.concat(excluded, ", "),
+          vim.log.levels.DEBUG
+        )
       end
 
       mason_lspconfig.setup({ ensure_installed = mason_servers })
-      -- Manually call setup for each mason-installed server
+      -- Manually call setup for each server (mason-installed + nix-provided).
       for _, server in ipairs(ensure_installed) do
         setup(server)
       end

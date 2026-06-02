@@ -497,9 +497,9 @@ return {
             require 'telescope.themes'.get_ivy({ previewer = true }), {
               {
                 layout_config = {
-                  width = 0.95,               -- give it most of the screen
+                  width = 0.95,         -- give it most of the screen
                   height = 0.85,
-                  preview_width = 0.55,       -- tune: smaller preview => more results width
+                  preview_width = 0.55, -- tune: smaller preview => more results width
                 },
               }
             })
@@ -514,6 +514,7 @@ return {
         desc =
         "Pick find grep args in buffer. Open live grepper accepting custom arguments."
       })
+
     vim.keymap.set('n', '<leader>pff',
       function()
         local path = cwd_util.get()
@@ -523,8 +524,9 @@ return {
       end,
       {
         desc =
-        "Pick find files."
+        "Pick/find files recursively within the current working directory."
       })
+
 
     vim.keymap.set('n', '<leader>pfc',
       function()

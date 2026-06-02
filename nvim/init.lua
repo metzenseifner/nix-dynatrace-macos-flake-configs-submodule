@@ -45,4 +45,5 @@ require('config/diagnostic')
 require('config/highlight_groups')
 require('config/portable')
 require('config/gopls_build_tags').setup() -- Auto-detect build tags for gopls
+require('config/lsp_provider_audit').setup() -- Warn when an LSP comes from Mason/system instead of /nix/store
 --"--lua require()
