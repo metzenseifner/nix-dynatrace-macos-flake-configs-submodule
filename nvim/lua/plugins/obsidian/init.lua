@@ -10,7 +10,7 @@ return {
   },
   config = function()
     -- Only setup if vault directory exists
-    local vault_path = vim.fn.expand("~/Documents/Obsidian Vault")
+    local vault_path = vim.fn.expand("~/devel/obsidian-vault")
 
     if vim.fn.isdirectory(vault_path) == 0 then
       -- Don't setup if vault doesn't exist - plugin is optional
