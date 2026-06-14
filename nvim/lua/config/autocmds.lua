@@ -206,13 +206,13 @@ local FullDiagnosticPopupHandler = diagnostic_popup.create_full_diagnostic_handl
 
 --- Show diagnostics automatically in floating window in NORMAL mode (debounce with vim.o.updatetime)
 -- Removed duplicate vim.cmd autocmd - using only the nvim_create_autocmd below
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  group = "buffer",
-  pattern = '*',
-  callback = function()
-    LspDiagnosticsPopupHandler()
-  end
-})
+-- vim.api.nvim_create_autocmd({ "CursorHold" }, {
+--   group = "buffer",
+--   pattern = '*',
+--   callback = function()
+--     LspDiagnosticsPopupHandler()
+--   end
+-- })
 
 vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, { desc =
 "Open diagnostics popup floating window for cursor position" })
