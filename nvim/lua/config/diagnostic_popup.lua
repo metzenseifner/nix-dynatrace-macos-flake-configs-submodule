@@ -20,10 +20,14 @@ end
 -- @return table: Float window options with unlimited width
 local function full_diagnostic_opts()
   local opts = default_float_opts()
-  opts.max_width = nil  -- Remove width limit
-  opts.max_height = nil -- Remove height limit
-  opts.wrap = true      -- Enable text wrapping
-  opts.focus = false    -- Don't steal focus
+  opts.max_width = nil    -- Remove width limit
+  opts.max_height = nil   -- Remove height limit
+  opts.wrap = true        -- Enable text wrapping
+  -- Press the mapping again to jump into the float (analogous to K twice).
+  -- open_float sets focus_id = scope ("cursor"); with focusable+focus the
+  -- second invocation focuses the existing float instead of reopening it.
+  opts.focusable = true
+  opts.focus = true
   return opts
 end
 

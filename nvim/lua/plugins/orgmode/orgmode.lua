@@ -827,8 +827,8 @@ return {
 
       -- Add properties filter for org files
       if is_org then
-        local filter_path = vim.fn.expand('$HOME/.local/share/pandoc/org-properties-filter.lua')
-        table.insert(command, 2, '--lua-filter=' .. filter_path)
+        -- local filter_path = vim.fn.expand('$HOME/.local/share/pandoc/org-properties-filter.lua')
+        -- table.insert(command, 2, '--lua-filter=' .. filter_path)
       end
 
       -- Execute pandoc

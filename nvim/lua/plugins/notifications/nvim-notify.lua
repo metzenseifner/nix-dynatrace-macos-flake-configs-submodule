@@ -3,6 +3,40 @@ return {
   lazy = false,
   priority = 1000, -- Load before fidget
   config = function(_, _)
+    -- Stop nvim-notify minting a fresh Notify<LEVEL><Section><bufnr> group per
+    -- notification, which never gets freed and eventually triggers E849 (too
+    -- many highlight groups). The window is invisible here (see below), so
+    -- reusing the static base Notify* groups has no visual effect. Must run
+    -- before require("notify"), which eagerly captures this factory.
+    package.loaded["notify.service.buffer.highlights"] = function(level, buffer, config)
+      local function base(section)
+        local group = "Notify" .. level .. section
+        if vim.fn.hlID(group) == 0 then
+          group = "NotifyINFO" .. section
+        end
+        return group
+      end
+      local hl = {
+        groups = {},
+        opacity = 100,
+        buffer = buffer,
+        _config = config,
+        title = base("Title"),
+        border = base("Border"),
+        body = base("Body"),
+        icon = base("Icon"),
+      }
+      function hl:set_opacity(alpha)
+        self.opacity = alpha
+        return false
+      end
+      function hl:get_opacity()
+        return self.opacity
+      end
+      function hl:_redefine_treesitter() end
+      return hl
+    end
+
     local notify = require("notify")
     ---
     ---@type notify.Config

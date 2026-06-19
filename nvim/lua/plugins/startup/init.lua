@@ -1,4 +1,3 @@
 return {
-  -- { import = "plugins.startup.startup" },
+  { import = "plugins.startup.startup" },
 }
-

@@ -57,42 +57,28 @@ return {
           --    cmp.select_next_item({behavior=cmp.SelectBehavior.Select}) --cmp.mapping.select_prev_item(),
           -- end,
           -- Contextual mappings for the nvim-cmp floating pop-up window
+          -- Completion only: snippet navigation lives on <c-f>/<c-b> (jump) and
+          -- <c-l>/<c-h> (choice), so <c-n> no longer touches luasnip.
           ["<C-n>"] = function()
-            local ls = require 'luasnip'
-            if ls.choice_active() then
-              vim.notify("Changing choice")
-              ls.change_choice(1)
-            elseif ls.jumpable(1) then
-              vim.notify("Jumping to next snippet node")
-              ls.jump(1)
-            elseif cmp.visible() then
-              vim.notify("nvim-cmp selecting next item")
+            if cmp.visible() then
               cmp.select_next_item(select_opts)
             else
-              vim.notify("nvim-cmp triggering completion")
               cmp.complete()
             end
           end,
           ["<C-e>"] = function()
             cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert })
           end,
-          ["<C-b>"] = function(fallback)
-            -- if require 'luasnip'.choice_active() then
-            require "luasnip".change_choice(-1)
-            -- else
-            --   cmp.select_prev_item(select_opts)
-            -- end
+          -- Jump to the previous snippet node (mirrors <c-f> forward).
+          ["<C-b>"] = function()
+            local ls = require "luasnip"
+            if ls.jumpable(-1) then
+              ls.jump(-1)
+            end
           end,
 
+          -- Completion confirm only.
           ["<C-y>"] = function(fallback)
-            local ls = require 'luasnip'
-            -- First handle choice node confirmation by jumping forward
-            if ls.choice_active() then
-              -- Jump forward to confirm/leave the choice node
-              ls.jump(1)
-              return
-            end
-            -- Then handle completion confirmation
             if cmp.visible() then
               cmp.confirm({
                 -- behavior = cmp.ConfirmBehavior.Insert,
@@ -114,12 +100,6 @@ return {
             local ls = require "luasnip"
             if ls.jumpable(1) then
               ls.jump(1)
-            end
-          end,
-          ["<C-d>"] = function()
-            local ls = require "luasnip"
-            if ls.jumpable(-1) then
-              ls.jump(-1)
             end
           end
           -- ["<CR>"] = function()

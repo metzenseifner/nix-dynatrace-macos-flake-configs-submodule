@@ -419,22 +419,26 @@ safe_keymap({ "i", "s" }, "<c-s>", luasnip_safe_expand_or_jump, opts, 'Snippets'
 
 
 
---local FORWARD = 1
---safe_keymap({ "i", "s" }, "<C-c>", require 'luasnip'.change_choice(FORWARD), 'Snippets', 'luasnip.change_choice_forward', 'Switch to next choice.')
-
-local function luasnip_confirm_choice()
-  local ls = require('luasnip')
-  if ls.choice_active() then
-    -- Confirm the choice and exit choice selection
-    -- Jump forward to exit the choice node
-    if ls.jumpable(1) then
-      ls.jump(1)
+-- Cycle the options of the active choiceNode. Choice cycling and node jumping
+-- (<c-f>/<c-b>) are kept on separate keys so neither has to guess intent.
+-- When no choice is active the keypress falls through to its default (notably
+-- <c-h> = backspace in insert mode), so these never clobber normal editing.
+local function luasnip_change_choice(direction, key)
+  return function()
+    local ls = require('luasnip')
+    if ls.choice_active() then
+      ls.change_choice(direction)
+      return
     end
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "n", false)
   end
 end
 
-safe_keymap({ "i", "s" }, "<C-y>", luasnip_confirm_choice, opts, 'Snippets', 'luasnip_confirm_choice',
-  'Confirm choice and exit choice selection')
+safe_keymap({ "i", "s" }, "<c-l>", luasnip_change_choice(1, "<c-l>"), opts, 'Snippets', 'luasnip_next_choice',
+  'Cycle to next choice in the active choiceNode.')
+
+safe_keymap({ "i", "s" }, "<c-h>", luasnip_change_choice(-1, "<c-h>"), opts, 'Snippets', 'luasnip_prev_choice',
+  'Cycle to previous choice in the active choiceNode.')
 
 safe_keymap("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/setup/luasnip.lua<CR>", opts, "Snippets", "reload",
   "Reload the luasnip file at runtime.")
