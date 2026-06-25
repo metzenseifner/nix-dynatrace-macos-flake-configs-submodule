@@ -28,10 +28,22 @@ vim.api.nvim_create_autocmd("FileType", {
         { "dd", "Identifier" },
         { " for delete, ", "Normal" },
         { "cdo s/foo/bar/g | update", "Identifier" },
-        { " by line no %, ", "Normal"},
+        { " by line no %, ", "Normal" },
         { "cfdo %s/foo/bar/g | update", "Identifier" },
-        { " by file; need %, ", "Normal"},
+        { " by file; need %, ", "Normal" },
       }, false, {})
+    end)
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function()
+    vim.schedule(function()
+      vim.api.nvim_echo(
+        {
+          { ":RustBackend to control lspconfig vs. rustaceanvim backend", "Normal" }
+        }, false, {})
     end)
   end,
 })
@@ -214,11 +226,15 @@ local FullDiagnosticPopupHandler = diagnostic_popup.create_full_diagnostic_handl
 --   end
 -- })
 
-vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, { desc =
-"Open diagnostics popup floating window for cursor position" })
+vim.keymap.set("n", "D", LspDiagnosticsPopupHandler, {
+  desc =
+  "Open diagnostics popup floating window for cursor position"
+})
 
-vim.keymap.set("n", "<S-d>", FullDiagnosticPopupHandler, { desc =
-"Open full diagnostics popup (no truncation) for cursor position" })
+vim.keymap.set("n", "<S-d>", FullDiagnosticPopupHandler, {
+  desc =
+  "Open full diagnostics popup (no truncation) for cursor position"
+})
 
 -- Show signature help as floating window in INSERT mode
 -- vim.cmd [[autocmd CursorHoldI * lua vim.lsp.buf.signature_help() ]]

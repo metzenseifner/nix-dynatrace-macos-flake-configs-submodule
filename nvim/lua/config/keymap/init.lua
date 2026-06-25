@@ -493,6 +493,16 @@ safe_keymap('v', '<C-j>', ':move \'>+1<CR>gv=gv', opts, 'Edit', 'swap_selection_
 safe_keymap('v', '<C-k>', ':move \'<-2<CR>gv=gv', opts, 'Edit', 'swap_selection_up', 'Swap selected lines up')
 
 --------------------------------------------------------------------------------
+--                      Insert Mode Cursor / Line Split                       --
+--------------------------------------------------------------------------------
+-- Complementary pair operating on the cursor's vertical position in insert mode.
+-- <C-j> splits the line at the cursor (text after the cursor descends with it);
+-- <C-k> raises only the cursor, leaving surrounding text in place.
+safe_keymap('i', '<C-j>', '<CR>', opts, 'Edit', 'insert_split_line_down',
+  'Break line at cursor, moving text after cursor down')
+safe_keymap('i', '<C-k>', '<Up>', opts, 'Edit', 'insert_cursor_up', 'Move cursor up one line')
+
+--------------------------------------------------------------------------------
 --                      Orgmode Global Keybindings                            --
 --------------------------------------------------------------------------------
 -- Orgmode keybindings moved to lua/plugins/orgmode/orgmode.lua `keys` property
