@@ -12,49 +12,13 @@
 -- nvim-treesitter unless `dir =` points at the wrapper path, and
 -- (b) leave the grammar-pack dir off rtp because no lazy spec names it.
 --
--- Algebraic shape:
---   find_pack_plugin : Name -> Maybe Path
---
--- Plain English: scan every entry in &packpath for
--- `pack/*/start/<name>` and return the first hit. nil if not present
--- (e.g. when running this config outside the Nix wrapper, in which
--- case lazy falls back to cloning nvim-treesitter and grammars must be
--- installed via `:TSInstall`).
-local function glob_first_dir(pattern)
-  for _, hit in ipairs(vim.fn.glob(pattern, false, true)) do
-    if vim.fn.isdirectory(hit) == 1 then return hit end
-  end
-  return nil
-end
-
-local function find_pack_plugin(name)
-  -- 1. Standard: anywhere on &packpath under pack/*/start/<name>.
-  for _, base in ipairs(vim.split(vim.o.packpath, ',')) do
-    if base ~= '' then
-      local hit = glob_first_dir(base .. '/pack/*/start/' .. name)
-      if hit then return hit end
-    end
-  end
-  -- 2. wlib / nixpkgs neovim wrapper fallback. The wrapper script execs
-  -- into the unwrapped binary, so vim.v.progpath points at the *base*
-  -- store path (no nvim-packdir). The wrapper exports
-  --   NVIM_SYSTEM_RPLUGIN_MANIFEST=<wrapper-prefix>/nvim-rplugin.vim
-  -- which gives us the wrapper prefix; its sibling `nvim-packdir/`
-  -- holds the actual pack tree (start/<plugin>, opt/<plugin>).
-  local manifest = vim.env.NVIM_SYSTEM_RPLUGIN_MANIFEST
-  if manifest and manifest ~= '' then
-    local wrapper_prefix = vim.fn.fnamemodify(manifest, ':h')
-    local hit = glob_first_dir(wrapper_prefix .. '/nvim-packdir/pack/*/start/' .. name)
-    if hit then return hit end
-  end
-  -- 3. Last resort: anything currently on rtp whose basename matches.
-  for _, p in ipairs(vim.api.nvim_list_runtime_paths()) do
-    if vim.fn.fnamemodify(p, ':t') == name and vim.fn.isdirectory(p) == 1 then
-      return p
-    end
-  end
-  return nil
-end
+-- Resolution lives in the shared nixwrapper.pack module (composed here
+-- and by plugins/rust/rustaceanvim.lua) so the discovery logic is named
+-- and reused rather than duplicated. nil if not present (e.g. when
+-- running this config outside the Nix wrapper, in which case lazy falls
+-- back to cloning nvim-treesitter and grammars must be installed via
+-- `:TSInstall`).
+local find_pack_plugin = require('nixwrapper.pack').find_pack_plugin
 
 local nvim_ts_dir = find_pack_plugin('nvim-treesitter')
 local grammars_dir = find_pack_plugin('COLLATED_TS_GRAMMARS')

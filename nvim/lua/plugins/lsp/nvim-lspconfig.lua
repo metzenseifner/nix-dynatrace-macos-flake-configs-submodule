@@ -281,6 +281,13 @@ return {
     -- server is a two-file change in modules/neovim/lsps/.
     local servers = {}
 
+    -- Rust backend selector. When the active backend is rustaceanvim (not
+    -- the default rust_analyzer), suppresses_lspconfig('rust_analyzer')
+    -- returns true and we skip registering it here, leaving rust-analyzer
+    -- to rustaceanvim so the two never attach duplicate clients. See
+    -- config/rust_backend.lua and plugins/rust/rustaceanvim.lua.
+    local rust_backend = require('config.rust_backend')
+
     local nix_lsp_dir = vim.env.NIX_LSP_DIR
     local nix_provided = {} ---@type table<string, boolean>
     if nix_lsp_dir and nix_lsp_dir ~= "" then
@@ -292,8 +299,10 @@ return {
           local ok, mod = pcall(dofile, nix_lsp_dir .. '/' .. name)
           if ok and type(mod) == 'table' then
             for server_name, cfg in pairs(mod) do
-              servers[server_name] = cfg
-              nix_provided[server_name] = true
+              if not rust_backend.suppresses_lspconfig(server_name) then
+                servers[server_name] = cfg
+                nix_provided[server_name] = true
+              end
             end
           else
             vim.notify(
