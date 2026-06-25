@@ -470,6 +470,21 @@ require('config.keymap.json')
 require('config.keymap.help')
 
 --------------------------------------------------------------------------------
+--                      Append Semicolon to Line End                          --
+--------------------------------------------------------------------------------
+-- Idempotent right-identity: appending ';' is a no-op when the line already
+-- ends in ';'. Cursor position is preserved so insert mode is uninterrupted.
+local function append_semicolon()
+  local line = vim.api.nvim_get_current_line()
+  if line:sub(-1) ~= ';' then
+    vim.api.nvim_set_current_line(line .. ';')
+  end
+end
+
+safe_keymap({ "n", "i" }, "<leader>;", append_semicolon, opts, 'Edit', 'append_semicolon',
+  'Append a semicolon to the end of the current line.')
+
+--------------------------------------------------------------------------------
 --                           Line Swapping                                    --
 --------------------------------------------------------------------------------
 safe_keymap('n', '<C-j>', ':move .+1<CR>==', opts, 'Edit', 'swap_line_down', 'Swap current line with line below')

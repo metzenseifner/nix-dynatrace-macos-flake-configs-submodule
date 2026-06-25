@@ -298,6 +298,7 @@ return {
             filetypes = { "nix" },
           }),
           require("plugins.golang.null-ls-golangci-lint"), -- golangci-lint v2 diagnostics from nix flake
+          require("plugins.rust.null-ls-rust-postformat"), -- no-op Rust post-format hook (extend transform() to e.g. trim trailing blank lines)
           --null_ls.builtins.code_actions.gomodifytags, -- add tags to json (covered by gopher.nvim)
           --null_ls.builtins.code_actions.impl, -- generate method stubs for implementing an interface (covered by gopher.nvim)
         },
