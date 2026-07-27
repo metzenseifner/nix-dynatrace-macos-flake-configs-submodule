@@ -12,3 +12,5 @@
 #/[^\.]*
 # above breaks rg which is used by telescope find_files
 
+
+**/.claude/settings.local.json

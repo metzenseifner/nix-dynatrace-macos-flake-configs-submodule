@@ -46,9 +46,36 @@ return {
       return rust_backend.current() == rust_backend.backends.rustaceanvim
     end,
     init = function()
+      -- rust_keymaps : (BufNr) -> IO (). Rewires a handful of generic LSP
+      -- keys to rustaceanvim's `:RustLsp` command layer *only* in the rust
+      -- buffer the client just attached to. The grouped/nested code actions
+      -- rust-analyzer emits (extract, generate, macro expand, runnables) are
+      -- not expandable through stock vim.lsp.buf.code_action, so the global
+      -- <leader>ca (config/keymap/init.lua) is shadowed here per-buffer while
+      -- left intact for every other language.
+      local function rust_keymaps(bufnr)
+        local function rustlsp(subcommand)
+          return function() vim.cmd.RustLsp(subcommand) end
+        end
+        local map = function(lhs, fn, desc)
+          vim.keymap.set("n", lhs, fn, { buffer = bufnr, desc = desc })
+        end
+        map("<leader>ca", rustlsp("codeAction"), "rustaceanvim: grouped code actions")
+        map("<leader>rr", rustlsp("runnables"), "rustaceanvim: runnables")
+        map("<leader>rd", rustlsp("debuggables"), "rustaceanvim: debuggables")
+        map("<leader>rm", rustlsp("expandMacro"), "rustaceanvim: expand macro")
+        map("<leader>re", rustlsp("explainError"), "rustaceanvim: explain error")
+        map("<leader>rc", rustlsp("openCargo"), "rustaceanvim: open Cargo.toml")
+        map("<leader>rp", rustlsp("parentModule"), "rustaceanvim: parent module")
+        map("K", rustlsp({ "hover", "actions" }), "rustaceanvim: hover actions")
+      end
+
       vim.g.rustaceanvim = {
         server = {
           default_settings = rust_analyzer_settings(),
+          on_attach = function(_, bufnr)
+            rust_keymaps(bufnr)
+          end,
         },
       }
     end,
