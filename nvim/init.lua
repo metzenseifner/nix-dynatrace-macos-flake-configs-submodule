@@ -46,4 +46,8 @@ require('config/highlight_groups')
 require('config/portable')
 require('config/gopls_build_tags').setup() -- Auto-detect build tags for gopls
 require('config/lsp_provider_audit').setup() -- Warn when an LSP comes from Mason/system instead of /nix/store
+-- Mark buffers whose backing file changed outside nvim.
+-- Dotted path deliberately: the lualine component requires the same module,
+-- and 'config/x' vs 'config.x' are distinct package.loaded keys (= two copies).
+require('config.disk_divergence').setup()
 --"--lua require()

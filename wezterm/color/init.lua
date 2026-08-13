@@ -1,4 +1,5 @@
 local apply = function(wezterm, config)
+  require 'color.picker'(wezterm, config)
   --config.color_scheme = 'Wild Cherry (Gogh)'
   --config.color_scheme = 'Builtin Solarized Dark'
   --config.color_scheme = 'Builtin Solarized Light'

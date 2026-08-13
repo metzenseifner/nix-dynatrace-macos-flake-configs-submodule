@@ -90,7 +90,7 @@ function M.setup(opts)
   opts = opts or {}
   M.keep_paragraphs = opts.keep_paragraphs or false
 
-  vim.api.nvim_create_user_command("ToggleCommentFolds", M.toggle, {
+  vim.api.nvim_create_user_command("CommentFoldsToggle", M.toggle, {
     desc = "Toggle folding of comment lines",
   })
 

@@ -568,9 +568,7 @@ return {
 
     vim.keymap.set('n', '<leader><leader>pn',
       function()
-        --local path = vim.fn.stdpath('data') .. "/jonathans_special_files/1on1-team-care"
-        local path = vim.fn.expand("$HOME") ..
-            "/Library/CloudStorage/OneDrive-Dynatrace/Dokumente/jonathans_special_files"
+        local path = vim.fn.expand("$HOME") .. "/Documents"
         require("telescope.builtin").find_files(object_assign(
           { cwd = path, hidden = false, prompt_title = "Pick file under: " .. path },
           require("telescope.themes").get_ivy({ previewer = true })))

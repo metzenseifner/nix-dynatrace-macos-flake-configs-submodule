@@ -45,8 +45,9 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.autoindent = true -- auto indent line same amount as previous line
 --vim.opt.showbreak = "++"
---vim.opt.textwidth = 0
+vim.opt.textwidth = 80
 
+vim.opt.autoread = false -- buffer rather never be silently reloaded
 
 vim.opt.splitbelow  = true
 vim.opt.number      = true

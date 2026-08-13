@@ -82,10 +82,10 @@ local data_dir = vim.fn.stdpath('data') .. "/orgmode"
 local main_dir = vim.g.jonathans_special_files
 local files_dir = {
   vim.g.jonathans_special_files .. "/tasks.org",
-  vim.g.jonathans_special_files .. "/standup.org",
-  vim.g.jonathans_special_files .. "/learn.org",
-  vim.fn.expand('~') .. "/devel/1on1s/**/*.org",
-  vim.fn.expand("~") .. "/devel/team-development/**/*.org"
+  -- vim.g.jonathans_special_files .. "/standup.org",
+  -- vim.g.jonathans_special_files .. "/learn.org",
+  -- vim.fn.expand('~') .. "/devel/1on1s/**/*.org",
+  -- vim.fn.expand("~") .. "/devel/team-development/**/*.org"
 }
 
 local timestamp_format = "%<%Y-%m-%d %a %H:%M-%S%z>"

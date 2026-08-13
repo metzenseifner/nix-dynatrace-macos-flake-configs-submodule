@@ -7,6 +7,10 @@ return {
       return [[hello world]]
     end
 
+    -- Badge for "the file backing this buffer moved without me".
+    -- Owned by config.disk_divergence; the bar is only a renderer.
+    local disk = require("config.disk_divergence")
+
     require("lualine").setup({
       options = {
         icons_enabled = false,
@@ -29,7 +33,7 @@ return {
       sections = {
         -- use output of a function: lualine_c = { hello }
         lualine_a = { "mode" },
-        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_b = { "branch", "diff", "diagnostics", disk.component },
         lualine_c = { "location", "[[Char 10]]", "%04b", "[[Char 16]]", "%04B" }, --utils.multibyteCharUnderCursor
         -- vimscript statusline items as lualine component: sections = { lualine_c = {'%=', '%t%m', '%3p'} }
         lualine_x = { "encoding", "fileformat", { "filetype", colored = true, } },
@@ -39,7 +43,7 @@ return {
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { "filename" },
+        lualine_c = { "filename", disk.component }, -- unfocused splits must warn too
         lualine_x = { "location" },
         lualine_y = {},
         lualine_z = {},
