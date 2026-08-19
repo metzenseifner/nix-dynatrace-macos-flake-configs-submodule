@@ -1,3 +1,20 @@
+local content_supplier = function()
+  --require("startup.functions").quote()
+  local process = require('config.portable').safe_popen('sprint_supplier', 'r', 'startup_sprint_supplier')
+  local stdout = "N/A"
+  if process then
+    stdout = process:read('*l') or "N/A"
+    process:close()
+  end
+  return {
+    "startup.nvim",
+    clock = " " .. os.date "%H:%M",
+    date = " " .. os.date "%d-%m-%y",
+    sprint = "Sprint: " .. stdout,
+    standup_zoom_url =
+    "Standup: https://dynatrace.zoom.us/j/91042876298?pwd=OlgXClad7p2MlbMAm2zkgnbcb8VDF4.1",
+  }
+end
 return {
   "startup-nvim/startup.nvim",
   dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim", "nvim-telescope/telescope-file-browser.nvim" },
@@ -43,22 +60,7 @@ return {
         -- }
         -- e.g. {" Find File", "Telescope find_files", "<leader>ff" }
         -- "oldfiles" -> ""
-        content = function()
-          --require("startup.functions").quote()
-          local clock = " " .. os.date "%H:%M"
-          local date = " " .. os.date "%d-%m-%y"
-          local portable = require('config.portable')
-          local process = portable.safe_popen('sprint_supplier', 'r', 'startup_sprint_supplier')
-          local stdout = "N/A"
-          if process then
-            stdout = process:read('*l') or "N/A"
-            process:close()
-          end
-          local sprint = "Sprint: " .. stdout
-          local standup_zoom_url =
-          "Standup: https://dynatrace.zoom.us/j/91042876298?pwd=OlgXClad7p2MlbMAm2zkgnbcb8VDF4.1"
-          return { "startup.nvim", clock, date, sprint, standup_zoom_url }
-        end,
+        content = content_supplier,
         highlight = "String",      -- highlight group in which the section text should be highlighted
         default_color = "#FF0000", -- a hex color that gets used if you don't specify `highlight`
         oldfiles_amount = 5,       -- the amount of oldfiles to be displayed
@@ -71,17 +73,17 @@ return {
         title = "Basic Commands",
         margin = 5,
         content = {
-          { "Standup", vim.g.jonathans_special_files .. "/standup.org", "s" },
-          { "󰍉 List Projects", ":NeovimProjectDiscover", "<leader>pp" },
-          { "  List Recent Projects", ":NeovimProjectHistory", "<leader>pph" },
-          { "Interviews in Oil", ":Oil " .. vim.g.jonathans_special_files .. "/Team\\ Captain/Interviews\\ -\\ Candidates\\ or\\ Prospective\\ Employees", "i" },
-          { "Special Files in Oil", ":Oil " .. vim.g.jonathans_special_files, "f" },
+          -- { "Standup", vim.g.jonathans_special_files .. "/standup.org", "s" },
+          { "󰍉 List Projects", "", "<leader>pp" },
+          -- { "  List Recent Projects", ":NeovimProjectHistory", "<leader>pph" },
+          -- { "Interviews in Oil", ":Oil " .. vim.g.jonathans_special_files .. "/Team\\ Captain/Interviews\\ -\\ Candidates\\ or\\ Prospective\\ Employees", "i" },
+          -- { "Special Files in Oil", ":Oil " .. vim.g.jonathans_special_files, "f" },
           --{ " Find File", "Telescope find_files", "<leader>ff" },
           --{ "󰍉 Find Word", "Telescope live_grep", "<leader>lg" },
           --{ " Recent Files", "Telescope oldfiles", "<leader>of" },
           --{ " File Browser", "Telescope file_browser", "<leader>fb" },
-          { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
-          { " New File", "lua require'startup'.new_file()", "<leader>nf" },
+          -- { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
+          -- { " New File", "lua require'startup'.new_file()", "<leader>nf" },
         },
         highlight = "String",
         default_color = "",

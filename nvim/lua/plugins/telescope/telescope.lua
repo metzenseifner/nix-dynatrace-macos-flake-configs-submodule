@@ -1,13 +1,28 @@
+local shared_rg_display = function()
+  return require 'telescope.themes'.get_ivy({ previewer = true }), {
+    {
+      layout_config = {
+        width = 0.95,       -- give it most of the screen
+        height = 0.85,
+        preview_width = 0.55, -- tune: smaller preview => more results width
+      },
+    }
+  }
+end
+local shared_rg_hints = {
+  "--no-ignore", "Enable full sweep regardless of git-ignored files",
+  "-g|--glob", "consider only filenames matching glob"
+}
 local shared_rg_args = {
   "--color=never",
   "--no-heading",
   "--with-filename",
   "--line-number",
-  "--column",    -- Show column numbers (1-based). This only shows the column numbers for the first match on each line.
-  '--hidden',    -- Search hidden files and directories.
-  '--follow',    --ripgrep will follow symbolic links while traversing directories.
-  '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
-  ' ',           -- required to separate args from search string
+  "--column", -- Show column numbers (1-based). This only shows the column numbers for the first match on each line.
+  '--hidden', -- Search hidden files and directories.
+  '--follow', --ripgrep will follow symbolic links while traversing directories.
+  -- '--no-ignore', -- Don’t respect ignore files (.gitignore, .ignore, etc.). This implies --no-ignore-dot, --no-ignore-exclude, --no-ignore-global, no-ignore-parent and --no-ignore-vcs.
+  ' ',        -- required to separate args from search string
 }
 local diagnostics_telescope_action = function(prompt_bufnr_or_opts, severity)
   local opts = {}
@@ -333,12 +348,15 @@ return {
     -- putting in telescope package was not working (prob due to lazy loading)
     vim.keymap.set('v', '<C-s>',
       function()
+        local cmd_str = table.concat(values.vimgrep_arguments or {}, ' ')
         require("telescope-live-grep-args.shortcuts").grep_visual_selection({
           quote = false,
           trim = true,
           default_text = table.concat(shared_rg_args, " "),
+          prompt_title = string.format('grep_visual_selection %s: %s',
+            table.concat(shared_rg_hints, " "),
+            cmd_str),
           postfix = "",
-          prompt_title = "Search in Buffer",
           search_dirs = { vim.api.nvim_buf_get_name(0) },
         })
       end,
@@ -354,12 +372,15 @@ return {
       { desc = "Workspace diagnostics to quickfix list" })
     -- Grep visual selection in the whole workspace (recursive search)
     vim.keymap.set('v', '<C-s><C-s>', function()
+      local cmd_str = table.concat(values.vimgrep_arguments or {}, ' ')
       require("telescope-live-grep-args.shortcuts").grep_visual_selection({
         quote = false,
         trim = true,
         default_text = table.concat(shared_rg_args, " "),
         postfix = "",
-        prompt_title = "Search in Workspace",
+        prompt_title = string.format('grep_visual_selection %s: %s',
+          table.concat(shared_rg_hints, " "),
+          cmd_str)
       })
     end, { desc = "Grep selection in workspace." })
 
@@ -488,21 +509,12 @@ return {
           object_assign(
             {
               default_text = table.concat(shared_rg_args, " "),
-              prompt_title = string.format('live_grep_args (hint: use -g|--glob to exclude filepath pattern): %s',
+              prompt_title = string.format('live_grep_args %s: %s',
+                table.concat(shared_rg_hints, " "),
                 cmd_str)
-              -- prompt_title =
-              -- "live_grep_args (Ripgrep) . (+/- files with --iglob **/dir/**) (--no-ignore to ignore gitignore)",
-              -- results_title = cmd_str
-            }, -- sits above the results pane
-            require 'telescope.themes'.get_ivy({ previewer = true }), {
-              {
-                layout_config = {
-                  width = 0.95,         -- give it most of the screen
-                  height = 0.85,
-                  preview_width = 0.55, -- tune: smaller preview => more results width
-                },
-              }
-            })
+            },
+            shared_rg_display()
+          )
         )
       end,
       {
