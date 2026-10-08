@@ -1,9 +1,16 @@
--- ~/.config/nvim/lua/buffer-filters.lua
+-- buffer_filters.nvim
+-- A Telescope picker for running filters over the current buffer.
+--
+-- A filter is any table that turns the buffer's lines into new lines. There are
+-- two kinds:
+--
+--   shell : has a `command` string. The buffer is piped through it on standard
+--           input, and standard output replaces the buffer.
+--   lua   : has an `apply` function. It receives a copy of the buffer's lines as
+--           a table and returns either a table of lines or a single string.
+--
+-- Both kinds share the same live preview and the same apply path.
 local M = {}
-
-M.setup = function()
-  -- for compatibility
-end
 
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
@@ -12,7 +19,11 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local previewers = require("telescope.previewers")
 
-M.filters = {
+-------------------------------------------------------------------------------
+-- Built-in filters
+--------------------------------------------------------------------------------
+
+local default_filters = {
   {
     name = "JQ: Flatten records with ::",
     command = "jq -r '.records[] | [.[]] | join(\"::\")'",
@@ -97,137 +108,320 @@ M.filters = {
     description = "Format YAML/JSON with yq",
     ft = "yaml",
   },
+  {
+    name = "Text: Trim trailing whitespace",
+    description = "Removes spaces and tabs at the end of every line",
+    apply = function(lines)
+      local trimmed = {}
+      for index, line in ipairs(lines) do
+        trimmed[index] = line:gsub("%s+$", "")
+      end
+      return trimmed
+    end,
+  },
 }
 
-local function get_buffer_content()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  return table.concat(lines, "\n")
+--------------------------------------------------------------------------------
+-- Registration
+--------------------------------------------------------------------------------
+
+M.filters = {}
+
+-- Turns a user-supplied table into the internal shape, or returns nil plus a
+-- message explaining what is wrong with it.
+local function normalize_filter(filter)
+  if type(filter) ~= "table" then
+    return nil, "a filter must be a table, got " .. type(filter)
+  end
+
+  if type(filter.name) ~= "string" or filter.name == "" then
+    return nil, "a filter must have a non-empty name"
+  end
+
+  local kind
+  if type(filter.command) == "string" then
+    kind = "shell"
+  elseif type(filter.apply) == "function" then
+    kind = "lua"
+  else
+    return nil, string.format(
+      "filter %q must have either a command string or an apply function",
+      filter.name
+    )
+  end
+
+  return {
+    name = filter.name,
+    description = filter.description or "Custom filter",
+    ft = filter.ft or "text",
+    command = filter.command,
+    apply = filter.apply,
+    kind = kind,
+  }
 end
 
-function M.apply_filter(filter_command)
-  local content = get_buffer_content()
-  local result = vim.fn.system(filter_command, content)
+-- Registers a filter. Accepts either the table form:
+--
+--   add_filter({ name = "...", apply = function(lines) ... end })
+--
+-- or the older positional form kept for backward compatibility:
+--
+--   add_filter(name, command, description, ft)
+function M.add_filter(filter_or_name, command, description, ft)
+  local candidate = filter_or_name
 
-  if vim.v.shell_error ~= 0 then
-    vim.notify("Filter error: " .. result, vim.log.levels.ERROR)
+  if type(filter_or_name) == "string" then
+    candidate = {
+      name = filter_or_name,
+      command = command,
+      description = description,
+      ft = ft,
+    }
+  end
+
+  local normalized, err = normalize_filter(candidate)
+  if not normalized then
+    vim.notify("buffer_filters: " .. err, vim.log.levels.ERROR)
+    return false
+  end
+
+  table.insert(M.filters, normalized)
+  return true
+end
+
+-- Registers the built-in filters plus anything the user passes in.
+--
+--   require("buffer_filters").setup({
+--     use_defaults = true,       -- set to false to keep only your own filters
+--     filters = { ... },
+--   })
+function M.setup(opts)
+  opts = opts or {}
+
+  M.filters = {}
+
+  if opts.use_defaults ~= false then
+    for _, filter in ipairs(default_filters) do
+      M.add_filter(filter)
+    end
+  end
+
+  for _, filter in ipairs(opts.filters or {}) do
+    M.add_filter(filter)
+  end
+end
+
+-- Register the defaults immediately so the picker still works if setup is never
+-- called. Calling setup afterwards replaces this list rather than appending.
+M.setup()
+
+--------------------------------------------------------------------------------
+-- Running filters
+--------------------------------------------------------------------------------
+
+-- Runs a filter over a table of lines and returns the resulting lines, or nil
+-- plus an error message. This never touches a buffer, which is what lets the
+-- previewer and the apply path share it.
+local function run_filter(filter, lines)
+  if filter.kind == "lua" then
+    local ok, result = pcall(filter.apply, vim.deepcopy(lines))
+
+    if not ok then
+      return nil, tostring(result)
+    end
+
+    if type(result) == "string" then
+      result = vim.split(result, "\n", { plain = true })
+    end
+
+    if type(result) ~= "table" then
+      return nil, "the apply function must return a table of lines or a string"
+    end
+
+    return result
+  end
+
+  local output = vim.fn.system(filter.command, table.concat(lines, "\n"))
+  local shell_error = vim.v.shell_error
+
+  if shell_error ~= 0 then
+    return nil, output
+  end
+
+  local result = vim.split(output, "\n", { plain = true })
+  if result[#result] == "" then
+    table.remove(result)
+  end
+
+  return result
+end
+
+-- Applies a filter to the current buffer. Accepts a filter table, or a bare
+-- command string for backward compatibility.
+function M.apply_filter(filter)
+  if type(filter) == "string" then
+    filter = { name = filter, command = filter, kind = "shell", description = "" }
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local cursor = vim.api.nvim_win_get_cursor(0)
+
+  local result, err = run_filter(filter, lines)
+
+  if not result then
+    vim.notify("Filter error: " .. err, vim.log.levels.ERROR)
     return
   end
 
-  local result_lines = vim.split(result, "\n", { plain = true })
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, result)
 
-  if result_lines[#result_lines] == "" then
-    table.remove(result_lines)
+  -- Put the cursor back, clamped to the new number of lines.
+  local last_line = vim.api.nvim_buf_line_count(bufnr)
+  pcall(vim.api.nvim_win_set_cursor, 0, { math.min(cursor[1], last_line), cursor[2] })
+
+  vim.notify("Filter applied: " .. filter.name, vim.log.levels.INFO)
+end
+
+-- Only meaningful for shell filters, since a Lua function has no command line
+-- representation.
+function M.edit_filter_in_cmdline(filter)
+  if filter.kind ~= "shell" then
+    vim.notify(
+      "This filter is a Lua function, so there is no command to edit",
+      vim.log.levels.WARN
+    )
+    return
   end
 
-  vim.api.nvim_buf_set_lines(0, 0, -1, false, result_lines)
-  vim.notify("Filter applied: " .. filter_command, vim.log.levels.INFO)
+  vim.fn.feedkeys(":%!" .. filter.command, "n")
 end
 
--- Function to edit filter in command line
-function M.edit_filter_in_cmdline(filter_command)
-  -- Set the command in the command line with cursor at the end
-  vim.fn.feedkeys(":%!" .. filter_command, "n")
+local function command_label(filter)
+  if filter.kind == "shell" then
+    return ":%!" .. filter.command
+  end
+  return "<lua function>"
 end
 
-local function create_filter_previewer(original_content)
+--------------------------------------------------------------------------------
+-- Previewer
+--------------------------------------------------------------------------------
+
+local function create_filter_previewer(original_lines)
   return previewers.new_buffer_previewer({
     title = "Filter Preview (Live)",
-    define_preview = function(self, entry, status)
+    define_preview = function(self, entry, _)
       local filter = entry.value
+      local result, err = run_filter(filter, original_lines)
 
-      -- Run the filter command with the captured original content
-      local result = vim.fn.system(filter.command, original_content)
-      local shell_error = vim.v.shell_error  -- Capture immediately after system call
-
-      -- Prepare preview content
       local preview_lines = {}
+      local highlights = {}
 
-      -- Header section with command
-      table.insert(preview_lines, "╔════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ COMMAND TO EXECUTE:")
-      table.insert(preview_lines, "╠════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ :%!" .. filter.command)
-      table.insert(preview_lines, "╠════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ DESCRIPTION:")
-      table.insert(preview_lines, "╠════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ " .. filter.description)
-      table.insert(preview_lines, "╠════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ ACTIONS:")
-      table.insert(preview_lines, "╠════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "║ <CR>    : Apply filter to buffer")
-      table.insert(preview_lines, "║ <C-e>   : Edit command in command line")
-      table.insert(preview_lines, "║ <C-y>   : Yank command to clipboard")
-      table.insert(preview_lines, "║ ?       : Show help")
-      table.insert(preview_lines, "╚════════════════════════════════════════════════════════════")
-      table.insert(preview_lines, "")
-      table.insert(preview_lines, "▼ PREVIEW OUTPUT ▼")
-      table.insert(preview_lines, "")
+      local function add(line, group)
+        table.insert(preview_lines, line)
+        if group then
+          table.insert(highlights, { group = group, line = #preview_lines - 1 })
+        end
+      end
 
-      if shell_error ~= 0 then
-        -- Show error
-        table.insert(preview_lines, "❌ ERROR:")
-        table.insert(preview_lines, "")
-        local error_lines = vim.split(result, "\n", { plain = true })
-        for _, line in ipairs(error_lines) do
-          table.insert(preview_lines, "  " .. line)
+      local rule = "╠════════════════════════════════════════════════════════════"
+
+      add("╔════════════════════════════════════════════════════════════", "Comment")
+      add("║ COMMAND TO EXECUTE:", "Comment")
+      add(rule, "Comment")
+      add("║ " .. command_label(filter), "String")
+      add(rule, "Comment")
+      add("║ DESCRIPTION:", "Comment")
+      add(rule, "Comment")
+      add("║ " .. filter.description, "Comment")
+      add(rule, "Comment")
+      add("║ ACTIONS:", "Comment")
+      add(rule, "Comment")
+      add("║ <CR>    : Apply filter to buffer", "Comment")
+      add("║ <C-e>   : Edit command in command line (shell filters only)", "Comment")
+      add("║ <C-y>   : Yank command to clipboard (shell filters only)", "Comment")
+      add("║ ?       : Show help", "Comment")
+      add("╚════════════════════════════════════════════════════════════", "Comment")
+      add("")
+      add("▼ PREVIEW OUTPUT ▼", "Title")
+      add("")
+
+      if not result then
+        add("❌ ERROR:", "ErrorMsg")
+        add("")
+        for _, line in ipairs(vim.split(err, "\n", { plain = true })) do
+          add("  " .. line)
         end
       else
-        -- Show result with line numbers
-        local result_lines = vim.split(result, "\n", { plain = true })
-        local num_lines = #result_lines
+        local num_lines = #result
+        add("✓ Success - " .. num_lines .. " lines", "String")
+        add("")
 
-        -- Add summary
-        table.insert(preview_lines, "✓ Success - " .. num_lines .. " lines")
-        table.insert(preview_lines, "")
-
-        -- Add first 100 lines of output
         local max_preview_lines = 100
-        for i, line in ipairs(result_lines) do
+        for i, line in ipairs(result) do
           if i > max_preview_lines then
-            table.insert(preview_lines, "")
-            table.insert(preview_lines, "... (" .. (num_lines - max_preview_lines) .. " more lines)")
+            add("")
+            add("... (" .. (num_lines - max_preview_lines) .. " more lines)")
             break
           end
-          table.insert(preview_lines, string.format("%4d │ %s", i, line))
+          add(string.format("%4d │ %s", i, line))
         end
       end
 
       vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, preview_lines)
+      vim.bo[self.state.bufnr].filetype = "text"
 
-      -- Set filetype to get some highlighting
-      vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "text")
-
-      -- Add highlighting
       local ns_id = vim.api.nvim_create_namespace("buffer_filters_preview")
       vim.api.nvim_buf_clear_namespace(self.state.bufnr, ns_id, 0, -1)
 
-      -- Highlight header lines
-      for i = 0, 14 do
-        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, "Comment", i, 0, -1)
-      end
-
-      -- Highlight command line
-      vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, "String", 3, 0, -1)
-
-      -- Highlight section title
-      vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, "Title", 16, 0, -1)
-
-      -- Highlight error or success
-      if shell_error ~= 0 then
-        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, "ErrorMsg", 19, 0, -1)
-      else
-        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, "String", 19, 0, -1)
+      for _, hl in ipairs(highlights) do
+        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns_id, hl.group, hl.line, 0, -1)
       end
     end,
   })
 end
 
-function M.show_picker()
-  -- Capture the original buffer number and content before opening picker
+--------------------------------------------------------------------------------
+-- Picker
+--------------------------------------------------------------------------------
+
+local help_text = [[
+Buffer Filters Help:
+
+<CR>    - Apply filter to current buffer
+<C-e>   - Edit command in command line (shell filters only)
+<C-y>   - Yank command to clipboard (shell filters only)
+<C-c>   - Cancel/Close picker
+?       - Show this help
+
+The preview shows:
+1. The exact command or function that will be run
+2. Description of what the filter does
+3. Live preview of the output
+4. Line count and error messages if any
+]]
+
+function M.show_picker(opts)
+  opts = opts or {}
+
   local original_bufnr = vim.api.nvim_get_current_buf()
   local original_lines = vim.api.nvim_buf_get_lines(original_bufnr, 0, -1, false)
-  local original_content = table.concat(original_lines, "\n")
-  
+
+  -- Optionally show only the filters that suit this buffer's filetype.
+  local available = M.filters
+  if opts.match_filetype then
+    local buffer_ft = vim.bo[original_bufnr].filetype
+    available = vim.tbl_filter(function(filter)
+      return filter.ft == buffer_ft or filter.ft == "text"
+    end, M.filters)
+  end
+
+  if #available == 0 then
+    vim.notify("buffer_filters: no filters registered", vim.log.levels.WARN)
+    return
+  end
+
   pickers.new({}, {
     prompt_title = "🔍 Buffer Filters (Type to search)",
     results_title = "Available Filters",
@@ -238,104 +432,58 @@ function M.show_picker()
       preview_width = 0.65,
     },
     finder = finders.new_table({
-      results = M.filters,
+      results = available,
       entry_maker = function(entry)
         return {
           value = entry,
           display = entry.name,
-          ordinal = entry.name .. " " .. entry.description .. " " .. entry.command,
+          ordinal = entry.name .. " " .. entry.description .. " " .. (entry.command or "lua"),
         }
       end,
     }),
     sorter = conf.generic_sorter({}),
-    previewer = create_filter_previewer(original_content),
+    previewer = create_filter_previewer(original_lines),
     attach_mappings = function(prompt_bufnr, map)
-      -- Default action: Apply filter to original buffer
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
-        
-        -- Switch back to original buffer and apply filter
+
         vim.api.nvim_set_current_buf(original_bufnr)
-        M.apply_filter(selection.value.command)
+        M.apply_filter(selection.value)
       end)
 
-      -- Ctrl-e: Edit in command line
-      map("i", "<C-e>", function()
+      local function edit_in_cmdline()
         local selection = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        M.edit_filter_in_cmdline(selection.value.command)
-      end)
+        M.edit_filter_in_cmdline(selection.value)
+      end
 
-      map("n", "<C-e>", function()
+      local function yank_command()
         local selection = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-        M.edit_filter_in_cmdline(selection.value.command)
-      end)
+        local filter = selection.value
 
-      -- Ctrl-y: Yank command to clipboard
-      map("i", "<C-y>", function()
-        local selection = action_state.get_selected_entry()
-        vim.fn.setreg("+", ":%!" .. selection.value.command)
-        vim.notify("Command copied to clipboard: :%!" .. selection.value.command, vim.log.levels.INFO)
-      end)
+        if filter.kind ~= "shell" then
+          vim.notify("This filter is a Lua function, so there is nothing to yank", vim.log.levels.WARN)
+          return
+        end
 
-      map("n", "<C-y>", function()
-        local selection = action_state.get_selected_entry()
-        vim.fn.setreg("+", ":%!" .. selection.value.command)
-        vim.notify("Command copied to clipboard: :%!" .. selection.value.command, vim.log.levels.INFO)
-      end)
+        vim.fn.setreg("+", ":%!" .. filter.command)
+        vim.notify("Command copied to clipboard: :%!" .. filter.command, vim.log.levels.INFO)
+      end
 
-      -- Show help
-      map("i", "?", function()
-        vim.notify([[
-Buffer Filters Help:
+      local function show_help()
+        vim.notify(help_text, vim.log.levels.INFO)
+      end
 
-<CR>    - Apply filter to current buffer
-<C-e>   - Edit command in command line (for quick modifications)
-<C-y>   - Yank command to clipboard
-<C-c>   - Cancel/Close picker
-?       - Show this help
-
-The preview shows:
-1. The exact command that will be executed
-2. Description of what the filter does
-3. Live preview of the output
-4. Line count and error messages if any
-        ]], vim.log.levels.INFO)
-      end)
-
-      map("n", "?", function()
-        vim.notify([[
-Buffer Filters Help:
-
-<CR>    - Apply filter to current buffer
-<C-e>   - Edit command in command line (for quick modifications)
-<C-y>   - Yank command to clipboard
-<C-c>   - Cancel/Close picker
-?       - Show this help
-
-The preview shows:
-1. The exact command that will be executed
-2. Description of what the filter does
-3. Live preview of the output
-4. Line count and error messages if any
-        ]], vim.log.levels.INFO)
-      end)
+      for _, mode in ipairs({ "i", "n" }) do
+        map(mode, "<C-e>", edit_in_cmdline)
+        map(mode, "<C-y>", yank_command)
+        map(mode, "?", show_help)
+      end
 
       return true
     end,
   }):find()
-end
-
--- Function to add custom filters at runtime
-function M.add_filter(name, command, description, ft)
-  table.insert(M.filters, {
-    name = name,
-    command = command,
-    description = description or "Custom filter",
-    ft = ft or "text",
-  })
 end
 
 return M

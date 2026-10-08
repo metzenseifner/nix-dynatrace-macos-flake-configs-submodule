@@ -502,9 +502,18 @@ return {
     vim.keymap.set('n', '<leader>f', format_buffer,
       { desc = "lsp.buf.format: Auto format code in buffer. TODO provide selection menu of formatters to apply." })
 
+    -- Hover. Two servers answer for .nix: `nil` with an inferred structural
+    -- type, `nixd` with the option's documentation (see
+    -- modules/neovim/lsps/). When more than one client responds, nvim heads
+    -- each section with the client name. Capping the width makes nil's
+    -- single-line type expression wrap instead of stretching the float
+    -- across the screen; pressing K again focuses the window so it can be
+    -- scrolled. The border comes from config/highlight_groups.lua.
     vim.keymap.set('n', 'K', function()
-      vim.notify("vim.lsp.buf.hover() called.")
-      vim.lsp.buf.hover()
+      vim.lsp.buf.hover({
+        max_width = math.min(100, math.floor(vim.o.columns * 0.8)),
+        max_height = math.min(30, math.floor(vim.o.lines * 0.6)),
+      })
     end, { desc = 'Show type information in hover window.' })
 
     vim.keymap.set('n', '<leader>pls', function()

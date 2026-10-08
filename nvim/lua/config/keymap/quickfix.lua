@@ -26,6 +26,10 @@ end
 
 vim.keymap.set('n', '<C-n>', safe_qf_next, { desc = "Next in quickfix list (if open)" })
 vim.keymap.set('n', '<C-p>', safe_qf_prev, { desc = "Previous in quickfix list (if open)" })
+vim.keymap.set('n', '<leader>qq', function()
+  local quickfix_window_id = vim.fn.getqflist({ winid = 0 }).winid
+  vim.cmd(quickfix_window_id ~= 0 and 'cclose' or 'copen')
+end, { desc = "Toggle quickfix list" })
 
 -- Delete/reorder quickfix items (context-sensitive: only in quickfix window)
 vim.api.nvim_create_autocmd('FileType', {

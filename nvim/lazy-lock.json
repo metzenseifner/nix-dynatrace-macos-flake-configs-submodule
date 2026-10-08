@@ -34,6 +34,7 @@
   "harpoon": { "branch": "harpoon2", "commit": "87b1a3506211538f460786c23f98ec63ad9af4e5" },
   "haskell-debug-adapter": { "branch": "master", "commit": "30ff1b310395195754176911cdb56b7f7d34d99c" },
   "haskell-tools.nvim": { "branch": "main", "commit": "5fa6671ff4face61be6a439b085c4977c20a60dc" },
+  "hlwords.nvim": { "branch": "main", "commit": "da5fb7a5e32878da7cd546f3e62710935cddb677" },
   "hover.nvim": { "branch": "main", "commit": "e73c00da3a9c87a21d2a8ddf7ab4a39824bd5d56" },
   "iceberg.vim": { "branch": "master", "commit": "23835d5ed696436f716cbfdb56a93a7850fe3b18" },
   "import-cost.nvim": { "branch": "main", "commit": "30935f8a5fa9e1970ce1f4082dcb10e90d286c6f" },

@@ -1,5 +1,5 @@
 local apply = function(wezterm, config)
-  require 'color.picker'(wezterm, config)
+  require 'color.picker' (wezterm, config)
   --config.color_scheme = 'Wild Cherry (Gogh)'
   --config.color_scheme = 'Builtin Solarized Dark'
   --config.color_scheme = 'Builtin Solarized Light'
@@ -14,7 +14,7 @@ local apply = function(wezterm, config)
     end
     return 'Dark'
   end
-  
+
   function scheme_for_appearance(appearance)
     if appearance:find 'Dark' then
       --return 'Tokyo Night'
@@ -26,10 +26,10 @@ local apply = function(wezterm, config)
       --return 'Relaxed'
       --return 'Retro'
     else
-      --return 'Material'
-       return 'Mexico Light (base16)'
-      -- return 'Builtin Solarized Light'
-      --return 'Mar (Gogh)'
+      -- return 'Material'
+      -- return 'Mexico Light (base16)'
+      --return 'Builtin Solarized Light'
+      return 'Mar (Gogh)'
       --return 'tokyonight_day'
     end
   end
@@ -48,7 +48,7 @@ local apply = function(wezterm, config)
     -- Extract background and foreground colors
     local bg_color = scheme.background or '#000000'
     local fg_color = scheme.foreground or '#ffffff'
-    
+
     -- Set environment variables for tmux to read
     config.set_environment_variables = {
       WEZTERM_BACKGROUND_COLOR = bg_color,

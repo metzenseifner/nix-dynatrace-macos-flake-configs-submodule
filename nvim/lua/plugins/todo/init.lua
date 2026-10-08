@@ -102,9 +102,9 @@ return {
         edit_task = "ee",
       },
     }
-    vim.keymap.set('n', "<leader><leader>tt", function() require("todotxt-nvim").toggle_task_pane() end,
+    vim.keymap.set('n', "<leader><leader>dd", function() require("todotxt-nvim").toggle_task_pane() end,
       { desc = "ToDoTxtTasksToggle Open tasks in pane." })
-    vim.keymap.set('n', "<leader><leader>ta", function() require("todotxt-nvim").capture() end,
+    vim.keymap.set('n', "<leader><leader>da", function() require("todotxt-nvim").capture() end,
       { desc = "ToDoTxtCapture Add a task." })
     require("todotxt-nvim").setup(conf)
   end

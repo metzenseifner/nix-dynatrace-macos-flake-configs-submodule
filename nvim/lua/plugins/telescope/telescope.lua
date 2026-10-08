@@ -2,7 +2,7 @@ local shared_rg_display = function()
   return require 'telescope.themes'.get_ivy({ previewer = true }), {
     {
       layout_config = {
-        width = 0.95,       -- give it most of the screen
+        width = 0.95,         -- give it most of the screen
         height = 0.85,
         preview_width = 0.55, -- tune: smaller preview => more results width
       },
@@ -344,6 +344,7 @@ return {
     --------------------------------------------------------------------------------
     --                               Global Keymap                                --
     --------------------------------------------------------------------------------
+    vim.keymap.set('n', '<leader>pof', "<cmd> Telescope oldfiles<cr>", { desc = "Pick old files/recently opened files" })
     vim.keymap.set('n', '<leader>r', require('telescope.builtin').registers, { desc = 'Telescope registers' })
     -- putting in telescope package was not working (prob due to lazy loading)
     vim.keymap.set('v', '<C-s>',

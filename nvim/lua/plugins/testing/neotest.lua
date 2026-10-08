@@ -95,7 +95,7 @@ return {
       },
       { "<leader><leader>tam",  function() require("neotest").summary.run_marked() end,   desc = "Neotest run all marked tests in summary." },
       { "<leader><leader>tw",   function() require("neotest").watch.watch() end,          desc = "Watch files for changes and run tests." },
-      { "<leader><leader>tus",  function() require("neotest").summary.toggle() end,       desc = "Neotest Toggle Test Summary Window" },
+      { "<leader><leader>tt",  function() require("neotest").summary.toggle() end,       desc = "Neotest Toggle Test Summary Window" },
       { "<leader><leader>tuo",  function() require("neotest").output_panel.open() end,    desc = "Neotest Open Test Output Panel Window" },
       { "<leader><leader>tuoc", function() require("neotest").output_panel.close() end,   desc = "Neotest Close Test Output Panel Window" },
       { "<leader><leader>tuot", function() require("neotest").output_panel.toggle() end,  desc = "Neotest Toggle Test Output Panel Window" },

@@ -46,6 +46,12 @@ require('config/highlight_groups')
 require('config/portable')
 require('config/gopls_build_tags').setup() -- Auto-detect build tags for gopls
 require('config/lsp_provider_audit').setup() -- Warn when an LSP comes from Mason/system instead of /nix/store
+-- :NixConf — every nix.conf key. nix.settings is a freeform option, so the
+-- other ~112 keys exist in no option tree that nil or nixd could index.
+require('config/nix_conf_options').setup()
+-- :NixOptions — the keys declared under the attribute path at the cursor,
+-- which is the question hover cannot answer for a submodule.
+require('config/nix_option_tree').setup()
 -- Mark buffers whose backing file changed outside nvim.
 -- Dotted path deliberately: the lualine component requires the same module,
 -- and 'config/x' vs 'config.x' are distinct package.loaded keys (= two copies).

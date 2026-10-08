@@ -8,6 +8,7 @@ alias haskell="cd ~/devel/haskell_projects/scripts"
 alias api="cd ~/devel/dynatrace_bitbucket/12_DYNATRACE_API"
 alias care="cd ~/devel/dynatrace_bitbucket/15_TEAM_CARE_PROJECTS"
 alias wh="which"
+alias lz="lazygit"
 
 # Environment variables
 export LC_ALL=en_US.UTF-8
