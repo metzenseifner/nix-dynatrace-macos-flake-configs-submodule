@@ -51,7 +51,11 @@ vim.opt.autoread = false -- buffer rather never be silently reloaded
 
 vim.opt.splitbelow  = true
 vim.opt.number      = true
-vim.opt.background  = "light"
+-- Detected from the terminal rather than pinned, so a dark wezterm opens a
+-- dark Neovim. Set early so anything that loads a colorscheme before
+-- colorscheme_select (firenvim, a --cmd colorscheme) already sees the right
+-- value. See lua/config/terminal_appearance.lua for the detector ordering.
+require('config.terminal_appearance').adopt() -- sets vim.opt.background
 -- vim.opt.completeopt = ""
 vim.opt.wildmode    = { "longest,list" } -- get bash-like tab completions
 vim.opt.hlsearch    = true

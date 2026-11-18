@@ -1,6 +1,6 @@
 -- lazy.nvim plugin spec
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*",
   lazy = true,
   event = "VeryLazy",

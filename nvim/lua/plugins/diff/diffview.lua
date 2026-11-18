@@ -36,3 +36,4 @@ return {
     require("diffview").setup(config)
   end
 }
+

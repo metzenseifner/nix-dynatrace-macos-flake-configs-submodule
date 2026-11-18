@@ -21,6 +21,85 @@ return {
     dependencies = { "mason.nvim", "nvimtools/none-ls-extras.nvim" },
     config = function(_, opts)
       local null_ls = require("null-ls")
+
+      -- markdownlint policy (consumed by the diagnostics source below and by the
+      -- wrap-budget autocmd at the end of this config function).
+      --
+      -- Algebraically: budget : buffer -> line_length | nil, resolved by walking
+      -- upwards from the buffer to the nearest markdownlint config. The linter and
+      -- the editor's wrap width are two applications of this one function, so a
+      -- diagnostic can never disagree with the width gq wraps to.
+      --
+      -- In plain English: the number that draws the squiggle and the number that
+      -- fixes it are the same local, declared a few lines apart.
+      local markdownlint_config_names = {
+        ".markdownlint.yml",
+        ".markdownlint.yaml",
+        ".markdownlint.json",
+        ".markdownlint.jsonc",
+        ".markdownlintrc",
+      }
+
+      -- markdownlint_config : bufname -> config path | nil
+      local markdownlint_config = function(bufname)
+        return vim.fs.find(markdownlint_config_names, {
+          upward = true,
+          path = vim.fs.dirname(bufname),
+          type = "file",
+        })[1]
+      end
+
+      -- MD013 omitted or given as a plain boolean means markdownlint's own default.
+      local MARKDOWNLINT_DEFAULT_LINE_LENGTH = 80
+
+      -- A narrow scan rather than a YAML parse: we need exactly one scalar, and
+      -- pulling in a YAML dependency to read it would be a poor trade.
+      local scan_yaml_line_length = function(lines)
+        local in_md013 = false
+        for _, line in ipairs(lines) do
+          if line:match("^%s*#") or not line:match("%S") then
+            -- comments and blank lines neither open nor close a block
+          elseif line:match("^MD013:") then
+            local inline = line:match("line_length:%s*(%d+)") -- MD013: { line_length: 120 }
+            if inline then return tonumber(inline) end
+            in_md013 = true
+          elseif in_md013 then
+            local nested = line:match("^%s+line_length:%s*(%d+)")
+            if nested then return tonumber(nested) end
+            if not line:match("^%s") then in_md013 = false end -- a dedent closes the block
+          end
+        end
+        return nil
+      end
+
+      local scan_json_line_length = function(lines)
+        local ok, decoded = pcall(vim.json.decode, table.concat(lines, "\n"))
+        if not ok or type(decoded) ~= "table" then return nil end
+        local md013 = decoded.MD013
+        return type(md013) == "table" and tonumber(md013.line_length) or nil
+      end
+
+      -- Keyed by config path and invalidated on mtime, so editing a project's
+      -- .markdownlint.yml takes effect without restarting neovim.
+      local line_length_cache = {}
+
+      -- markdownlint_line_length : bufname -> line_length | nil (nil = no config governs this buffer)
+      local markdownlint_line_length = function(bufname)
+        local cfg = markdownlint_config(bufname)
+        if not cfg then return nil end
+
+        local stat = vim.uv.fs_stat(cfg)
+        local mtime = stat and stat.mtime and stat.mtime.sec or 0
+        local cached = line_length_cache[cfg]
+        if cached and cached.mtime == mtime then return cached.line_length end
+
+        local ok, lines = pcall(vim.fn.readfile, cfg)
+        local scan = cfg:match("%.jsonc?$") and scan_json_line_length or scan_yaml_line_length
+        local line_length = (ok and scan(lines)) or MARKDOWNLINT_DEFAULT_LINE_LENGTH
+
+        line_length_cache[cfg] = { mtime = mtime, line_length = line_length }
+        return line_length
+      end
       null_ls.setup({
         debug = false, -- possible culprit for sluggish slow typing in neovim!
         on_attach = function(client, bufnr)
@@ -91,7 +170,17 @@ return {
           -- TODO these binaries automatically WARNING: If any missing, this will cause an ambiguous async error (plenary)
           --nls.builtins.formatting.fish_indent,
           --null_ls.builtins.diagnostics.luacheck,
-          --null_ls.builtins.diagnostics.markdownlint,
+          -- markdownlint-cli reads a config only from its cwd (here: the null-ls
+          -- root_dir, i.e. the .git toplevel), so a project config living in a
+          -- subdirectory -- e.g. Opencast's docs/guides/.markdownlint.yml -- is
+          -- missed and upstream defaults (MD013 at 80 chars, ...) are used instead.
+          -- Pass the nearest config found upwards from the buffer explicitly.
+          null_ls.builtins.diagnostics.markdownlint.with({
+            extra_args = function(params)
+              local cfg = markdownlint_config(params.bufname)
+              return cfg and { "--config", cfg } or {}
+            end,
+          }),
           --nls.builtins.diagnostics.fish,
           --nls.builtins.formatting.stylua,
           --nls.builtins.formatting.shfmt,
@@ -311,6 +400,38 @@ return {
         --diagnostics_format = "#{m}",
         --log_level = "warn",
         --notify_format = "[null-ls] %s",
+      })
+
+      -- Give markdown buffers the same line budget markdownlint judges them by,
+      -- so gq/gqip wraps to exactly the width MD013 complains about.
+      --
+      -- Only when a config actually governs the buffer: without one we leave
+      -- textwidth as the global default, rather than silently imposing
+      -- markdownlint's 80 on repositories that never asked for it.
+      vim.api.nvim_create_augroup("markdownlint_wrap_budget", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        group = "markdownlint_wrap_budget",
+        pattern = "markdown",
+        desc = "Set textwidth from the nearest markdownlint MD013.line_length",
+        callback = function(args)
+          local line_length = markdownlint_line_length(vim.api.nvim_buf_get_name(args.buf))
+          if not line_length then return end
+
+          vim.bo[args.buf].textwidth = line_length
+
+          -- Drop t/a: wrapping is an explicit gq, never something that happens
+          -- underneath you while typing in someone else's repository.
+          -- Add n + formatlistpat: gq then keeps a list item's hanging indent
+          -- instead of flattening the continuation to the margin (MD005/MD007).
+          local fo = vim.bo[args.buf].formatoptions:gsub("[ta]", "")
+          for _, flag in ipairs({ "n", "q", "j" }) do
+            if not fo:find(flag, 1, true) then fo = fo .. flag end
+          end
+          vim.bo[args.buf].formatoptions = fo
+          vim.bo[args.buf].formatlistpat = [[^\s*\%([-*+]\|\d\+[.)]\)\s\+]]
+
+          vim.opt_local.colorcolumn = tostring(line_length)
+        end,
       })
     end
   },

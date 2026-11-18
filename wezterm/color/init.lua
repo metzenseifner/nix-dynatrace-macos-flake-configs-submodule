@@ -18,10 +18,10 @@ local apply = function(wezterm, config)
   function scheme_for_appearance(appearance)
     if appearance:find 'Dark' then
       --return 'Tokyo Night'
-      return 'Maia (Gogh)'
+      --return 'Maia (Gogh)'
       -- return 'tokyonight'
       --return 'Operator Mono Dark'
-      --return 'Pnevma'
+      return 'Pnevma'
       --return 'Solarized Dark Higher Contrast'
       --return 'Relaxed'
       --return 'Retro'
